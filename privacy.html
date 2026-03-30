@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Scrybe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f5f5f7;--white:#ffffff;--dark:#1d1d1f;--dark2:#0a0a0a;
+  --mid:#6e6e73;--light:#d2d2d7;--lighter:#f0f0f2;
+  --accent:#0066cc;--accent-h:#0055aa;--green:#34c759;
+  --radius:18px;--nav-h:56px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--bg);color:var(--dark);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:var(--accent);}
+a:hover{text-decoration:underline;}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:rgba(245,245,247,0.82);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:0.5px solid rgba(0,0,0,0.12);}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:22px;letter-spacing:-0.5px;color:var(--dark);}
+.nav-right a{font-size:13px;color:var(--accent);padding:6px 14px;border-radius:980px;transition:background 0.15s;display:inline-flex;align-items:center;gap:5px;}
+.nav-right a:hover{background:rgba(0,102,204,0.08);text-decoration:none;}
+.nav-right svg{width:14px;height:14px;}
+.hero{background:var(--white);padding:calc(var(--nav-h) + 72px) 24px 72px;border-bottom:0.5px solid var(--light);text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:400px;background:radial-gradient(ellipse at 50% 0%,rgba(0,102,204,0.07) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{display:inline-block;font-size:12px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;animation:fadeUp 0.6s ease both;}
+.hero h1{font-family:'Instrument Serif',serif;font-size:clamp(40px,6vw,64px);letter-spacing:-0.03em;line-height:1.06;color:var(--dark);margin-bottom:20px;animation:fadeUp 0.7s ease 0.07s both;}
+.hero-meta{font-size:14px;color:var(--mid);animation:fadeUp 0.7s ease 0.14s both;}
+.hero-meta span{margin:0 10px;opacity:0.4;}
+.page-wrap{max-width:1060px;margin:0 auto;padding:72px 24px 120px;display:grid;grid-template-columns:220px 1fr;gap:64px;align-items:start;}
+.toc{position:sticky;top:calc(var(--nav-h) + 28px);}
+.toc-label{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid);margin-bottom:14px;}
+.toc ul{list-style:none;display:flex;flex-direction:column;gap:2px;}
+.toc ul li a{display:block;font-size:13px;font-weight:400;color:var(--mid);padding:6px 10px;border-radius:8px;transition:background 0.13s,color 0.13s;text-decoration:none;line-height:1.4;}
+.toc ul li a:hover{background:rgba(0,0,0,0.05);color:var(--dark);}
+.toc ul li a.active{background:rgba(0,102,204,0.08);color:var(--accent);font-weight:500;}
+.content{min-width:0;}
+.policy-section{margin-bottom:56px;padding-bottom:56px;border-bottom:0.5px solid var(--light);opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.policy-section.in{opacity:1;transform:translateY(0);}
+.policy-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.policy-section h2{font-family:'Instrument Serif',serif;font-size:clamp(26px,3.5vw,36px);letter-spacing:-0.025em;line-height:1.1;color:var(--dark);margin-bottom:20px;}
+.policy-section p{font-size:16px;font-weight:300;color:var(--mid);line-height:1.75;margin-bottom:16px;}
+.policy-section p:last-child{margin-bottom:0;}
+.policy-section ul,.policy-section ol{padding-left:20px;display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.policy-section ul li,.policy-section ol li{font-size:16px;font-weight:300;color:var(--mid);line-height:1.7;}
+.policy-section ul li::marker{color:var(--accent);}
+.policy-section ol li::marker{color:var(--accent);font-weight:600;}
+.info-card{background:var(--white);border:0.5px solid rgba(0,0,0,0.07);border-radius:14px;padding:20px 22px;margin:24px 0;box-shadow:0 2px 12px rgba(0,0,0,0.04);display:flex;gap:14px;align-items:flex-start;}
+.info-card-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.info-card-body{min-width:0;}
+.info-card-body strong{display:block;font-size:14px;font-weight:600;color:var(--dark);margin-bottom:4px;}
+.info-card-body p{font-size:14px!important;margin-bottom:0!important;}
+.highlight-block{background:rgba(0,102,204,0.05);border-left:2px solid var(--accent);border-radius:0 10px 10px 0;padding:16px 20px;margin:24px 0;}
+.highlight-block p{font-size:15px!important;color:var(--dark)!important;font-weight:400!important;margin-bottom:0!important;}
+.data-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px;border:0.5px solid rgba(0,0,0,0.07);border-radius:12px;overflow:hidden;}
+.data-table th{text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--mid);padding:10px 14px;background:var(--white);border-bottom:0.5px solid var(--light);}
+.data-table td{padding:13px 14px;color:var(--mid);font-weight:300;line-height:1.5;border-bottom:0.5px solid rgba(0,0,0,0.05);vertical-align:top;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table td:first-child{color:var(--dark);font-weight:500;}
+.rights-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0;}
+.right-card{background:var(--white);border:0.5px solid rgba(0,0,0,0.07);border-radius:12px;padding:18px;box-shadow:0 1px 6px rgba(0,0,0,0.04);transition:transform 0.2s,box-shadow 0.2s;}
+.right-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.08);}
+.right-card-icon{font-size:22px;margin-bottom:10px;}
+.right-card h4{font-size:14px;font-weight:600;color:var(--dark);margin-bottom:5px;}
+.right-card p{font-size:13px!important;margin-bottom:0!important;}
+.contact-block{background:var(--dark2);border-radius:16px;padding:32px 28px;margin-top:24px;}
+.contact-block h3{font-family:'Instrument Serif',serif;font-size:24px;color:#fff;letter-spacing:-0.02em;margin-bottom:10px;}
+.contact-block p{color:rgba(255,255,255,0.45)!important;font-size:14px!important;margin-bottom:20px!important;}
+.contact-block a{display:inline-block;background:var(--accent);color:#fff!important;font-size:14px;font-weight:500;padding:10px 22px;border-radius:980px;text-decoration:none!important;transition:background 0.15s,box-shadow 0.15s;box-shadow:0 2px 10px rgba(0,102,204,0.3);}
+.contact-block a:hover{background:var(--accent-h);box-shadow:0 4px 16px rgba(0,102,204,0.4);}
+footer{background:var(--dark2);border-top:0.5px solid rgba(255,255,255,0.07);padding:48px 24px 40px;}
+.footer-inner{max-width:1060px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:40px;}
+.footer-brand .logo-text{font-family:'Instrument Serif',serif;font-size:20px;color:#fff;margin-bottom:8px;}
+.footer-brand p{font-size:13px;color:rgba(255,255,255,0.35);max-width:220px;line-height:1.6;}
+.footer-col h5{font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:14px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col ul a{font-size:14px;color:rgba(255,255,255,0.55);transition:color 0.15s;text-decoration:none;}
+.footer-col ul a:hover{color:#fff;}
+.footer-bottom{max-width:1060px;margin:36px auto 0;border-top:0.5px solid rgba(255,255,255,0.07);padding-top:22px;display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.3);flex-wrap:wrap;gap:12px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:760px){.page-wrap{grid-template-columns:1fr;gap:0;}.toc{display:none;}.rights-grid{grid-template-columns:1fr;}.footer-inner{flex-direction:column;}}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--light);border-radius:99px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Scrybe</span>
+  <div class="nav-right">
+    <a href="index.html">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M10 13L5 8l5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to Home
+    </a>
+  </div>
+</nav>
+
+<div class="hero">
+  <span class="hero-eyebrow">Legal</span>
+  <h1>Privacy Policy</h1>
+  <p class="hero-meta">
+    Effective: March 22, 2026
+    <span>·</span>
+    Last updated: March 22, 2026
+  </p>
+</div>
+
+<div class="page-wrap">
+  <aside class="toc">
+    <div class="toc-label">On this page</div>
+    <ul id="toc-list">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#data-collect">Data We Collect</a></li>
+      <li><a href="#how-we-use">How We Use It</a></li>
+      <li><a href="#third-party">Third-Party Services</a></li>
+      <li><a href="#sharing">Sharing &amp; Disclosure</a></li>
+      <li><a href="#retention">Data Retention</a></li>
+      <li><a href="#your-rights">Your Rights</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#children">Children</a></li>
+      <li><a href="#changes">Policy Changes</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ul>
+  </aside>
+
+  <main class="content">
+
+    <!-- 1. OVERVIEW -->
+    <div class="policy-section" id="overview">
+      <h2>Overview</h2>
+      <p>Scrybe is committed to protecting your privacy. This Privacy Policy explains what information the Scrybe Chrome Extension and its associated services collect when you use them to generate, review, and type essays into Google Docs.</p>
+      <div class="highlight-block">
+        <p><strong>The short version:</strong> Scrybe collects only what is necessary to provide the service — your account information and subscription status. The content of your essays and assignment details are processed on our servers to generate your essay and are not sold or shared with third parties.</p>
+      </div>
+      <p>By installing Scrybe or creating an account, you agree to this Privacy Policy. If you do not agree, please do not use the service.</p>
+    </div>
+
+    <!-- 2. DATA WE COLLECT -->
+    <div class="policy-section" id="data-collect">
+      <h2>Data We Collect</h2>
+      <p>Here is a complete picture of the information Scrybe collects:</p>
+
+      <div class="info-card">
+        <span class="info-card-icon">👤</span>
+        <div class="info-card-body">
+          <strong>Account Information</strong>
+          <p>When you sign in with Google, we receive your name, email address, and profile picture from Google OAuth. This is used to create and manage your Scrybe account.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <span class="info-card-icon">💳</span>
+        <div class="info-card-body">
+          <strong>Subscription &amp; Billing</strong>
+          <p>We use Stripe to handle payments. Scrybe stores your subscription tier and essay usage count. We do not store your full credit card number — that is handled entirely by Stripe.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <span class="info-card-icon">✍️</span>
+        <div class="info-card-body">
+          <strong>Assignment Details &amp; Essay Content</strong>
+          <p>When you generate an essay, your subject, grade target, rubric, and instructions are sent to our servers, which pass them to an AI provider to generate your essay. This content is processed to fulfill your request and is not permanently stored or used to train AI models.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <span class="info-card-icon">📄</span>
+        <div class="info-card-body">
+          <strong>Google Docs Access</strong>
+          <p>Scrybe injects simulated keystrokes into your active Google Doc tab to type your essay. It accesses the page only to locate the document editor. It does not read, copy, transmit, or store the existing contents of your documents.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <span class="info-card-icon">🚫</span>
+        <div class="info-card-body">
+          <strong>What We Do Not Collect</strong>
+          <p>We do not collect your browsing history, device identifiers, location data, or any information from pages other than Google Docs. We do not run advertising trackers or third-party analytics inside the extension.</p>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>Data Type</th><th>Where It Goes</th><th>Stored by Scrybe?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Name &amp; email (Google sign-in)</td><td>Scrybe account database</td><td>Yes — required for account</td></tr>
+          <tr><td>Subscription tier &amp; essay count</td><td>Scrybe database</td><td>Yes — required for billing</td></tr>
+          <tr><td>Payment details</td><td>Stripe (not Scrybe)</td><td>No — Stripe only</td></tr>
+          <tr><td>Assignment prompt / rubric</td><td>Scrybe servers → AI provider</td><td>No — processed, not stored</td></tr>
+          <tr><td>Generated essay</td><td>Scrybe servers → your browser → Google Docs</td><td>No — not stored</td></tr>
+          <tr><td>Existing Google Doc content</td><td>Stays in your browser tab</td><td>No</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3. HOW WE USE -->
+    <div class="policy-section" id="how-we-use">
+      <h2>How We Use Your Information</h2>
+      <p>We use the information we collect only to provide and improve Scrybe:</p>
+      <ul>
+        <li><strong>Account &amp; authentication</strong> — your email and name are used to create your account, verify your identity when you sign in, and communicate with you about your subscription.</li>
+        <li><strong>Subscription management</strong> — your subscription tier and essay usage count are used to enforce your plan limits and process billing through Stripe.</li>
+        <li><strong>Essay generation</strong> — your assignment details are sent to our servers, passed to an AI provider, and the resulting essay is returned to your browser. This content is not stored beyond the duration of your request.</li>
+        <li><strong>Service improvements</strong> — we may use anonymized, aggregated usage data (e.g. average essay word count, feature usage rates) to improve the product. This data cannot be used to identify you.</li>
+      </ul>
+      <p>We do not sell your data, use it for advertising, or share it with any party other than the service providers listed below.</p>
+    </div>
+
+    <!-- 4. THIRD PARTY -->
+    <div class="policy-section" id="third-party">
+      <h2>Third-Party Services</h2>
+      <p>Scrybe uses a small number of trusted third-party services to operate:</p>
+
+      <div class="info-card">
+        <span class="info-card-icon">🔐</span>
+        <div class="info-card-body">
+          <strong>Google OAuth (accounts.google.com)</strong>
+          <p>Used for sign-in. When you authenticate, Google shares your name, email, and profile picture with Scrybe. See <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <span class="info-card-icon">💳</span>
+        <div class="info-card-body">
+          <strong>Stripe (stripe.com)</strong>
+          <p>Used to process subscription payments. Stripe handles all payment card data directly — Scrybe never sees your full card number. See <a href="https://stripe.com/privacy" target="_blank">Stripe's Privacy Policy</a>.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <span class="info-card-icon">🤖</span>
+        <div class="info-card-body">
+          <strong>DeepSeek (api.deepseek.com)</strong>
+          <p>Used to generate essay content. Your assignment prompt is sent from our servers to DeepSeek's API. DeepSeek's own <a href="https://www.deepseek.com/privacy" target="_blank">Privacy Policy</a> governs how they handle this data.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <span class="info-card-icon">🗄️</span>
+        <div class="info-card-body">
+          <strong>Supabase (supabase.com)</strong>
+          <p>Used as our backend database and authentication provider. Your account data and subscription status are stored in a Supabase Postgres database hosted on secure cloud infrastructure. See <a href="https://supabase.com/privacy" target="_blank">Supabase's Privacy Policy</a>.</p>
+        </div>
+      </div>
+
+      <p>Scrybe does not use advertising networks, marketing trackers, or crash analytics tools of any kind.</p>
+    </div>
+
+    <!-- 5. SHARING -->
+    <div class="policy-section" id="sharing">
+      <h2>Sharing &amp; Disclosure</h2>
+      <p>We do not sell or rent your personal information. We share your data only in the following limited circumstances:</p>
+      <ul>
+        <li><strong>Service providers</strong> — the third-party providers listed above (Google, Stripe, DeepSeek, Supabase) receive only the data necessary to perform their specific function.</li>
+        <li><strong>Legal requirements</strong> — we may disclose your information if required by law, court order, or government request. We will notify you where legally permitted to do so.</li>
+        <li><strong>Business transfers</strong> — if Scrybe is acquired or merges with another company, your information may be transferred as part of that transaction. We will notify users before this occurs.</li>
+      </ul>
+      <div class="highlight-block">
+        <p>We will never sell your personal data to advertisers, data brokers, or any other third party.</p>
+      </div>
+    </div>
+
+    <!-- 6. RETENTION -->
+    <div class="policy-section" id="retention">
+      <h2>Data Retention</h2>
+      <p>We retain your data only as long as necessary:</p>
+      <ul>
+        <li><strong>Account data</strong> (name, email, subscription status) — retained for as long as your account is active. Deleted within 30 days of account deletion.</li>
+        <li><strong>Essay usage count</strong> — retained to enforce plan limits and billing. Deleted with your account.</li>
+        <li><strong>Assignment prompts &amp; generated essays</strong> — not stored. Processed in memory to fulfill your request and discarded immediately.</li>
+        <li><strong>Payment records</strong> — retained by Stripe per their legal and compliance obligations. Scrybe retains only your subscription status.</li>
+      </ul>
+      <p>To delete your account and all associated data, contact us at <a href="mailto:getscribe@gmail.com">getscribe@gmail.com</a>. We will process your request within 30 days.</p>
+    </div>
+
+    <!-- 7. YOUR RIGHTS -->
+    <div class="policy-section" id="your-rights">
+      <h2>Your Rights</h2>
+      <p>You have the following rights regarding your personal data:</p>
+
+      <div class="rights-grid">
+        <div class="right-card">
+          <div class="right-card-icon">👁️</div>
+          <h4>Access</h4>
+          <p>Request a copy of the personal data we hold about you at any time.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-card-icon">🗑️</div>
+          <h4>Deletion</h4>
+          <p>Request deletion of your account and all associated personal data.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-card-icon">✏️</div>
+          <h4>Correction</h4>
+          <p>Request correction of any inaccurate personal data we hold.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-card-icon">📦</div>
+          <h4>Portability</h4>
+          <p>Request an export of your account data in a machine-readable format.</p>
+        </div>
+      </div>
+
+      <p>To exercise any of these rights, contact us at <a href="mailto:getscribe@gmail.com">getscribe@gmail.com</a>. We will respond within 5 business days.</p>
+    </div>
+
+    <!-- 8. SECURITY -->
+    <div class="policy-section" id="security">
+      <h2>Security</h2>
+      <p>All data transmitted between the Scrybe extension, our servers, and third-party providers is encrypted using HTTPS/TLS. Your account data is stored in a secure Supabase Postgres database with access controls and encryption at rest.</p>
+      <p>Authentication is handled via Google OAuth — Scrybe never stores or handles your Google password. Session tokens are stored securely and expire after a period of inactivity.</p>
+      <p>While we take reasonable measures to protect your data, no system is completely immune to security risks. If you believe your account has been compromised, contact us immediately at <a href="mailto:getscribe@gmail.com">getscribe@gmail.com</a>.</p>
+    </div>
+
+    <!-- 9. CHILDREN -->
+    <div class="policy-section" id="children">
+      <h2>Children's Privacy</h2>
+      <p>Scrybe is not directed to children under the age of 13 and we do not knowingly collect personal information from children under 13. If you are under 13, please do not use this service.</p>
+      <p>If you are a parent or guardian and believe your child has created a Scrybe account, contact us at <a href="mailto:getscribe@gmail.com">getscribe@gmail.com</a> and we will delete the account promptly.</p>
+    </div>
+
+    <!-- 10. CHANGES -->
+    <div class="policy-section" id="changes">
+      <h2>Policy Changes</h2>
+      <p>We may update this Privacy Policy as Scrybe evolves. When we make material changes, we will update the "Last updated" date at the top of this page and notify users via email or within the extension itself.</p>
+      <p>Your continued use of Scrybe after changes take effect constitutes your acceptance of the revised policy.</p>
+    </div>
+
+    <!-- 11. CONTACT -->
+    <div class="policy-section" id="contact">
+      <h2>Contact Us</h2>
+      <p>If you have questions or concerns about this Privacy Policy or how Scrybe handles your data, please reach out. We take privacy seriously and aim to respond within 5 business days.</p>
+      <div class="contact-block">
+        <h3>Get in touch</h3>
+        <p>Questions about your account, data, or privacy? We're happy to help.</p>
+        <a href="mailto:getscribe@gmail.com">getscribe@gmail.com</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo-text">Scrybe</div>
+      <p>AI writing assistance for students.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="privacy.html" style="color:rgba(255,255,255,0.9);">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Support</h5>
+      <ul>
+        <li><a href="mailto:getscribe@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Scrybe. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  const ro = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.policy-section').forEach(el => ro.observe(el));
+
+  const sections = document.querySelectorAll('.policy-section');
+  const tocLinks = document.querySelectorAll('.toc a');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        tocLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => io.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — Scrybe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg:         #f5f5f7;
+  --white:      #ffffff;
+  --dark:       #1d1d1f;
+  --dark2:      #0a0a0a;
+  --mid:        #6e6e73;
+  --light:      #d2d2d7;
+  --lighter:    #f0f0f2;
+  --accent:     #0066cc;
+  --accent-h:   #0055aa;
+  --accent-dim: rgba(0,102,204,0.08);
+  --red:        #ff3b30;
+  --red-dim:    rgba(255,59,48,0.1);
+  --nav-h:      56px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; }
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+a { text-decoration: none; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px;
+  background: rgba(245,245,247,0.82);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid rgba(0,0,0,0.1);
+}
+.nav-logo {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px; letter-spacing: -0.5px;
+  color: var(--dark);
+}
+.nav-link {
+  font-size: 13px; color: var(--mid);
+  padding: 6px 14px; border-radius: 980px;
+  transition: background 0.15s, color 0.15s;
+}
+.nav-link:hover { background: rgba(0,0,0,0.05); color: var(--dark); }
+
+/* ── MAIN ── */
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--nav-h) + 48px) 24px 64px;
+  position: relative;
+  overflow: hidden;
+}
+main::before {
+  content: '';
+  position: absolute; top: -60px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 500px;
+  background: radial-gradient(ellipse at 50% 20%,
+    rgba(0,102,204,0.09) 0%,
+    rgba(0,102,204,0.03) 40%,
+    transparent 70%);
+  pointer-events: none;
+}
+
+/* ── WRAPPER ── */
+.wrapper {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── CARD ── */
+.card {
+  width: 100%;
+  background: var(--white);
+  border-radius: 22px;
+  border: 0.5px solid rgba(0,0,0,0.08);
+  box-shadow:
+    0 1px 1px rgba(0,0,0,0.03),
+    0 4px 24px rgba(0,0,0,0.07),
+    0 0 0 0.5px rgba(0,0,0,0.04);
+  overflow: hidden;
+  animation: cardIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── BLUE TOP BAND ── */
+.card-top {
+  background: var(--accent);
+  padding: 28px 32px 26px;
+  position: relative;
+  overflow: hidden;
+}
+.card-top::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+  pointer-events: none;
+}
+.card-top::after {
+  content: '';
+  position: absolute; bottom: -50px; left: -20px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  pointer-events: none;
+}
+.card-top h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px; letter-spacing: -0.03em;
+  color: #fff; line-height: 1.15;
+  margin-bottom: 5px;
+  position: relative; z-index: 1;
+}
+.card-top p {
+  font-size: 13px; font-weight: 300;
+  color: rgba(255,255,255,0.72);
+  position: relative; z-index: 1;
+}
+
+/* ── CARD BODY ── */
+.card-body { padding: 28px 32px 30px; }
+
+/* ── FEATURES ── */
+.features {
+  display: flex; flex-direction: column; gap: 11px;
+  margin-bottom: 26px;
+}
+.feature { display: flex; align-items: center; gap: 11px; }
+.feature-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); flex-shrink: 0; opacity: 0.5;
+}
+.feature span { font-size: 13px; color: var(--mid); font-weight: 300; }
+
+/* ── DIVIDER ── */
+.divider {
+  height: 0.5px;
+  background: linear-gradient(90deg, transparent, var(--light), transparent);
+  margin-bottom: 24px;
+}
+
+/* ── GOOGLE BUTTON ── */
+.google-btn {
+  display: flex; align-items: center; justify-content: center; gap: 11px;
+  width: 100%; padding: 13px 20px;
+  border-radius: 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; font-weight: 600; color: var(--dark);
+  background: var(--white);
+  border: 0.5px solid rgba(0,0,0,0.13);
+  box-shadow: 0 1px 5px rgba(0,0,0,0.07), 0 0.5px 0 rgba(255,255,255,0.9) inset;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 14px;
+}
+.google-btn:hover {
+  background: var(--lighter);
+  border-color: rgba(0,0,0,0.18);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+.google-btn:active { transform: scale(0.985) translateY(0); }
+.google-btn:disabled { opacity: 0.55; pointer-events: none; }
+.google-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+.btn-spinner {
+  display: none; width: 16px; height: 16px;
+  border: 2px solid rgba(0,0,0,0.1);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite; flex-shrink: 0;
+}
+.google-btn.loading svg { display: none; }
+.google-btn.loading .btn-spinner { display: block; }
+.google-btn.loading .btn-label { color: var(--mid); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── ERROR ── */
+.auth-error {
+  display: none;
+  background: var(--red-dim);
+  border: 0.5px solid rgba(255,59,48,0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px; color: var(--red);
+  margin-bottom: 14px;
+}
+.auth-error.show { display: block; }
+
+/* ── CARD FOOTER NOTE ── */
+.card-note {
+  text-align: center;
+  font-size: 11.5px; font-weight: 300;
+  color: var(--light); line-height: 1.6;
+}
+.card-note a { color: var(--light); border-bottom: 0.5px solid var(--light); }
+.card-note a:hover { color: var(--mid); border-color: var(--mid); }
+
+/* ── SUCCESS STATE ── */
+.success-state {
+  display: none;
+  padding: 28px 32px 32px;
+  text-align: center;
+}
+.success-state.show { display: block; }
+.success-ring {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--accent-dim);
+  border: 1.5px solid rgba(0,102,204,0.2);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px;
+  animation: popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.success-ring svg { width: 26px; height: 26px; stroke: var(--accent); }
+@keyframes popIn {
+  from { opacity:0; transform:scale(0.5); }
+  to   { opacity:1; transform:scale(1); }
+}
+.success-state h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 24px; letter-spacing: -0.02em;
+  color: var(--dark); margin-bottom: 6px;
+}
+.success-state p { font-size: 13px; font-weight: 300; color: var(--mid); }
+
+/* ── BELOW CARD ── */
+.below-card {
+  margin-top: 20px;
+  font-size: 11.5px; color: var(--mid);
+  display: flex; gap: 4px; align-items: center;
+  animation: fadeUp 0.6s ease 0.35s both;
+}
+.below-card a { color: var(--mid); }
+.below-card a:hover { color: var(--dark); text-decoration: underline; }
+.below-card span { opacity: 0.35; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(6px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--dark2);
+  border-top: 0.5px solid rgba(255,255,255,0.06);
+  padding: 26px 28px;
+  margin-top: auto;
+}
+.footer-inner {
+  max-width: 980px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 14px;
+}
+.footer-logo { font-family: 'Instrument Serif', serif; font-size: 17px; color: rgba(255,255,255,0.7); }
+.footer-links { display: flex; gap: 22px; }
+.footer-links a { font-size: 12px; color: rgba(255,255,255,0.3); transition: color 0.15s; }
+.footer-links a:hover { color: rgba(255,255,255,0.65); }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+
+@media (max-width: 480px) {
+  .card-top, .card-body, .success-state { padding-left: 22px; padding-right: 22px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Scrybe</a>
+  <a href="index.html" class="nav-link">Home</a>
+</nav>
+
+<main>
+  <div class="wrapper">
+    <div class="card" id="card">
+
+      <!-- DEFAULT STATE -->
+      <div id="mainContent">
+        <div class="card-top">
+          <h1>Start writing.</h1>
+          <p>Sign in to access your Scrybe account.</p>
+        </div>
+        <div class="card-body">
+          <div class="features">
+            <div class="feature">
+              <div class="feature-dot"></div>
+              <span>Essays generated from your rubric in seconds</span>
+            </div>
+            <div class="feature">
+              <div class="feature-dot"></div>
+              <span>Humanized to bypass AI detection</span>
+            </div>
+            <div class="feature">
+              <div class="feature-dot"></div>
+              <span>Types directly into Google Docs</span>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="auth-error" id="authError"></div>
+
+          <button class="google-btn" id="googleBtn" onclick="signInWithGoogle()">
+            <svg viewBox="0 0 24 24">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            <div class="btn-spinner"></div>
+            <span class="btn-label">Continue with Google</span>
+          </button>
+
+          <div class="card-note">
+            By continuing you agree to our
+            <a href="privacy.html">Privacy Policy</a> and
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div class="success-state" id="successState">
+        <div class="success-ring">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2>You're in.</h2>
+        <p>Redirecting you now…</p>
+      </div>
+
+    </div><!-- /card -->
+
+    <div class="below-card">
+      <a href="privacy.html">Privacy</a>
+      <span>·</span>
+      <a href="#">Terms</a>
+      <span>·</span>
+      <a href="#">Help</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Scrybe</div>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Support</a>
+    </div>
+    <div class="footer-copy">© 2026 Scrybe, Inc.</div>
+  </div>
+</footer>
+
+<script>
+  // ─────────────────────────────────────────
+  //  SWAP THESE TWO VALUES
+  // ─────────────────────────────────────────
+  const SUPABASE_URL  = 'https://YOUR_PROJECT_ID.supabase.co';
+  const SUPABASE_ANON = 'YOUR_ANON_PUBLIC_KEY';
+  // ─────────────────────────────────────────
+
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  // Check if returning from Google OAuth redirect
+  window.addEventListener('load', async () => {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) handleSuccess(session);
+  });
+
+  async function signInWithGoogle() {
+    const btn   = document.getElementById('googleBtn');
+    const errEl = document.getElementById('authError');
+    btn.classList.add('loading');
+    errEl.classList.remove('show');
+
+    const { error } = await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.href }
+    });
+
+    if (error) {
+      btn.classList.remove('loading');
+      errEl.textContent = error.message || 'Something went wrong. Please try again.';
+      errEl.classList.add('show');
+    }
+  }
+
+  function handleSuccess(session) {
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('successState').classList.add('show');
+
+    try {
+      chrome.runtime.sendMessage(
+        'YOUR_EXTENSION_ID', // ← replace with ID from chrome://extensions
+        {
+          action: 'saveToken',
+          token: session.access_token,
+          user: {
+            id:    session.user.id,
+            email: session.user.email,
+            name:  session.user.user_metadata?.full_name || ''
+          }
+        },
+        () => {
+          setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+        }
+      );
+    } catch (e) {
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+    }
+  }
+</script>
+
+</body>
+</html>
