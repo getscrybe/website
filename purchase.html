@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scrybe — Upgrade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #f5f5f7;
+      --surface:     #ffffff;
+      --surface-2:   #f0f0f2;
+      --surface-3:   #e8e8ed;
+      --border:      rgba(0,0,0,0.08);
+      --border-hi:   rgba(0,0,0,0.14);
+      --text:        #1d1d1f;
+      --text-2:      #6e6e73;
+      --muted:       #aeaeb2;
+      --accent:      #0066cc;
+      --accent-2:    #0077ed;
+      --accent-dim:  rgba(0,102,204,0.08);
+      --accent-glow: rgba(0,102,204,0.22);
+      --green:       #34c759;
+      --green-dim:   rgba(52,199,89,0.1);
+      --r:           10px;
+      --sans:        'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+      --mono:        'JetBrains Mono', 'SF Mono', monospace;
+      --nav-h:       48px;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hdr {
+      padding: 0 14px;
+      height: var(--nav-h);
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(245,245,247,0.88);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand { display: flex; align-items: center; gap: 8px; }
+
+    .brand-icon {
+      width: 26px; height: 26px;
+      background: var(--accent);
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .brand-icon svg { width: 13px; height: 13px; color: #fff; }
+
+    .brand-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: -0.3px;
+      color: var(--text);
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 0.5px solid var(--border-hi);
+      border-radius: 980px;
+      padding: 4px 10px 4px 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .user-avatar {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,102,204,0.2);
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .user-email {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-2);
+    }
+
+    .body {
+      padding: 0 14px;
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section {
+      padding: 16px 0 15px;
+      border-bottom: 0.5px solid var(--border);
+      animation: fadeUp 0.22s ease both;
+    }
+    .section:last-of-type { border-bottom: none; }
+    .section:nth-child(1) { animation-delay: 0.03s; }
+    .section:nth-child(2) { animation-delay: 0.06s; }
+    .section:nth-child(3) { animation-delay: 0.09s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .sec-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* Usage */
+    .usage-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .usage-label { font-size: 12px; font-weight: 600; color: var(--text); }
+
+    .tier-badge {
+      font-family: var(--mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 0.5px solid rgba(0,102,204,0.15);
+      padding: 2px 8px;
+      border-radius: 980px;
+    }
+
+    .usage-bar-wrap {
+      width: 100%;
+      height: 5px;
+      background: var(--surface-3);
+      border-radius: 980px;
+      overflow: hidden;
+      margin-bottom: 5px;
+    }
+
+    .usage-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 980px;
+      transition: width 0.6s cubic-bezier(.4,0,.2,1);
+    }
+
+    .usage-sub { font-family: var(--mono); font-size: 9.5px; color: var(--muted); }
+    .usage-sub span { color: var(--text-2); }
+
+    /* Plans */
+    .plans { display: flex; flex-direction: column; gap: 10px; }
+
+    .plan {
+      background: var(--surface);
+      border: 0.5px solid var(--border-hi);
+      border-radius: 14px;
+      padding: 16px;
+      position: relative;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .plan:hover {
+      border-color: rgba(0,0,0,0.2);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .plan.featured {
+      border-color: rgba(0,102,204,0.35);
+      box-shadow: 0 0 0 3px var(--accent-dim), 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .plan.featured:hover { border-color: rgba(0,102,204,0.5); }
+
+    .plan-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .plan-tag {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .plan-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 22px;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .badge-popular {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 0.5px solid rgba(0,102,204,0.2);
+      padding: 3px 8px;
+      border-radius: 980px;
+      white-space: nowrap;
+    }
+
+    .badge-features {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #8e44ad;
+      background: rgba(142,68,173,0.08);
+      border: 0.5px solid rgba(142,68,173,0.2);
+      padding: 3px 8px;
+      border-radius: 980px;
+      white-space: nowrap;
+    }
+
+    .plan-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+      margin-bottom: 3px;
+    }
+
+    .plan-dollar {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-2);
+    }
+
+    .plan-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 34px;
+      letter-spacing: -1px;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .plan-per {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .plan-note {
+      font-size: 11px;
+      color: var(--text-2);
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .plan-divider {
+      height: 0.5px;
+      background: var(--border);
+      margin-bottom: 12px;
+    }
+
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .chk {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--green-dim);
+      border: 0.5px solid rgba(52,199,89,0.25);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .chk svg { width: 9px; height: 9px; }
+
+    /* Buttons */
+    .plan-btn {
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: 980px;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.1px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+    }
+
+    .btn-blue {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 10px var(--accent-glow), 0 1px 0 rgba(255,255,255,0.15) inset;
+    }
+
+    .btn-blue:hover:not(:disabled) {
+      background: #0055aa;
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+
+    .btn-blue:active:not(:disabled) { transform: scale(0.985); }
+
+    .btn-ghost {
+      background: var(--surface-2);
+      color: var(--text-2);
+      border: 0.5px solid var(--border-hi);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .btn-ghost:hover:not(:disabled) { background: var(--surface-3); }
+
+    .plan-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .coming-soon {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    /* Sign out */
+    .signout-section {
+      padding: 20px 0 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .btn-signout {
+      background: none;
+      border: none;
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.12s;
+    }
+
+    .btn-signout:hover { color: var(--text-2); }
+
+    /* Loading */
+    #loadingState {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 12px;
+    }
+
+    .spinner {
+      width: 24px; height: 24px;
+      border: 2px solid var(--border-hi);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .spinner-label { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+
+    #mainContent { display: none; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 99px; }
+  </style>
+</head>
+<body>
+
+  <header class="hdr">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 13 13" fill="none"><path d="M2 10.5L4.5 3l2 5 1.5-2.5L11 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="brand-name">Scrybe</span>
+    </div>
+    <div class="user-pill" id="userPill" style="display:none">
+      <div class="user-avatar" id="userInitial">?</div>
+      <span class="user-email" id="userEmail">—</span>
+    </div>
+  </header>
+
+  <div id="loadingState">
+    <div class="spinner"></div>
+    <span class="spinner-label">Loading your account…</span>
+  </div>
+
+  <div id="mainContent">
+    <div class="body">
+
+      <!-- Usage -->
+      <div class="section">
+        <div class="sec-label">Your Usage</div>
+        <div class="usage-row">
+          <span class="usage-label">Essays this period</span>
+          <span class="tier-badge" id="tierBadge">Free</span>
+        </div>
+        <div class="usage-bar-wrap">
+          <div class="usage-bar-fill" id="usageBar" style="width:0%"></div>
+        </div>
+        <div class="usage-sub"><span id="usageCount">0</span> of <span id="usageMax">2</span> used</div>
+      </div>
+
+      <!-- Plans -->
+      <div class="section">
+        <div class="sec-label">Choose a Plan</div>
+        <div class="plans">
+
+          <!-- Free -->
+          <div class="plan">
+            <div class="plan-header">
+              <div>
+                <div class="plan-tag">Trial</div>
+                <div class="plan-name">Free</div>
+              </div>
+            </div>
+            <div class="plan-price-row">
+              <span class="plan-dollar">$</span>
+              <span class="plan-num">0</span>
+            </div>
+            <div class="plan-note">forever free · Perfect for trying Scrybe</div>
+            <div class="plan-divider"></div>
+            <ul class="plan-features">
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 free essays</li>
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 500 words each</li>
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 60 WPM</li>
+            </ul>
+            <button class="plan-btn btn-ghost" id="btnFree" disabled>Current plan</button>
+          </div>
+
+          <!-- Pro -->
+          <div class="plan featured">
+            <div class="plan-header">
+              <div>
+                <div class="plan-tag">Most Popular</div>
+                <div class="plan-name">Pro</div>
+              </div>
+              <span class="badge-popular">Most Popular</span>
+            </div>
+            <div class="plan-price-row">
+              <span class="plan-dollar">$</span>
+              <span class="plan-num">5</span>
+              <span class="plan-per">/mo</span>
+            </div>
+            <div class="plan-note">cancel anytime · For students all semester</div>
+            <div class="plan-divider"></div>
+            <ul class="plan-features">
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 essays per month</li>
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 5,000 words each</li>
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Rubric uploads</li>
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Draft paper outlines</li>
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited WPM</li>
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support</li>
+            </ul>
+            <button class="plan-btn btn-blue" id="btnPro">Get Pro</button>
+            <div class="coming-soon">Payments coming soon</div>
+          </div>
+
+          <!-- Unlimited -->
+          <div class="plan">
+            <div class="plan-header">
+              <div>
+                <div class="plan-tag">Most Features</div>
+                <div class="plan-name">Unlimited</div>
+              </div>
+              <span class="badge-features">Most Features</span>
+            </div>
+            <div class="plan-price-row">
+              <span class="plan-dollar">$</span>
+              <span class="plan-num">25</span>
+              <span class="plan-per">/mo</span>
+            </div>
+            <div class="plan-note">Unlimited essays · Undetectable AI writing</div>
+            <div class="plan-divider"></div>
+            <ul class="plan-features">
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Everything in Pro</li>
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Early access to new features</li>
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited generations</li>
+              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Dedicated support</li>
+            </ul>
+            <button class="plan-btn btn-blue" id="btnUnlimited">Get Unlimited</button>
+            <div class="coming-soon">Payments coming soon</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="signout-section">
+        <button class="btn-signout" id="btnSignOut">Sign out</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL  = 'https://ajswovsdbdeohuyyucyo.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqc3dvdnNkYmRlb2h1eXl1Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMTEwNDYsImV4cCI6MjA4OTg4NzA0Nn0.N5NyNjP1fc7fxZm08DbNAlx-hGOlfCYXrlpezt_EG9c';
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    const TIER_LIMITS = {
+      free:      { essays: 2,        label: 'Free'      },
+      pro:       { essays: 20,       label: 'Pro'       },
+      unlimited: { essays: Infinity, label: 'Unlimited' }
+    };
+
+    async function init() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) { window.location.href = '/login.html'; return; }
+
+      const user = session.user;
+
+      const { data: profile } = await sb.from('users')
+        .select('tier, essay_count')
+        .eq('id', user.id)
+        .single();
+
+      const tier  = profile?.tier || 'free';
+      const count = profile?.essay_count || 0;
+      const info  = TIER_LIMITS[tier] || TIER_LIMITS.free;
+      const max   = info.essays;
+      const pct   = max === Infinity ? 0 : Math.min(100, (count / max) * 100);
+
+      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('userInitial').textContent = user.email[0].toUpperCase();
+      document.getElementById('userPill').style.display = 'flex';
+      document.getElementById('usageCount').textContent = count;
+      document.getElementById('usageMax').textContent = max === Infinity ? '∞' : max;
+      document.getElementById('usageBar').style.width = pct + '%';
+      document.getElementById('tierBadge').textContent = info.label;
+
+      if (tier === 'pro') {
+        document.getElementById('btnPro').textContent = 'Current plan';
+        document.getElementById('btnPro').disabled = true;
+        document.getElementById('btnFree').textContent = 'Downgrade';
+        document.getElementById('btnFree').disabled = false;
+      } else if (tier === 'unlimited') {
+        document.getElementById('btnUnlimited').textContent = 'Current plan';
+        document.getElementById('btnUnlimited').disabled = true;
+      }
+
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+
+      document.getElementById('btnPro').addEventListener('click', () => {
+        alert('Payments coming soon — check back shortly!');
+      });
+      document.getElementById('btnUnlimited').addEventListener('click', () => {
+        alert('Payments coming soon — check back shortly!');
+      });
+      document.getElementById('btnSignOut').addEventListener('click', async () => {
+        await sb.auth.signOut();
+        window.location.href = '/login.html';
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
