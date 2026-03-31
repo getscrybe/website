@@ -389,8 +389,8 @@ footer {
   // ─────────────────────────────────────────
   //  SWAP THESE TWO VALUES
   // ─────────────────────────────────────────
-  const SUPABASE_URL  = 'https://YOUR_PROJECT_ID.supabase.co';
-  const SUPABASE_ANON = 'YOUR_ANON_PUBLIC_KEY';
+  const SUPABASE_URL  = 'https://ajswovsdbdeohuyyucyo.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqc3dvdnNkYmRlb2h1eXl1Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMTEwNDYsImV4cCI6MjA4OTg4NzA0Nn0.N5NyNjP1fc7fxZm08DbNAlx-hGOlfCYXrlpezt_EG9c';
   // ─────────────────────────────────────────
 
   const { createClient } = supabase;
@@ -426,7 +426,7 @@ footer {
 
     try {
       chrome.runtime.sendMessage(
-        'YOUR_EXTENSION_ID', // ← replace with ID from chrome://extensions
+        'iknjdhnpjdabefhofilclhjkfolhgdoj', // ← replace with ID from chrome://extensions
         {
           action: 'saveToken',
           token: session.access_token,
