@@ -14,224 +14,358 @@
 
     :root {
       --bg:          #f5f5f7;
-      --surface:     #ffffff;
-      --surface-2:   #f0f0f2;
-      --surface-3:   #e8e8ed;
+      --white:       #ffffff;
+      --dark:        #1d1d1f;
+      --dark2:       #0a0a0a;
+      --mid:         #6e6e73;
+      --light:       #d2d2d7;
+      --lighter:     #f0f0f2;
       --border:      rgba(0,0,0,0.08);
-      --border-hi:   rgba(0,0,0,0.14);
-      --text:        #1d1d1f;
-      --text-2:      #6e6e73;
-      --muted:       #aeaeb2;
+      --border-hi:   rgba(0,0,0,0.13);
       --accent:      #0066cc;
-      --accent-2:    #0077ed;
+      --accent-h:    #0055aa;
       --accent-dim:  rgba(0,102,204,0.08);
       --accent-glow: rgba(0,102,204,0.22);
       --green:       #34c759;
-      --green-dim:   rgba(52,199,89,0.1);
-      --r:           10px;
+      --green-dim:   rgba(52,199,89,0.12);
+      --muted:       #aeaeb2;
+      --nav-h:       56px;
       --sans:        'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+      --serif:       'Instrument Serif', Georgia, serif;
       --mono:        'JetBrains Mono', 'SF Mono', monospace;
-      --nav-h:       48px;
     }
 
     html, body {
-      width: 100%;
-      min-height: 100vh;
+      min-height: 100%;
       background: var(--bg);
-      color: var(--text);
+      color: var(--dark);
       font-family: var(--sans);
-      font-size: 13px;
+      font-size: 15px;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
     }
 
-    .hdr {
-      padding: 0 14px;
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       height: var(--nav-h);
-      border-bottom: 0.5px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(245,245,247,0.88);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px;
+      background: rgba(245,245,247,0.82);
       backdrop-filter: saturate(180%) blur(20px);
       -webkit-backdrop-filter: saturate(180%) blur(20px);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      border-bottom: 0.5px solid rgba(0,0,0,0.1);
     }
 
-    .brand { display: flex; align-items: center; gap: 8px; }
+    .nav-brand {
+      display: flex; align-items: center; gap: 9px;
+      text-decoration: none;
+    }
 
-    .brand-icon {
-      width: 26px; height: 26px;
+    .nav-icon {
+      width: 28px; height: 28px;
       background: var(--accent);
-      border-radius: 7px;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
+      border-radius: 8px;
+      display: grid; place-items: center;
+    }
+    .nav-icon svg { width: 13px; height: 13px; }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 22px; letter-spacing: -0.5px;
+      color: var(--dark);
     }
 
-    .brand-icon svg { width: 13px; height: 13px; color: #fff; }
-
-    .brand-name {
-      font-family: 'Instrument Serif', serif;
-      font-size: 16px;
-      font-weight: 400;
-      letter-spacing: -0.3px;
-      color: var(--text);
-    }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
 
     .user-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--surface);
+      display: none;
+      align-items: center; gap: 6px;
+      background: var(--white);
       border: 0.5px solid var(--border-hi);
       border-radius: 980px;
-      padding: 4px 10px 4px 5px;
+      padding: 4px 12px 4px 5px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
 
     .user-avatar {
-      width: 22px; height: 22px;
+      width: 24px; height: 24px;
       border-radius: 50%;
       background: var(--accent-dim);
       border: 1px solid rgba(0,102,204,0.2);
-      display: grid;
-      place-items: center;
+      display: grid; place-items: center;
       font-family: var(--mono);
       font-size: 10px;
       color: var(--accent);
       text-transform: uppercase;
     }
 
-    .user-email {
+    .user-email { font-family: var(--mono); font-size: 10px; color: var(--mid); }
+
+    .nav-link {
+      font-size: 13px; color: var(--mid);
+      padding: 6px 14px; border-radius: 980px;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-link:hover { background: rgba(0,0,0,0.05); color: var(--dark); }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      padding: calc(var(--nav-h) + 48px) 24px 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    main::before {
+      content: '';
+      position: absolute; top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse at 50% 20%,
+        rgba(0,102,204,0.09) 0%,
+        rgba(0,102,204,0.03) 40%,
+        transparent 70%);
+      pointer-events: none;
+    }
+
+    .wrapper {
+      max-width: 880px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: cardIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .page-label {
       font-family: var(--mono);
       font-size: 10px;
-      color: var(--text-2);
-    }
-
-    .body {
-      padding: 0 14px;
-      max-width: 480px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .section {
-      padding: 16px 0 15px;
-      border-bottom: 0.5px solid var(--border);
-      animation: fadeUp 0.22s ease both;
-    }
-    .section:last-of-type { border-bottom: none; }
-    .section:nth-child(1) { animation-delay: 0.03s; }
-    .section:nth-child(2) { animation-delay: 0.06s; }
-    .section:nth-child(3) { animation-delay: 0.09s; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(5px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .sec-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 1.4px;
+      letter-spacing: 1.8px;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 12px;
+      color: var(--accent);
+      margin-bottom: 10px;
     }
 
-    /* Usage */
-    .usage-row {
+    .page-title {
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 48px);
+      letter-spacing: -0.03em;
+      color: var(--dark);
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .page-sub {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--mid);
+    }
+
+    /* ── USAGE CARD ── */
+    .usage-card {
+      background: var(--white);
+      border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 18px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 24px rgba(0,0,0,0.04);
+      overflow: hidden;
+      margin-bottom: 32px;
+      animation: cardIn 0.6s cubic-bezier(0.22,1,0.36,1) 0.08s both;
+    }
+
+    .usage-top {
+      background: var(--accent);
+      padding: 20px 28px 18px;
+      position: relative;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
     }
 
-    .usage-label { font-size: 12px; font-weight: 600; color: var(--text); }
+    .usage-top::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      pointer-events: none;
+    }
 
-    .tier-badge {
+    .usage-top-left { position: relative; z-index: 1; }
+
+    .usage-top-label {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 4px;
+    }
+
+    .usage-heading {
+      font-family: var(--serif);
+      font-size: 22px;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+
+    .usage-tier-badge {
+      position: relative; z-index: 1;
       font-family: var(--mono);
       font-size: 9px;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 1px;
       color: var(--accent);
-      background: var(--accent-dim);
-      border: 0.5px solid rgba(0,102,204,0.15);
-      padding: 2px 8px;
+      background: rgba(255,255,255,0.92);
+      padding: 4px 12px;
       border-radius: 980px;
+    }
+
+    .usage-body { padding: 20px 28px 22px; }
+
+    .usage-nums {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+
+    .usage-count {
+      font-family: var(--serif);
+      font-size: 36px;
+      letter-spacing: -1px;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .usage-sep {
+      font-size: 20px;
+      color: var(--light);
+      font-weight: 300;
+    }
+
+    .usage-max {
+      font-family: var(--mono);
+      font-size: 16px;
+      color: var(--mid);
+    }
+
+    .usage-unit {
+      font-size: 13px;
+      color: var(--mid);
+      font-weight: 300;
+      margin-left: 4px;
     }
 
     .usage-bar-wrap {
       width: 100%;
-      height: 5px;
-      background: var(--surface-3);
+      height: 4px;
+      background: var(--lighter);
       border-radius: 980px;
       overflow: hidden;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
 
     .usage-bar-fill {
       height: 100%;
       background: var(--accent);
       border-radius: 980px;
-      transition: width 0.6s cubic-bezier(.4,0,.2,1);
+      transition: width 0.8s cubic-bezier(.4,0,.2,1);
     }
 
-    .usage-sub { font-family: var(--mono); font-size: 9.5px; color: var(--muted); }
-    .usage-sub span { color: var(--text-2); }
+    .usage-note { font-size: 12px; font-weight: 300; color: var(--mid); }
 
-    /* Plans */
-    .plans { display: flex; flex-direction: column; gap: 10px; }
+    /* ── PLANS GRID ── */
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
 
+    /* ── PLAN CARD ── */
     .plan {
-      background: var(--surface);
-      border: 0.5px solid var(--border-hi);
-      border-radius: 14px;
-      padding: 16px;
-      position: relative;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-      transition: border-color 0.15s, box-shadow 0.15s;
+      background: var(--white);
+      border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.03), 0 4px 24px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      animation: cardIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
     }
+
+    .plan:nth-child(1) { animation-delay: 0.12s; }
+    .plan:nth-child(2) { animation-delay: 0.18s; }
+    .plan:nth-child(3) { animation-delay: 0.24s; }
 
     .plan:hover {
-      border-color: rgba(0,0,0,0.2);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 2px 2px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.1);
     }
 
     .plan.featured {
-      border-color: rgba(0,102,204,0.35);
-      box-shadow: 0 0 0 3px var(--accent-dim), 0 2px 8px rgba(0,0,0,0.06);
+      border-color: rgba(0,102,204,0.3);
+      box-shadow: 0 0 0 3px rgba(0,102,204,0.08), 0 4px 24px rgba(0,0,0,0.08);
     }
 
-    .plan.featured:hover { border-color: rgba(0,102,204,0.5); }
+    .plan.featured:hover {
+      box-shadow: 0 0 0 3px rgba(0,102,204,0.12), 0 8px 32px rgba(0,0,0,0.1);
+    }
 
-    .plan-header {
+    /* Plan top band */
+    .plan-top {
+      padding: 24px 26px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-top.plain { background: var(--bg); border-bottom: 0.5px solid rgba(0,0,0,0.06); }
+    .plan-top.blue  { background: var(--accent); border-bottom: none; }
+    .plan-top.dark  { background: var(--dark); border-bottom: none; }
+
+    .plan-top.blue::before {
+      content: '';
+      position: absolute; top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+    }
+
+    .plan-top.dark::before {
+      content: '';
+      position: absolute; top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .plan-badge-row {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      position: relative; z-index: 1;
     }
 
     .plan-tag {
       font-family: var(--mono);
       font-size: 8.5px;
-      letter-spacing: 1.2px;
+      letter-spacing: 1.3px;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 2px;
     }
-
-    .plan-name {
-      font-family: 'Instrument Serif', serif;
-      font-size: 22px;
-      letter-spacing: -0.3px;
-      color: var(--text);
-      line-height: 1.1;
-    }
+    .plan-top.plain .plan-tag { color: var(--muted); }
+    .plan-top.blue .plan-tag  { color: rgba(255,255,255,0.55); }
+    .plan-top.dark .plan-tag  { color: rgba(255,255,255,0.4); }
 
     .badge-popular {
       font-family: var(--mono);
@@ -239,132 +373,151 @@
       letter-spacing: 0.6px;
       text-transform: uppercase;
       color: var(--accent);
-      background: var(--accent-dim);
-      border: 0.5px solid rgba(0,102,204,0.2);
-      padding: 3px 8px;
+      background: rgba(255,255,255,0.9);
+      padding: 3px 9px;
       border-radius: 980px;
-      white-space: nowrap;
     }
 
-    .badge-features {
+    .badge-max {
       font-family: var(--mono);
       font-size: 8px;
       letter-spacing: 0.6px;
       text-transform: uppercase;
-      color: #8e44ad;
-      background: rgba(142,68,173,0.08);
-      border: 0.5px solid rgba(142,68,173,0.2);
-      padding: 3px 8px;
+      color: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.15);
+      border: 0.5px solid rgba(255,255,255,0.25);
+      padding: 3px 9px;
       border-radius: 980px;
-      white-space: nowrap;
     }
+
+    .plan-name {
+      font-family: var(--serif);
+      font-size: 28px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      position: relative; z-index: 1;
+    }
+    .plan-top.plain .plan-name { color: var(--dark); }
+    .plan-top.blue .plan-name  { color: #fff; }
+    .plan-top.dark .plan-name  { color: #fff; }
 
     .plan-price-row {
       display: flex;
       align-items: baseline;
       gap: 2px;
       margin-bottom: 3px;
+      position: relative; z-index: 1;
     }
 
-    .plan-dollar {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--text-2);
-    }
+    .plan-dollar { font-family: var(--mono); font-size: 14px; }
+    .plan-top.plain .plan-dollar { color: var(--mid); }
+    .plan-top.blue .plan-dollar  { color: rgba(255,255,255,0.65); }
+    .plan-top.dark .plan-dollar  { color: rgba(255,255,255,0.5); }
 
     .plan-num {
-      font-family: 'Instrument Serif', serif;
-      font-size: 34px;
-      letter-spacing: -1px;
-      color: var(--text);
+      font-family: var(--serif);
+      font-size: 42px;
+      letter-spacing: -2px;
       line-height: 1;
     }
+    .plan-top.plain .plan-num { color: var(--dark); }
+    .plan-top.blue .plan-num  { color: #fff; }
+    .plan-top.dark .plan-num  { color: #fff; }
 
-    .plan-per {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--muted);
-    }
+    .plan-per { font-family: var(--mono); font-size: 11px; }
+    .plan-top.plain .plan-per { color: var(--muted); }
+    .plan-top.blue .plan-per  { color: rgba(255,255,255,0.5); }
+    .plan-top.dark .plan-per  { color: rgba(255,255,255,0.4); }
 
-    .plan-note {
-      font-size: 11px;
-      color: var(--text-2);
-      margin-bottom: 14px;
-      line-height: 1.4;
-    }
+    .plan-note { font-size: 12px; font-weight: 300; position: relative; z-index: 1; }
+    .plan-top.plain .plan-note { color: var(--mid); }
+    .plan-top.blue .plan-note  { color: rgba(255,255,255,0.65); }
+    .plan-top.dark .plan-note  { color: rgba(255,255,255,0.5); }
 
-    .plan-divider {
-      height: 0.5px;
-      background: var(--border);
-      margin-bottom: 12px;
+    /* Plan body */
+    .plan-body {
+      padding: 20px 26px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     .plan-features {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 7px;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex: 1;
     }
 
     .plan-features li {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--text);
+      gap: 9px;
+      font-size: 13px;
+      color: var(--dark);
+      font-weight: 400;
     }
 
     .chk {
-      width: 16px; height: 16px;
+      width: 17px; height: 17px;
       border-radius: 50%;
       background: var(--green-dim);
-      border: 0.5px solid rgba(52,199,89,0.25);
-      display: grid;
-      place-items: center;
+      border: 0.5px solid rgba(52,199,89,0.2);
+      display: grid; place-items: center;
       flex-shrink: 0;
     }
-
     .chk svg { width: 9px; height: 9px; }
 
     /* Buttons */
     .plan-btn {
       width: 100%;
-      padding: 10px 16px;
+      padding: 11px 20px;
       border-radius: 980px;
       font-family: var(--sans);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
-      letter-spacing: -0.1px;
+      letter-spacing: -0.15px;
       cursor: pointer;
       border: none;
-      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      transition: all 0.15s;
     }
+
+    .btn-ghost {
+      background: var(--lighter);
+      color: var(--mid);
+      border: 0.5px solid rgba(0,0,0,0.1);
+    }
+    .btn-ghost:hover:not(:disabled) { background: #e8e8ed; }
 
     .btn-blue {
       background: var(--accent);
       color: #fff;
       box-shadow: 0 2px 10px var(--accent-glow), 0 1px 0 rgba(255,255,255,0.15) inset;
     }
-
     .btn-blue:hover:not(:disabled) {
-      background: #0055aa;
+      background: var(--accent-h);
       box-shadow: 0 4px 16px var(--accent-glow);
+      transform: translateY(-1px);
     }
+    .btn-blue:active:not(:disabled) { transform: scale(0.985) translateY(0); }
 
-    .btn-blue:active:not(:disabled) { transform: scale(0.985); }
-
-    .btn-ghost {
-      background: var(--surface-2);
-      color: var(--text-2);
-      border: 0.5px solid var(--border-hi);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    .btn-dark {
+      background: var(--dark);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.08) inset;
     }
-
-    .btn-ghost:hover:not(:disabled) { background: var(--surface-3); }
+    .btn-dark:hover:not(:disabled) {
+      background: #2a2a2e;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      transform: translateY(-1px);
+    }
+    .btn-dark:active:not(:disabled) { transform: scale(0.985) translateY(0); }
 
     .plan-btn:disabled {
-      opacity: 0.5;
+      opacity: 0.45;
       cursor: not-allowed;
       transform: none !important;
       box-shadow: none !important;
@@ -375,15 +528,15 @@
       font-size: 9px;
       color: var(--muted);
       text-align: center;
-      margin-top: 6px;
+      margin-top: 7px;
       letter-spacing: 0.2px;
     }
 
-    /* Sign out */
-    .signout-section {
-      padding: 20px 0 40px;
-      display: flex;
-      justify-content: center;
+    /* ── SIGN OUT ── */
+    .signout-row {
+      text-align: center;
+      margin-top: 36px;
+      animation: fadeUp 0.6s ease 0.4s both;
     }
 
     .btn-signout {
@@ -397,10 +550,9 @@
       text-underline-offset: 3px;
       transition: color 0.12s;
     }
+    .btn-signout:hover { color: var(--mid); }
 
-    .btn-signout:hover { color: var(--text-2); }
-
-    /* Loading */
+    /* ── LOADING ── */
     #loadingState {
       display: flex;
       flex-direction: column;
@@ -412,37 +564,73 @@
 
     .spinner {
       width: 24px; height: 24px;
-      border: 2px solid var(--border-hi);
+      border: 2px solid rgba(0,0,0,0.1);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-
     .spinner-label { font-family: var(--mono); font-size: 10px; color: var(--muted); }
 
     #mainContent { display: none; }
 
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 99px; }
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark2);
+      border-top: 0.5px solid rgba(255,255,255,0.06);
+      padding: 26px 28px;
+      margin-top: auto;
+    }
+
+    .footer-inner {
+      max-width: 980px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 14px;
+    }
+
+    .footer-logo { font-family: var(--serif); font-size: 17px; color: rgba(255,255,255,0.7); }
+    .footer-links { display: flex; gap: 22px; }
+    .footer-links a { font-size: 12px; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.65); }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .plans { grid-template-columns: 1fr; }
+      main { padding-top: calc(var(--nav-h) + 32px); }
+    }
   </style>
 </head>
 <body>
 
-  <header class="hdr">
-    <div class="brand">
-      <div class="brand-icon">
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <div class="nav-icon">
         <svg viewBox="0 0 13 13" fill="none"><path d="M2 10.5L4.5 3l2 5 1.5-2.5L11 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
-      <span class="brand-name">Scrybe</span>
+      <span class="nav-logo">Scrybe</span>
+    </a>
+    <div class="nav-right">
+      <div class="user-pill" id="userPill">
+        <div class="user-avatar" id="userInitial">?</div>
+        <span class="user-email" id="userEmail">—</span>
+      </div>
+      <a href="index.html" class="nav-link">Home</a>
     </div>
-    <div class="user-pill" id="userPill" style="display:none">
-      <div class="user-avatar" id="userInitial">?</div>
-      <span class="user-email" id="userEmail">—</span>
-    </div>
-  </header>
+  </nav>
 
   <div id="loadingState">
     <div class="spinner"></div>
@@ -450,110 +638,141 @@
   </div>
 
   <div id="mainContent">
-    <div class="body">
+    <main>
+      <div class="wrapper">
 
-      <!-- Usage -->
-      <div class="section">
-        <div class="sec-label">Your Usage</div>
-        <div class="usage-row">
-          <span class="usage-label">Essays this period</span>
-          <span class="tier-badge" id="tierBadge">Free</span>
+        <!-- Page heading -->
+        <div class="page-header">
+          <div class="page-label">Plans &amp; Pricing</div>
+          <h1 class="page-title">Choose your plan.</h1>
+          <p class="page-sub">Start free, upgrade when you need more.</p>
         </div>
-        <div class="usage-bar-wrap">
-          <div class="usage-bar-fill" id="usageBar" style="width:0%"></div>
-        </div>
-        <div class="usage-sub"><span id="usageCount">0</span> of <span id="usageMax">2</span> used</div>
-      </div>
 
-      <!-- Plans -->
-      <div class="section">
-        <div class="sec-label">Choose a Plan</div>
+        <!-- Usage card -->
+        <div class="usage-card">
+          <div class="usage-top">
+            <div class="usage-top-left">
+              <div class="usage-top-label">Current usage</div>
+              <div class="usage-heading">Essays this period</div>
+            </div>
+            <div class="usage-tier-badge" id="tierBadge">Free</div>
+          </div>
+          <div class="usage-body">
+            <div class="usage-nums">
+              <span class="usage-count" id="usageCount">0</span>
+              <span class="usage-sep">/</span>
+              <span class="usage-max" id="usageMax">2</span>
+              <span class="usage-unit">essays used</span>
+            </div>
+            <div class="usage-bar-wrap">
+              <div class="usage-bar-fill" id="usageBar" style="width:0%"></div>
+            </div>
+            <div class="usage-note">Resets at the start of each billing period.</div>
+          </div>
+        </div>
+
+        <!-- Plans -->
         <div class="plans">
 
           <!-- Free -->
           <div class="plan">
-            <div class="plan-header">
-              <div>
-                <div class="plan-tag">Trial</div>
-                <div class="plan-name">Free</div>
+            <div class="plan-top plain">
+              <div class="plan-badge-row">
+                <span class="plan-tag">Trial</span>
               </div>
+              <div class="plan-name">Free</div>
+              <div class="plan-price-row">
+                <span class="plan-dollar">$</span>
+                <span class="plan-num">0</span>
+              </div>
+              <div class="plan-note">Forever free · Perfect for trying Scrybe</div>
             </div>
-            <div class="plan-price-row">
-              <span class="plan-dollar">$</span>
-              <span class="plan-num">0</span>
+            <div class="plan-body">
+              <ul class="plan-features">
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 free essays</li>
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 500 words each</li>
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 60 WPM typing speed</li>
+              </ul>
+              <button class="plan-btn btn-ghost" id="btnFree" disabled>Current plan</button>
             </div>
-            <div class="plan-note">forever free · Perfect for trying Scrybe</div>
-            <div class="plan-divider"></div>
-            <ul class="plan-features">
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 free essays</li>
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 500 words each</li>
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 60 WPM</li>
-            </ul>
-            <button class="plan-btn btn-ghost" id="btnFree" disabled>Current plan</button>
           </div>
 
-          <!-- Pro -->
+          <!-- Pro (featured) -->
           <div class="plan featured">
-            <div class="plan-header">
-              <div>
-                <div class="plan-tag">Most Popular</div>
-                <div class="plan-name">Pro</div>
+            <div class="plan-top blue">
+              <div class="plan-badge-row">
+                <span class="plan-tag">Most Popular</span>
+                <span class="badge-popular">Most Popular</span>
               </div>
-              <span class="badge-popular">Most Popular</span>
+              <div class="plan-name">Pro</div>
+              <div class="plan-price-row">
+                <span class="plan-dollar">$</span>
+                <span class="plan-num">5</span>
+                <span class="plan-per">/mo</span>
+              </div>
+              <div class="plan-note">Cancel anytime · For students all semester</div>
             </div>
-            <div class="plan-price-row">
-              <span class="plan-dollar">$</span>
-              <span class="plan-num">5</span>
-              <span class="plan-per">/mo</span>
+            <div class="plan-body">
+              <ul class="plan-features">
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 essays per month</li>
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 5,000 words each</li>
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Rubric uploads</li>
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Draft paper outlines</li>
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited WPM</li>
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support</li>
+              </ul>
+              <button class="plan-btn btn-blue" id="btnPro">Get Pro</button>
+              <div class="coming-soon">Payments coming soon</div>
             </div>
-            <div class="plan-note">cancel anytime · For students all semester</div>
-            <div class="plan-divider"></div>
-            <ul class="plan-features">
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 essays per month</li>
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 5,000 words each</li>
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Rubric uploads</li>
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Draft paper outlines</li>
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited WPM</li>
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support</li>
-            </ul>
-            <button class="plan-btn btn-blue" id="btnPro">Get Pro</button>
-            <div class="coming-soon">Payments coming soon</div>
           </div>
 
           <!-- Unlimited -->
           <div class="plan">
-            <div class="plan-header">
-              <div>
-                <div class="plan-tag">Most Features</div>
-                <div class="plan-name">Unlimited</div>
+            <div class="plan-top dark">
+              <div class="plan-badge-row">
+                <span class="plan-tag">Most Features</span>
+                <span class="badge-max">Most Features</span>
               </div>
-              <span class="badge-features">Most Features</span>
+              <div class="plan-name">Unlimited</div>
+              <div class="plan-price-row">
+                <span class="plan-dollar">$</span>
+                <span class="plan-num">25</span>
+                <span class="plan-per">/mo</span>
+              </div>
+              <div class="plan-note">Unlimited essays · Undetectable AI writing</div>
             </div>
-            <div class="plan-price-row">
-              <span class="plan-dollar">$</span>
-              <span class="plan-num">25</span>
-              <span class="plan-per">/mo</span>
+            <div class="plan-body">
+              <ul class="plan-features">
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Everything in Pro</li>
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited generations</li>
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Early access to new features</li>
+                <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Dedicated support</li>
+              </ul>
+              <button class="plan-btn btn-dark" id="btnUnlimited">Get Unlimited</button>
+              <div class="coming-soon">Payments coming soon</div>
             </div>
-            <div class="plan-note">Unlimited essays · Undetectable AI writing</div>
-            <div class="plan-divider"></div>
-            <ul class="plan-features">
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Everything in Pro</li>
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Early access to new features</li>
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited generations</li>
-              <li><span class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="#34c759" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Dedicated support</li>
-            </ul>
-            <button class="plan-btn btn-blue" id="btnUnlimited">Get Unlimited</button>
-            <div class="coming-soon">Payments coming soon</div>
           </div>
 
         </div>
-      </div>
 
-      <div class="signout-section">
-        <button class="btn-signout" id="btnSignOut">Sign out</button>
-      </div>
+        <div class="signout-row">
+          <button class="btn-signout" id="btnSignOut">Sign out</button>
+        </div>
 
-    </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-logo">Scrybe</div>
+        <div class="footer-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Support</a>
+        </div>
+        <div class="footer-copy">© 2026 Scrybe, Inc.</div>
+      </div>
+    </footer>
   </div>
 
   <script>
@@ -583,7 +802,7 @@
       const count = profile?.essay_count || 0;
       const info  = TIER_LIMITS[tier] || TIER_LIMITS.free;
       const max   = info.essays;
-      const pct   = max === Infinity ? 0 : Math.min(100, (count / max) * 100);
+      const pct   = max === Infinity ? 5 : Math.min(100, (count / max) * 100);
 
       document.getElementById('userEmail').textContent = user.email;
       document.getElementById('userInitial').textContent = user.email[0].toUpperCase();
@@ -598,6 +817,7 @@
         document.getElementById('btnPro').disabled = true;
         document.getElementById('btnFree').textContent = 'Downgrade';
         document.getElementById('btnFree').disabled = false;
+        document.getElementById('btnFree').classList.replace('btn-ghost', 'btn-ghost');
       } else if (tier === 'unlimited') {
         document.getElementById('btnUnlimited').textContent = 'Current plan';
         document.getElementById('btnUnlimited').disabled = true;
