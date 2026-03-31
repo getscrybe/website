@@ -9,19 +9,17 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
-  --bg:         #f5f5f7;
-  --white:      #ffffff;
-  --dark:       #1d1d1f;
-  --dark2:      #0a0a0a;
-  --mid:        #6e6e73;
-  --light:      #d2d2d7;
-  --lighter:    #f0f0f2;
-  --accent:     #0066cc;
-  --accent-h:   #0055aa;
-  --accent-dim: rgba(0,102,204,0.08);
-  --red:        #ff3b30;
-  --red-dim:    rgba(255,59,48,0.1);
-  --nav-h:      56px;
+  --bg:      #f2f2f4;
+  --white:   #ffffff;
+  --dark:    #1d1d1f;
+  --dark2:   #0a0a0a;
+  --mid:     #6e6e73;
+  --light:   #c7c7cc;
+  --lighter: #ebebed;
+  --accent:  #0066cc;
+  --accent-h:#0055aa;
+  --red:     #ff3b30;
+  --nav-h:   52px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,258 +37,244 @@ body {
 }
 a { text-decoration: none; }
 
-/* ── NAV ── */
+/* NAV */
 nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  z-index: 200;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   height: var(--nav-h);
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 28px;
-  background: rgba(245,245,247,0.82);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 0.5px solid rgba(0,0,0,0.1);
+  background: rgba(242,242,244,0.88);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 0.5px solid rgba(0,0,0,0.07);
 }
+
 .nav-logo {
   font-family: 'Instrument Serif', serif;
-  font-size: 22px; letter-spacing: -0.5px;
+  font-size: 20px; letter-spacing: -0.4px;
   color: var(--dark);
+  text-decoration: none;
 }
+
 .nav-link {
   font-size: 13px; color: var(--mid);
-  padding: 6px 14px; border-radius: 980px;
-  transition: background 0.15s, color 0.15s;
+  padding: 5px 12px; border-radius: 980px;
+  transition: background 0.12s, color 0.12s;
 }
 .nav-link:hover { background: rgba(0,0,0,0.05); color: var(--dark); }
 
-/* ── MAIN ── */
+/* MAIN */
 main {
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: calc(var(--nav-h) + 48px) 24px 64px;
+  display: flex; align-items: center; justify-content: center;
+  padding: calc(var(--nav-h) + 48px) 24px 72px;
   position: relative;
-  overflow: hidden;
 }
+
+/* subtle ruled lines */
 main::before {
   content: '';
-  position: absolute; top: -60px; left: 50%;
-  transform: translateX(-50%);
-  width: 800px; height: 500px;
-  background: radial-gradient(ellipse at 50% 20%,
-    rgba(0,102,204,0.09) 0%,
-    rgba(0,102,204,0.03) 40%,
-    transparent 70%);
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 39px,
+    rgba(0,0,0,0.026) 39px,
+    rgba(0,0,0,0.026) 40px
+  );
   pointer-events: none;
 }
 
-/* ── WRAPPER ── */
 .wrapper {
-  width: 100%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  z-index: 1;
+  width: 100%; max-width: 360px;
+  display: flex; flex-direction: column; align-items: center;
+  position: relative; z-index: 1;
 }
 
-/* ── CARD ── */
+/* italic eyebrow above card */
+.eyebrow {
+  font-family: 'Instrument Serif', serif;
+  font-size: 13px; font-style: italic;
+  color: var(--mid);
+  margin-bottom: 12px;
+  letter-spacing: 0.1px;
+  opacity: 0;
+  animation: fadeUp 0.45s ease 0.12s forwards;
+}
+
+/* CARD */
 .card {
   width: 100%;
   background: var(--white);
-  border-radius: 22px;
-  border: 0.5px solid rgba(0,0,0,0.08);
+  border-radius: 18px;
+  border: 0.5px solid rgba(0,0,0,0.09);
   box-shadow:
-    0 1px 1px rgba(0,0,0,0.03),
-    0 4px 24px rgba(0,0,0,0.07),
-    0 0 0 0.5px rgba(0,0,0,0.04);
+    0 2px 4px rgba(0,0,0,0.05),
+    0 12px 40px rgba(0,0,0,0.09);
   overflow: hidden;
-  animation: cardIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
-}
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(24px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  opacity: 0;
+  animation: riseIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.04s forwards;
 }
 
-/* ── BLUE TOP BAND ── */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* CARD TOP */
 .card-top {
   background: var(--accent);
-  padding: 28px 32px 26px;
-  position: relative;
-  overflow: hidden;
+  padding: 28px 26px 24px;
 }
-.card-top::before {
-  content: '';
-  position: absolute; top: -40px; right: -40px;
-  width: 160px; height: 160px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.07);
-  pointer-events: none;
-}
-.card-top::after {
-  content: '';
-  position: absolute; bottom: -50px; left: -20px;
-  width: 120px; height: 120px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.05);
-  pointer-events: none;
-}
+
 .card-top h1 {
   font-family: 'Instrument Serif', serif;
-  font-size: 28px; letter-spacing: -0.03em;
-  color: #fff; line-height: 1.15;
-  margin-bottom: 5px;
-  position: relative; z-index: 1;
+  font-size: 32px; letter-spacing: -0.05em;
+  color: #fff; line-height: 1.05;
+  margin-bottom: 7px;
 }
+
 .card-top p {
   font-size: 13px; font-weight: 300;
-  color: rgba(255,255,255,0.72);
-  position: relative; z-index: 1;
+  color: rgba(255,255,255,0.62);
 }
 
-/* ── CARD BODY ── */
-.card-body { padding: 28px 32px 30px; }
+/* CARD BODY */
+.card-body { padding: 22px 26px 26px; }
 
-/* ── FEATURES ── */
+/* FEATURES */
 .features {
-  display: flex; flex-direction: column; gap: 11px;
-  margin-bottom: 26px;
+  display: flex; flex-direction: column; gap: 9px;
+  margin-bottom: 20px;
 }
-.feature { display: flex; align-items: center; gap: 11px; }
-.feature-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent); flex-shrink: 0; opacity: 0.5;
-}
-.feature span { font-size: 13px; color: var(--mid); font-weight: 300; }
+.feature { display: flex; align-items: flex-start; gap: 9px; }
+.feature-check { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; }
+.feature-check svg { width: 14px; height: 14px; display: block; }
+.feature span { font-size: 13px; font-weight: 300; color: var(--mid); line-height: 1.45; }
 
-/* ── DIVIDER ── */
-.divider {
-  height: 0.5px;
-  background: linear-gradient(90deg, transparent, var(--light), transparent);
-  margin-bottom: 24px;
-}
+/* RULE */
+.rule { height: 0.5px; background: rgba(0,0,0,0.07); margin-bottom: 20px; }
 
-/* ── GOOGLE BUTTON ── */
+/* AUTH ERROR */
+.auth-error {
+  display: none;
+  background: rgba(255,59,48,0.07);
+  border: 0.5px solid rgba(255,59,48,0.18);
+  border-radius: 9px;
+  padding: 9px 12px;
+  font-size: 13px; color: var(--red);
+  margin-bottom: 12px;
+}
+.auth-error.show { display: block; }
+
+/* GOOGLE BUTTON */
 .google-btn {
-  display: flex; align-items: center; justify-content: center; gap: 11px;
-  width: 100%; padding: 13px 20px;
-  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 12px 18px;
+  border-radius: 10px;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 14px; font-weight: 600; color: var(--dark);
   background: var(--white);
-  border: 0.5px solid rgba(0,0,0,0.13);
-  box-shadow: 0 1px 5px rgba(0,0,0,0.07), 0 0.5px 0 rgba(255,255,255,0.9) inset;
+  border: 0.5px solid rgba(0,0,0,0.12);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: background 0.12s, box-shadow 0.12s, transform 0.1s;
   margin-bottom: 14px;
 }
 .google-btn:hover {
   background: var(--lighter);
-  border-color: rgba(0,0,0,0.18);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   transform: translateY(-1px);
 }
-.google-btn:active { transform: scale(0.985) translateY(0); }
-.google-btn:disabled { opacity: 0.55; pointer-events: none; }
-.google-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.google-btn:active { transform: scale(0.987); box-shadow: none; }
+.google-btn:disabled { opacity: 0.5; pointer-events: none; }
+.google-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
 
 .btn-spinner {
-  display: none; width: 16px; height: 16px;
-  border: 2px solid rgba(0,0,0,0.1);
+  display: none; width: 15px; height: 15px;
+  border: 1.5px solid rgba(0,0,0,0.1);
   border-top-color: var(--accent);
   border-radius: 50%;
-  animation: spin 0.7s linear infinite; flex-shrink: 0;
+  animation: spin 0.65s linear infinite; flex-shrink: 0;
 }
 .google-btn.loading svg { display: none; }
 .google-btn.loading .btn-spinner { display: block; }
 .google-btn.loading .btn-label { color: var(--mid); }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── ERROR ── */
-.auth-error {
-  display: none;
-  background: var(--red-dim);
-  border: 0.5px solid rgba(255,59,48,0.2);
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 13px; color: var(--red);
-  margin-bottom: 14px;
-}
-.auth-error.show { display: block; }
-
-/* ── CARD FOOTER NOTE ── */
+/* LEGAL */
 .card-note {
   text-align: center;
-  font-size: 11.5px; font-weight: 300;
+  font-size: 11px; font-weight: 300;
   color: var(--light); line-height: 1.6;
 }
-.card-note a { color: var(--light); border-bottom: 0.5px solid var(--light); }
+.card-note a {
+  color: var(--light);
+  border-bottom: 0.5px solid var(--light);
+  transition: color 0.12s, border-color 0.12s;
+}
 .card-note a:hover { color: var(--mid); border-color: var(--mid); }
 
-/* ── SUCCESS STATE ── */
-.success-state {
-  display: none;
-  padding: 28px 32px 32px;
-  text-align: center;
-}
+/* SUCCESS */
+.success-state { display: none; padding: 44px 26px; text-align: center; }
 .success-state.show { display: block; }
-.success-ring {
-  width: 60px; height: 60px; border-radius: 50%;
-  background: var(--accent-dim);
-  border: 1.5px solid rgba(0,102,204,0.2);
-  display: flex; align-items: center; justify-content: center;
+
+.success-icon {
+  width: 48px; height: 48px; border-radius: 13px;
+  background: rgba(0,102,204,0.07);
+  border: 0.5px solid rgba(0,102,204,0.15);
+  display: grid; place-items: center;
   margin: 0 auto 18px;
-  animation: popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
 }
-.success-ring svg { width: 26px; height: 26px; stroke: var(--accent); }
+.success-icon svg { width: 20px; height: 20px; stroke: var(--accent); }
 @keyframes popIn {
   from { opacity:0; transform:scale(0.5); }
   to   { opacity:1; transform:scale(1); }
 }
 .success-state h2 {
   font-family: 'Instrument Serif', serif;
-  font-size: 24px; letter-spacing: -0.02em;
-  color: var(--dark); margin-bottom: 6px;
+  font-size: 26px; letter-spacing: -0.03em;
+  color: var(--dark); margin-bottom: 5px;
 }
 .success-state p { font-size: 13px; font-weight: 300; color: var(--mid); }
 
-/* ── BELOW CARD ── */
+/* BELOW CARD */
 .below-card {
-  margin-top: 20px;
-  font-size: 11.5px; color: var(--mid);
-  display: flex; gap: 4px; align-items: center;
-  animation: fadeUp 0.6s ease 0.35s both;
+  margin-top: 16px;
+  font-size: 11.5px; color: var(--light);
+  display: flex; gap: 5px; align-items: center;
+  opacity: 0;
+  animation: fadeUp 0.45s ease 0.32s forwards;
 }
-.below-card a { color: var(--mid); }
-.below-card a:hover { color: var(--dark); text-decoration: underline; }
-.below-card span { opacity: 0.35; }
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(6px); }
-  to   { opacity:1; transform:translateY(0); }
-}
+.below-card a { color: var(--light); transition: color 0.12s; }
+.below-card a:hover { color: var(--mid); }
+.below-card .dot { opacity: 0.4; }
 
-/* ── FOOTER ── */
+/* FOOTER */
 footer {
   background: var(--dark2);
-  border-top: 0.5px solid rgba(255,255,255,0.06);
-  padding: 26px 28px;
+  border-top: 0.5px solid rgba(255,255,255,0.05);
+  padding: 22px 28px;
   margin-top: auto;
 }
 .footer-inner {
   max-width: 980px; margin: 0 auto;
   display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 14px;
+  flex-wrap: wrap; gap: 12px;
 }
-.footer-logo { font-family: 'Instrument Serif', serif; font-size: 17px; color: rgba(255,255,255,0.7); }
-.footer-links { display: flex; gap: 22px; }
-.footer-links a { font-size: 12px; color: rgba(255,255,255,0.3); transition: color 0.15s; }
-.footer-links a:hover { color: rgba(255,255,255,0.65); }
-.footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+.footer-logo { font-family: 'Instrument Serif', serif; font-size: 16px; color: rgba(255,255,255,0.5); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { font-size: 12px; color: rgba(255,255,255,0.22); transition: color 0.12s; }
+.footer-links a:hover { color: rgba(255,255,255,0.6); }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.15); }
 
-@media (max-width: 480px) {
-  .card-top, .card-body, .success-state { padding-left: 22px; padding-right: 22px; }
+@media (max-width: 420px) {
+  .card-top, .card-body, .success-state { padding-left: 20px; padding-right: 20px; }
 }
 </style>
 </head>
@@ -303,32 +287,46 @@ footer {
 
 <main>
   <div class="wrapper">
+
+    <div class="eyebrow">your AI writing assistant</div>
+
     <div class="card" id="card">
 
-      <!-- DEFAULT STATE -->
       <div id="mainContent">
         <div class="card-top">
           <h1>Start writing.</h1>
           <p>Sign in to access your Scrybe account.</p>
         </div>
         <div class="card-body">
+
           <div class="features">
             <div class="feature">
-              <div class="feature-dot"></div>
+              <div class="feature-check">
+                <svg viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7l3.5 3.5L12 3" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
               <span>Essays generated from your rubric in seconds</span>
             </div>
             <div class="feature">
-              <div class="feature-dot"></div>
+              <div class="feature-check">
+                <svg viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7l3.5 3.5L12 3" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
               <span>Humanized to bypass AI detection</span>
             </div>
             <div class="feature">
-              <div class="feature-dot"></div>
+              <div class="feature-check">
+                <svg viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7l3.5 3.5L12 3" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
               <span>Types directly into Google Docs</span>
             </div>
           </div>
 
-          <div class="divider"></div>
-
+          <div class="rule"></div>
           <div class="auth-error" id="authError"></div>
 
           <button class="google-btn" id="googleBtn" onclick="signInWithGoogle()">
@@ -350,10 +348,9 @@ footer {
         </div>
       </div>
 
-      <!-- SUCCESS STATE -->
       <div class="success-state" id="successState">
-        <div class="success-ring">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12"/>
           </svg>
         </div>
@@ -361,13 +358,13 @@ footer {
         <p>Redirecting you now…</p>
       </div>
 
-    </div><!-- /card -->
+    </div>
 
     <div class="below-card">
       <a href="privacy.html">Privacy</a>
-      <span>·</span>
+      <span class="dot">·</span>
       <a href="#">Terms</a>
-      <span>·</span>
+      <span class="dot">·</span>
       <a href="#">Help</a>
     </div>
   </div>
@@ -386,17 +383,12 @@ footer {
 </footer>
 
 <script>
-  // ─────────────────────────────────────────
-  //  SWAP THESE TWO VALUES
-  // ─────────────────────────────────────────
   const SUPABASE_URL  = 'https://ajswovsdbdeohuyyucyo.supabase.co';
   const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqc3dvdnNkYmRlb2h1eXl1Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMTEwNDYsImV4cCI6MjA4OTg4NzA0Nn0.N5NyNjP1fc7fxZm08DbNAlx-hGOlfCYXrlpezt_EG9c';
-  // ─────────────────────────────────────────
 
   const { createClient } = supabase;
   const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
-  // Check if returning from Google OAuth redirect
   window.addEventListener('load', async () => {
     const { data: { session } } = await sb.auth.getSession();
     if (session) handleSuccess(session);
@@ -426,7 +418,7 @@ footer {
 
     try {
       chrome.runtime.sendMessage(
-        'iknjdhnpjdabefhofilclhjkfolhgdoj', // ← replace with ID from chrome://extensions
+        'iknjdhnpjdabefhofilclhjkfolhgdoj',
         {
           action: 'saveToken',
           token: session.access_token,
@@ -436,9 +428,7 @@ footer {
             name:  session.user.user_metadata?.full_name || ''
           }
         },
-        () => {
-          setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
-        }
+        () => { setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200); }
       );
     } catch (e) {
       setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
