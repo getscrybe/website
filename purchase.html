@@ -20,6 +20,7 @@
       --accent:  #0066cc;
       --accent-h:#0055aa;
       --green:   #34c759;
+      --red:     #ff3b30;
       --nav-h:   52px;
     }
 
@@ -38,7 +39,6 @@
     }
     a { text-decoration: none; }
 
-    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       height: var(--nav-h);
@@ -77,9 +77,7 @@
       text-transform: uppercase;
     }
 
-    .user-email {
-      font-size: 12px; font-weight: 400; color: var(--mid);
-    }
+    .user-email { font-size: 12px; font-weight: 400; color: var(--mid); }
 
     .nav-link {
       font-size: 13px; color: var(--mid);
@@ -88,7 +86,6 @@
     }
     .nav-link:hover { background: rgba(0,0,0,0.05); color: var(--dark); }
 
-    /* MAIN */
     main {
       flex: 1;
       padding: calc(var(--nav-h) + 52px) 24px 72px;
@@ -99,59 +96,55 @@
       content: '';
       position: absolute; inset: 0;
       background-image: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 39px,
-        rgba(0,0,0,0.026) 39px,
-        rgba(0,0,0,0.026) 40px
+        0deg, transparent, transparent 39px,
+        rgba(0,0,0,0.026) 39px, rgba(0,0,0,0.026) 40px
       );
       pointer-events: none;
     }
 
-    .wrapper {
-      max-width: 820px;
-      margin: 0 auto;
-      position: relative; z-index: 1;
-    }
+    .wrapper { max-width: 820px; margin: 0 auto; position: relative; z-index: 1; }
 
-    /* PAGE HEADER */
     .page-header {
-      text-align: center;
-      margin-bottom: 36px;
-      opacity: 0;
-      animation: fadeUp 0.45s ease 0.05s forwards;
+      text-align: center; margin-bottom: 36px;
+      opacity: 0; animation: fadeUp 0.45s ease 0.05s forwards;
     }
 
     .page-eyebrow {
       font-family: 'Instrument Serif', serif;
       font-size: 13px; font-style: italic;
-      color: var(--mid);
-      margin-bottom: 10px;
+      color: var(--mid); margin-bottom: 10px;
     }
 
     .page-title {
       font-family: 'Instrument Serif', serif;
       font-size: clamp(30px, 5vw, 42px);
-      letter-spacing: -0.04em;
-      color: var(--dark);
-      line-height: 1.05;
-      margin-bottom: 8px;
+      letter-spacing: -0.04em; color: var(--dark);
+      line-height: 1.05; margin-bottom: 8px;
     }
 
-    .page-sub {
-      font-size: 13px; font-weight: 300; color: var(--mid);
-    }
+    .page-sub { font-size: 13px; font-weight: 300; color: var(--mid); }
 
-    /* USAGE CARD */
+    /* Error banner */
+    .error-banner {
+      display: none;
+      background: rgba(255,59,48,0.07);
+      border: 0.5px solid rgba(255,59,48,0.2);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 13px; color: var(--red);
+      text-align: center;
+    }
+    .error-banner.show { display: block; }
+
+    /* Usage card */
     .usage-card {
       background: var(--white);
       border: 0.5px solid rgba(0,0,0,0.09);
-      border-radius: 18px;
-      overflow: hidden;
+      border-radius: 18px; overflow: hidden;
       box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 28px rgba(0,0,0,0.07);
       margin-bottom: 24px;
-      opacity: 0;
-      animation: riseIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
+      opacity: 0; animation: riseIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
     }
 
     .usage-top {
@@ -160,83 +153,33 @@
       display: flex; align-items: center; justify-content: space-between;
     }
 
-    .usage-top-label {
-      font-size: 11px; font-weight: 300;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 3px;
-      letter-spacing: 0.2px;
-    }
-
-    .usage-heading {
-      font-family: 'Instrument Serif', serif;
-      font-size: 20px; color: #fff;
-      letter-spacing: -0.02em;
-    }
+    .usage-top-label { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.55); margin-bottom: 3px; letter-spacing: 0.2px; }
+    .usage-heading { font-family: 'Instrument Serif', serif; font-size: 20px; color: #fff; letter-spacing: -0.02em; }
 
     .usage-tier {
       font-size: 11px; font-weight: 500;
-      color: var(--accent);
-      background: rgba(255,255,255,0.9);
-      padding: 3px 11px;
-      border-radius: 980px;
-      letter-spacing: 0.1px;
+      color: var(--accent); background: rgba(255,255,255,0.9);
+      padding: 3px 11px; border-radius: 980px; letter-spacing: 0.1px;
     }
 
-    .usage-body {
-      padding: 18px 24px 20px;
-      display: flex; align-items: center; gap: 20px;
-    }
-
-    .usage-nums {
-      flex-shrink: 0;
-      display: flex; align-items: baseline; gap: 3px;
-    }
-
-    .usage-count {
-      font-family: 'Instrument Serif', serif;
-      font-size: 38px; letter-spacing: -1.5px;
-      color: var(--dark); line-height: 1;
-    }
-
+    .usage-body { padding: 18px 24px 20px; display: flex; align-items: center; gap: 20px; }
+    .usage-nums { flex-shrink: 0; display: flex; align-items: baseline; gap: 3px; }
+    .usage-count { font-family: 'Instrument Serif', serif; font-size: 38px; letter-spacing: -1.5px; color: var(--dark); line-height: 1; }
     .usage-sep { font-size: 22px; color: var(--light); font-weight: 300; margin: 0 1px; }
-
-    .usage-max {
-      font-size: 16px; color: var(--mid); font-weight: 300;
-    }
-
+    .usage-max { font-size: 16px; color: var(--mid); font-weight: 300; }
     .usage-right { flex: 1; }
-
-    .usage-bar-wrap {
-      width: 100%; height: 3px;
-      background: var(--lighter);
-      border-radius: 980px; overflow: hidden;
-      margin-bottom: 7px;
-    }
-
-    .usage-bar-fill {
-      height: 100%; background: var(--accent);
-      border-radius: 980px;
-      transition: width 0.9s cubic-bezier(.4,0,.2,1);
-    }
-
+    .usage-bar-wrap { width: 100%; height: 3px; background: var(--lighter); border-radius: 980px; overflow: hidden; margin-bottom: 7px; }
+    .usage-bar-fill { height: 100%; background: var(--accent); border-radius: 980px; transition: width 0.9s cubic-bezier(.4,0,.2,1); }
     .usage-note { font-size: 11.5px; font-weight: 300; color: var(--light); }
 
-    /* PLANS */
-    .plans {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    @media (max-width: 680px) {
-      .plans { grid-template-columns: 1fr; }
-    }
+    /* Plans */
+    .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 680px) { .plans { grid-template-columns: 1fr; } }
 
     .plan {
       background: var(--white);
       border: 0.5px solid rgba(0,0,0,0.09);
-      border-radius: 18px;
-      overflow: hidden;
+      border-radius: 18px; overflow: hidden;
       box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 28px rgba(0,0,0,0.06);
       display: flex; flex-direction: column;
       opacity: 0;
@@ -247,74 +190,38 @@
     .plan:nth-child(2) { animation: riseIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.21s forwards; }
     .plan:nth-child(3) { animation: riseIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.26s forwards; }
 
-    .plan:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.06), 0 16px 40px rgba(0,0,0,0.1);
-    }
+    .plan:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.06), 0 16px 40px rgba(0,0,0,0.1); }
 
-    .plan.featured {
-      border-color: rgba(0,102,204,0.28);
-      box-shadow: 0 0 0 3px rgba(0,102,204,0.07), 0 8px 28px rgba(0,0,0,0.07);
-    }
+    .plan.featured { border-color: rgba(0,102,204,0.28); box-shadow: 0 0 0 3px rgba(0,102,204,0.07), 0 8px 28px rgba(0,0,0,0.07); }
 
-    /* Plan top bands */
-    .plan-top {
-      padding: 22px 22px 20px;
-      position: relative;
-    }
-
+    .plan-top { padding: 22px 22px 20px; position: relative; }
     .plan-top.neutral { background: var(--bg); border-bottom: 0.5px solid rgba(0,0,0,0.06); }
     .plan-top.blue    { background: var(--accent); }
     .plan-top.ink     { background: #1d1d1f; }
 
-    .plan-tag {
-      font-size: 10px; font-weight: 300;
-      letter-spacing: 0.2px;
-      margin-bottom: 8px;
-    }
+    .plan-tag { font-size: 10px; font-weight: 300; letter-spacing: 0.2px; margin-bottom: 8px; }
     .plan-top.neutral .plan-tag { color: var(--light); }
     .plan-top.blue .plan-tag    { color: rgba(255,255,255,0.5); }
     .plan-top.ink .plan-tag     { color: rgba(255,255,255,0.35); }
 
-    .plan-name-row {
-      display: flex; align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
+    .plan-name-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
 
-    .plan-name {
-      font-family: 'Instrument Serif', serif;
-      font-size: 26px; letter-spacing: -0.03em;
-      line-height: 1;
-    }
+    .plan-name { font-family: 'Instrument Serif', serif; font-size: 26px; letter-spacing: -0.03em; line-height: 1; }
     .plan-top.neutral .plan-name { color: var(--dark); }
     .plan-top.blue .plan-name    { color: #fff; }
     .plan-top.ink .plan-name     { color: #fff; }
 
-    .plan-badge {
-      font-size: 10px; font-weight: 500;
-      padding: 3px 9px; border-radius: 980px;
-      letter-spacing: 0.1px;
-      white-space: nowrap;
-      margin-top: 2px;
-    }
-
+    .plan-badge { font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 980px; letter-spacing: 0.1px; white-space: nowrap; margin-top: 2px; }
     .badge-blue  { background: rgba(255,255,255,0.9); color: var(--accent); }
     .badge-ghost { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); border: 0.5px solid rgba(255,255,255,0.2); }
 
-    .plan-price-row {
-      display: flex; align-items: baseline; gap: 1px;
-    }
-
+    .plan-price-row { display: flex; align-items: baseline; gap: 1px; }
     .plan-dollar { font-size: 14px; font-weight: 300; }
     .plan-top.neutral .plan-dollar { color: var(--mid); }
     .plan-top.blue .plan-dollar    { color: rgba(255,255,255,0.6); }
     .plan-top.ink .plan-dollar     { color: rgba(255,255,255,0.45); }
 
-    .plan-num {
-      font-family: 'Instrument Serif', serif;
-      font-size: 40px; letter-spacing: -2px; line-height: 1;
-    }
+    .plan-num { font-family: 'Instrument Serif', serif; font-size: 40px; letter-spacing: -2px; line-height: 1; }
     .plan-top.neutral .plan-num { color: var(--dark); }
     .plan-top.blue .plan-num    { color: #fff; }
     .plan-top.ink .plan-num     { color: #fff; }
@@ -329,137 +236,73 @@
     .plan-top.blue .plan-note    { color: rgba(255,255,255,0.5); }
     .plan-top.ink .plan-note     { color: rgba(255,255,255,0.35); }
 
-    /* Plan body */
-    .plan-body {
-      padding: 18px 22px 22px;
-      flex: 1; display: flex; flex-direction: column;
-    }
+    .plan-body { padding: 18px 22px 22px; flex: 1; display: flex; flex-direction: column; }
 
-    .plan-features {
-      list-style: none;
-      display: flex; flex-direction: column; gap: 8px;
-      margin-bottom: 18px; flex: 1;
-    }
-
-    .plan-features li {
-      display: flex; align-items: flex-start; gap: 9px;
-      font-size: 13px; font-weight: 300; color: var(--mid);
-      line-height: 1.4;
-    }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; flex: 1; }
+    .plan-features li { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; font-weight: 300; color: var(--mid); line-height: 1.4; }
 
     .chk { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
     .chk svg { width: 14px; height: 14px; display: block; }
 
     /* Buttons */
     .plan-btn {
-      width: 100%; padding: 11px 18px;
-      border-radius: 10px;
+      width: 100%; padding: 11px 18px; border-radius: 10px;
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 13px; font-weight: 600;
       cursor: pointer; border: none;
       transition: background 0.12s, box-shadow 0.12s, transform 0.1s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      position: relative;
     }
 
-    .btn-ghost {
-      background: var(--lighter);
-      color: var(--mid);
-      border: 0.5px solid rgba(0,0,0,0.09);
-    }
+    .btn-ghost { background: var(--lighter); color: var(--mid); border: 0.5px solid rgba(0,0,0,0.09); }
     .btn-ghost:hover:not(:disabled) { background: #e2e2e5; }
 
-    .btn-blue {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 2px 8px rgba(0,102,204,0.25);
-    }
-    .btn-blue:hover:not(:disabled) {
-      background: var(--accent-h);
-      box-shadow: 0 4px 14px rgba(0,102,204,0.3);
-      transform: translateY(-1px);
-    }
+    .btn-blue { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(0,102,204,0.25); }
+    .btn-blue:hover:not(:disabled) { background: var(--accent-h); box-shadow: 0 4px 14px rgba(0,102,204,0.3); transform: translateY(-1px); }
     .btn-blue:active:not(:disabled) { transform: scale(0.987); }
 
-    .btn-ink {
-      background: var(--dark);
-      color: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-    }
-    .btn-ink:hover:not(:disabled) {
-      background: #2a2a2e;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.24);
-      transform: translateY(-1px);
-    }
+    .btn-ink { background: var(--dark); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.18); }
+    .btn-ink:hover:not(:disabled) { background: #2a2a2e; box-shadow: 0 4px 14px rgba(0,0,0,0.24); transform: translateY(-1px); }
     .btn-ink:active:not(:disabled) { transform: scale(0.987); }
 
     .plan-btn:disabled { opacity: 0.38; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
-    .coming-soon {
-      font-size: 11px; font-weight: 300;
-      color: var(--light);
-      text-align: center;
-      margin-top: 8px;
+    /* Button spinner */
+    .btn-spinner {
+      display: none; width: 13px; height: 13px;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.65s linear infinite;
+      flex-shrink: 0;
     }
+    .plan-btn.loading .btn-spinner { display: block; }
+    .plan-btn.loading .btn-label { opacity: 0.7; }
 
-    /* SIGN OUT */
-    .signout-row {
-      text-align: center; margin-top: 32px;
-      opacity: 0;
-      animation: fadeUp 0.45s ease 0.38s forwards;
-    }
-    .btn-signout {
-      background: none; border: none;
-      font-size: 12px; font-weight: 300; color: var(--light);
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      transition: color 0.12s;
-    }
+    /* Sign out */
+    .signout-row { text-align: center; margin-top: 32px; opacity: 0; animation: fadeUp 0.45s ease 0.38s forwards; }
+    .btn-signout { background: none; border: none; font-size: 12px; font-weight: 300; color: var(--light); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; transition: color 0.12s; }
     .btn-signout:hover { color: var(--mid); }
 
-    /* LOADING */
-    #loadingState {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      min-height: 60vh; gap: 12px;
-    }
-    .spinner {
-      width: 22px; height: 22px;
-      border: 1.5px solid rgba(0,0,0,0.1);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-    }
+    /* Loading */
+    #loadingState { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 12px; }
+    .spinner { width: 22px; height: 22px; border: 1.5px solid rgba(0,0,0,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
     .spinner-label { font-size: 12px; font-weight: 300; color: var(--light); }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
     #mainContent { display: none; }
 
-    /* FOOTER */
-    footer {
-      background: var(--dark2);
-      border-top: 0.5px solid rgba(255,255,255,0.05);
-      padding: 22px 28px;
-      margin-top: auto;
-    }
-    .footer-inner {
-      max-width: 980px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 12px;
-    }
+    footer { background: var(--dark2); border-top: 0.5px solid rgba(255,255,255,0.05); padding: 22px 28px; margin-top: auto; }
+    .footer-inner { max-width: 980px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
     .footer-logo { font-family: 'Instrument Serif', serif; font-size: 16px; color: rgba(255,255,255,0.5); }
     .footer-links { display: flex; gap: 20px; }
     .footer-links a { font-size: 12px; color: rgba(255,255,255,0.22); transition: color 0.12s; }
     .footer-links a:hover { color: rgba(255,255,255,0.6); }
     .footer-copy { font-size: 12px; color: rgba(255,255,255,0.15); }
 
-    @keyframes riseIn {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes riseIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
@@ -489,6 +332,8 @@
           <h1 class="page-title">Choose your plan.</h1>
           <p class="page-sub">Start free, upgrade when you need more.</p>
         </div>
+
+        <div class="error-banner" id="errorBanner"></div>
 
         <!-- Usage -->
         <div class="usage-card">
@@ -532,20 +377,13 @@
             </div>
             <div class="plan-body">
               <ul class="plan-features">
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  2 essays
-                </li>
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  Up to 500 words each
-                </li>
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  Up to 60 WPM
-                </li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 essays</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 500 words each</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 60 WPM</li>
               </ul>
-              <button class="plan-btn btn-ghost" id="btnFree" disabled>Current plan</button>
+              <button class="plan-btn btn-ghost" id="btnFree" disabled>
+                <span class="btn-label">Current plan</span>
+              </button>
             </div>
           </div>
 
@@ -566,33 +404,17 @@
             </div>
             <div class="plan-body">
               <ul class="plan-features">
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  20 essays per month
-                </li>
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  Up to 5,000 words each
-                </li>
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  Rubric uploads
-                </li>
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  Paper outlines
-                </li>
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  Unlimited WPM
-                </li>
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  Priority support
-                </li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 essays per month</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 5,000 words each</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Rubric uploads</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Paper outlines</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited WPM</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support</li>
               </ul>
-              <button class="plan-btn btn-blue" id="btnPro">Get Pro</button>
-              <div class="coming-soon">Payments coming soon</div>
+              <button class="plan-btn btn-blue" id="btnPro">
+                <div class="btn-spinner"></div>
+                <span class="btn-label">Get Pro — $5/mo</span>
+              </button>
             </div>
           </div>
 
@@ -613,25 +435,15 @@
             </div>
             <div class="plan-body">
               <ul class="plan-features">
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  Everything in Pro
-                </li>
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  Unlimited essays
-                </li>
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  Early access to new features
-                </li>
-                <li>
-                  <span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  Dedicated support
-                </li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Everything in Pro</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited essays</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Early access to new features</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Dedicated support</li>
               </ul>
-              <button class="plan-btn btn-ink" id="btnUnlimited">Get Unlimited</button>
-              <div class="coming-soon">Payments coming soon</div>
+              <button class="plan-btn btn-ink" id="btnUnlimited">
+                <div class="btn-spinner"></div>
+                <span class="btn-label">Get Unlimited — $25/mo</span>
+              </button>
             </div>
           </div>
 
@@ -668,10 +480,72 @@
       unlimited: { essays: Infinity, label: 'Unlimited' }
     };
 
+    let currentSession = null;
+
+    function showError(msg) {
+      const el = document.getElementById('errorBanner');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 6000);
+    }
+
+    function setButtonLoading(btn, loading) {
+      btn.disabled = loading;
+      btn.classList.toggle('loading', loading);
+    }
+
+    async function startCheckout(plan) {
+      const btn = plan === 'pro' ? document.getElementById('btnPro') : document.getElementById('btnUnlimited');
+      setButtonLoading(btn, true);
+
+      try {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) { window.location.href = '/login.html'; return; }
+
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout-session`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            plan,
+            success_url: `${window.location.origin}/purchase.html?checkout=success`,
+            cancel_url:  `${window.location.origin}/purchase.html?checkout=cancelled`,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || data.message || 'Failed to create checkout session.');
+        }
+
+        if (!data.url) {
+          throw new Error('No checkout URL returned from server.');
+        }
+
+        window.location.href = data.url;
+
+      } catch (err) {
+        console.error('Checkout error:', err);
+        showError(err.message || 'Something went wrong. Please try again.');
+        setButtonLoading(btn, false);
+      }
+    }
+
     async function init() {
+      // Handle post-checkout return
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('checkout') === 'success') {
+        // Refresh session so tier badge reflects new plan
+        await sb.auth.refreshSession();
+      }
+
       const { data: { session } } = await sb.auth.getSession();
       if (!session) { window.location.href = '/login.html'; return; }
 
+      currentSession = session;
       const user = session.user;
       const { data: profile } = await sb.from('users')
         .select('tier, essay_count')
@@ -684,33 +558,43 @@
       const max   = info.essays;
       const pct   = max === Infinity ? 5 : Math.min(100, (count / max) * 100);
 
-      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('userEmail').textContent   = user.email;
       document.getElementById('userInitial').textContent = user.email[0].toUpperCase();
-      document.getElementById('userPill').style.display = 'flex';
-      document.getElementById('usageCount').textContent = count;
-      document.getElementById('usageMax').textContent = max === Infinity ? '∞' : max;
-      document.getElementById('usageBar').style.width = pct + '%';
-      document.getElementById('tierBadge').textContent = info.label;
+      document.getElementById('userPill').style.display  = 'flex';
+      document.getElementById('usageCount').textContent  = count;
+      document.getElementById('usageMax').textContent    = max === Infinity ? '∞' : max;
+      document.getElementById('usageBar').style.width    = pct + '%';
+      document.getElementById('tierBadge').textContent   = info.label;
+
+      const btnPro       = document.getElementById('btnPro');
+      const btnUnlimited = document.getElementById('btnUnlimited');
+      const btnFree      = document.getElementById('btnFree');
 
       if (tier === 'pro') {
-        document.getElementById('btnPro').textContent = 'Current plan';
-        document.getElementById('btnPro').disabled = true;
-        document.getElementById('btnFree').textContent = 'Downgrade';
-        document.getElementById('btnFree').disabled = false;
+        btnPro.querySelector('.btn-label').textContent = 'Current plan';
+        btnPro.disabled = true;
+        btnFree.querySelector('.btn-label').textContent = 'Downgrade';
+        btnFree.disabled = false;
+        btnFree.classList.remove('btn-ghost');
+        btnFree.style.cssText = 'background:var(--lighter);color:var(--mid);border:0.5px solid rgba(0,0,0,0.09);';
       } else if (tier === 'unlimited') {
-        document.getElementById('btnUnlimited').textContent = 'Current plan';
-        document.getElementById('btnUnlimited').disabled = true;
+        btnUnlimited.querySelector('.btn-label').textContent = 'Current plan';
+        btnUnlimited.disabled = true;
+        btnPro.querySelector('.btn-label').textContent = 'Get Pro — $5/mo';
       }
 
       document.getElementById('loadingState').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
+      document.getElementById('mainContent').style.display  = 'block';
 
-      document.getElementById('btnPro').addEventListener('click', () => {
-        alert('Payments coming soon — check back shortly!');
+      // Wire up checkout buttons
+      btnPro.addEventListener('click', () => {
+        if (!btnPro.disabled) startCheckout('pro');
       });
-      document.getElementById('btnUnlimited').addEventListener('click', () => {
-        alert('Payments coming soon — check back shortly!');
+
+      btnUnlimited.addEventListener('click', () => {
+        if (!btnUnlimited.disabled) startCheckout('unlimited');
       });
+
       document.getElementById('btnSignOut').addEventListener('click', async () => {
         await sb.auth.signOut();
         window.location.href = '/login.html';

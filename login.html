@@ -422,11 +422,11 @@
           {
             action: 'saveToken',
             token: session.access_token,
-            user: {
-              id:    session.user.id,
-              email: session.user.email,
-              name:  session.user.user_metadata?.full_name || ''
-            }
+           user: {
+  id:    session.user.id,
+  email: session.user.email,
+  name:  session.user.user_metadata?.full_name || ''
+}
           },
           () => { setTimeout(() => { window.location.href = 'purchase.html'; }, 1200); }
         );
