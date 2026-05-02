@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Scrybe — Essay Due Tonight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --white: #ffffff;
+    --dark: #1d1d1f;
+    --mid: #6e6e73;
+    --light: #d2d2d7;
+    --lighter: #f0f0f2;
+    --accent: #0066cc;
+    --accent-h: #0055aa;
+    --accent-dim: rgba(0,102,204,0.08);
+    --accent-glow: rgba(0,102,204,0.22);
+    --green: #34c759;
+    --orange: #ff9500;
+    --orange-dim: rgba(255,149,0,0.09);
+    --orange-border: rgba(255,149,0,0.25);
+    --red: #ff3b30;
+    --border: rgba(0,0,0,0.08);
+    --border-hi: rgba(0,0,0,0.14);
+    --sans: 'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+    --serif: 'Instrument Serif', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--dark);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 400px;
+    background: radial-gradient(ellipse at center, rgba(255,149,0,0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 56px 24px 48px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--orange-dim);
+    border: 0.5px solid var(--orange-border);
+    border-radius: 980px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #b85c00;
+    margin-bottom: 28px;
+    align-self: center;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.05s forwards;
+  }
+  .badge-dot {
+    width: 5px; height: 5px;
+    background: var(--orange);
+    border-radius: 50%;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.6); }
+  }
+
+  /* ── HEADLINE ── */
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(38px, 10.5vw, 54px);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--dark);
+    margin-bottom: 18px;
+    opacity: 0;
+    animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.12s forwards;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .sub {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.65;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.22s forwards;
+  }
+
+  .divider {
+    border: none;
+    border-top: 0.5px solid var(--border);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.3s forwards;
+  }
+
+  /* ── CARD ── */
+  .bridge {
+    background: var(--white);
+    border: 0.5px solid rgba(0,0,0,0.06);
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    padding: 28px 24px 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.34s forwards;
+  }
+
+  .bridge-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .bridge-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: var(--dark);
+    margin-bottom: 8px;
+  }
+  .bridge-body {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.65;
+    margin-bottom: 22px;
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    background: var(--accent-dim);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2px;
+  }
+  .step-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--dark);
+  }
+  .step-text .tag {
+    display: inline-block;
+    margin-top: 2px;
+    font-size: 11px;
+    background: var(--lighter);
+    border: 0.5px solid var(--border-hi);
+    border-radius: 6px;
+    padding: 1px 7px;
+    color: var(--mid);
+  }
+
+  /* ── FORM ── */
+  .email-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .email-input {
+    width: 100%;
+    background: var(--white);
+    border: 0.5px solid var(--border-hi);
+    border-radius: 12px;
+    padding: 13px 16px;
+    font-family: var(--sans);
+    font-size: 16px;
+    color: var(--dark);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .email-input::placeholder { color: var(--light); }
+  .email-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+  .btn-send {
+    width: 100%;
+    background: var(--accent);
+    color: white;
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px;
+    border-radius: 980px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 12px var(--accent-glow);
+    transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-send:active {
+    transform: scale(0.987);
+    background: var(--accent-h);
+  }
+  .btn-send:disabled { opacity: 0.6; cursor: default; }
+
+  .form-note {
+    font-size: 11px;
+    color: var(--light);
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .error-msg {
+    display: none;
+    font-size: 12px;
+    color: var(--red);
+    margin-top: -4px;
+  }
+
+  /* ── SUCCESS ── */
+  .success-state {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 28px 0 8px;
+    text-align: center;
+  }
+  .success-icon {
+    width: 44px; height: 44px;
+    background: rgba(52,199,89,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .success-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    color: var(--dark);
+  }
+  .success-sub {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: auto;
+    padding-top: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--dark);
+    text-decoration: none;
+  }
+  .footer-link {
+    font-size: 12px;
+    color: var(--light);
+    text-decoration: none;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  ::-webkit-scrollbar { width: 0; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="badge">
+    <span class="badge-dot"></span>
+    Essay due tonight
+  </div>
+
+  <h1>We'll write it.<br>You just <em>submit it.</em></h1>
+
+  <p class="sub">
+    Scrybe sits invisibly inside Google Docs and writes your essay alongside you — in your voice, at your pace, while looking completely normal.
+  </p>
+
+  <hr class="divider">
+
+  <div class="bridge">
+    <p class="bridge-eyebrow">You're on your phone</p>
+    <p class="bridge-title">The extension runs on your laptop.</p>
+    <p class="bridge-body">Send yourself the link now. By the time you open your laptop, you'll be 30 seconds from a working essay.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          Drop your email below
+          <br><span class="tag">5 seconds</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          Open it on your laptop, click <strong>Add to Chrome</strong>
+          <br><span class="tag">one click</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          Open Google Docs and start writing
+          <br><span class="tag">Scrybe takes over from there</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="formWrap" class="email-wrap">
+      <input
+        type="email"
+        id="emailInput"
+        class="email-input"
+        placeholder="your@email.com"
+        autocomplete="email"
+        inputmode="email"
+      >
+      <p id="errorMsg" class="error-msg">Something went wrong — try again.</p>
+      <button id="sendBtn" class="btn-send" onclick="handleSend()">Send Me the Link</button>
+      <p class="form-note">No spam. One email. The link, that's it.</p>
+    </div>
+
+    <div id="successState" class="success-state">
+      <div class="success-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M4 11.5l4.5 4.5 9.5-10" stroke="#34c759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <p class="success-title">You're good. Check your inbox.</p>
+      <p class="success-sub">The link is waiting. Open it on your laptop and you'll be writing in under a minute.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="https://scrybe.app" class="footer-logo">Scrybe</a>
+    <a href="https://scrybe.app/privacy" class="footer-link">Privacy</a>
+  </div>
+
+</div>
+
+<script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_ilXtoUGuTwcGG0tSMI-BlSRRszBK83ADxxMCOs-71tD7cOEO6oXSHfKXTMl0sDexTQ/exec';
+  const EXTENSION_URL   = 'https://chromewebstore.google.com/detail/scrybe/akchgkfjphnfklojlkgkcpcihkjmcmhh';
+
+  async function handleSend() {
+    const emailInput = document.getElementById('emailInput');
+    const sendBtn    = document.getElementById('sendBtn');
+    const errorMsg   = document.getElementById('errorMsg');
+    const email      = emailInput.value.trim();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailInput.focus();
+      emailInput.style.borderColor = '#ff3b30';
+      emailInput.style.boxShadow   = '0 0 0 3px rgba(255,59,48,0.1)';
+      return;
+    }
+
+    emailInput.style.borderColor = '';
+    emailInput.style.boxShadow   = '';
+    errorMsg.style.display       = 'none';
+    sendBtn.textContent          = 'Sending…';
+    sendBtn.disabled             = true;
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, extensionUrl: EXTENSION_URL })
+      });
+      showSuccess();
+    } catch (err) {
+      sendBtn.textContent    = 'Send Me the Link';
+      sendBtn.disabled       = false;
+      errorMsg.style.display = 'block';
+    }
+  }
+
+  function showSuccess() {
+    document.getElementById('formWrap').style.display = 'none';
+    const s = document.getElementById('successState');
+    s.style.display   = 'flex';
+    s.style.animation = 'fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards';
+  }
+
+  document.getElementById('emailInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleSend();
+  });
+</script>
+
+</body>
+</html>
