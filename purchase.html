@@ -3,9 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scrybe — Upgrade</title>
+  <title>Plans &amp; Pricing — Scrybe</title>
+  <meta name="description" content="Upgrade Scrybe. Pro is $5/mo for 20 AI-generated essays, Unlimited is $25/mo for 200. Start free, cancel anytime." />
+  <meta name="robots" content="noindex, follow" />
+  <meta name="theme-color" content="#f2f2f4" />
+  <link rel="canonical" href="https://getscrybe.net/purchase.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="Scrybe.png" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root {
@@ -461,8 +467,7 @@
         <div class="footer-logo">Scrybe</div>
         <div class="footer-links">
           <a href="privacy.html">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Support</a>
+          <a href="mailto:getscribe@gmail.com">Support</a>
         </div>
         <div class="footer-copy">© 2026 Scrybe, Inc.</div>
       </div>
@@ -500,7 +505,7 @@
 
       try {
         const { data: { session } } = await sb.auth.getSession();
-        if (!session) { window.location.href = '/login.html'; return; }
+        if (!session) { window.location.href = 'login.html'; return; }
 
         const response = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout-session`, {
           method: 'POST',
@@ -543,7 +548,7 @@
       }
 
       const { data: { session } } = await sb.auth.getSession();
-      if (!session) { window.location.href = '/login.html'; return; }
+      if (!session) { window.location.href = 'login.html'; return; }
 
       currentSession = session;
       const user = session.user;
@@ -596,8 +601,11 @@
       });
 
       document.getElementById('btnSignOut').addEventListener('click', async () => {
+        try {
+          chrome.runtime.sendMessage('imelbhmelocdbjoobiogfallkokomoao', { action: 'logout' });
+        } catch (e) { /* extension not installed */ }
         await sb.auth.signOut();
-        window.location.href = '/login.html';
+        window.location.href = 'index.html';
       });
     }
 

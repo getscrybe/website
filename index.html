@@ -3,10 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scrybe — Write Brilliantly</title>
+<title>Scrybe — AI Writing Assistant for Students</title>
+<meta name="description" content="Scrybe is an AI writing assistant for students that drafts, refines, and types essays directly inside Google Docs. Free plan, no sign-up required to start.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1d1d1f">
+<link rel="canonical" href="https://getscrybe.net/index.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="Scrybe.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Scrybe">
+<meta property="og:title" content="Scrybe — AI Writing Assistant for Students">
+<meta property="og:description" content="From blank page to polished essay in minutes. Scrybe drafts, refines, and types essays directly inside Google Docs.">
+<meta property="og:url" content="https://getscrybe.net/">
+<meta property="og:image" content="https://getscrybe.net/Scrybe.png">
+<meta property="og:image:alt" content="Scrybe logo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Scrybe — AI Writing Assistant for Students">
+<meta name="twitter:description" content="From blank page to polished essay in minutes. Scrybe drafts, refines, and types essays directly inside Google Docs.">
+<meta name="twitter:image" content="https://getscrybe.net/Scrybe.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://getscrybe.net/#organization",
+      "name": "Scrybe",
+      "url": "https://getscrybe.net/",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://getscrybe.net/#logo",
+        "url": "https://getscrybe.net/Scrybe.png"
+      },
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://getscrybe.net/#website",
+      "url": "https://getscrybe.net/",
+      "name": "Scrybe",
+      "publisher": {
+        "@id": "https://getscrybe.net/#organization"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://getscrybe.net/#software",
+      "name": "Scrybe",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Chrome",
+      "url": "https://getscrybe.net/",
+      "description": "Scrybe is an AI writing assistant for students that drafts, refines, and types essays directly inside Google Docs.",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Scrybe Free",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "2 free essays per month, up to 500 words each."
+        },
+        {
+          "@type": "Offer",
+          "name": "Scrybe Pro",
+          "price": "5",
+          "priceCurrency": "USD",
+          "description": "20 essays per month, up to 5,000 words each, rubric uploads and paper outlines."
+        },
+        {
+          "@type": "Offer",
+          "name": "Scrybe Unlimited",
+          "price": "25",
+          "priceCurrency": "USD",
+          "description": "200 essays per month, unlimited word count, early access and dedicated support."
+        }
+      ],
+      "publisher": {
+        "@id": "https://getscrybe.net/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://getscrybe.net/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://getscrybe.net/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://getscrybe.net/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Scrybe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Scrybe is an AI writing assistant for students that drafts, refines, and types essays directly inside Google Docs — from a blank page to a polished draft in minutes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Scrybe work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Scrybe works inside Google Docs as a Chrome extension: paste your assignment prompt, choose your word count and academic level, and Scrybe builds your draft, humanizes it, and types it into your document at your chosen pace."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Scrybe free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — Scrybe has a free plan with 2 essays per month up to 500 words each, forever, no credit card required. Paid plans start at $5 per month."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does Scrybe cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Scrybe costs $0 for the free trial plan, $5 per month for Pro (20 essays, up to 5,000 words each), and $25 per month for Unlimited (200 essays, early access). You can cancel anytime."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Scrybe work on Chromebooks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — Scrybe is a Chrome extension, so it works on any device that runs Chrome, including Chromebooks, Windows, and Macs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Scrybe support citation styles?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — Scrybe supports major citation formats including APA, MLA, and Chicago, and pulls real, verifiable references rather than invented ones."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 <style>
 
 /* ─────────────────────────────────────────────
@@ -674,6 +820,65 @@ nav {
 .cta-band .section-body { color: rgba(255,255,255,0.45); margin-bottom: 44px; }
 
 /* ─────────────────────────────────────────────
+   ABOUT (E-E-A-T) + FAQ
+───────────────────────────────────────────── */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 980px;
+  margin: 72px auto 0;
+  text-align: left;
+}
+.about-card {
+  background: var(--white);
+  border: 0.5px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius);
+  padding: 28px 26px;
+}
+.about-card h4 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  color: var(--dark);
+}
+.about-card p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--mid);
+  line-height: 1.6;
+}
+.faq-grid {
+  max-width: 980px;
+  margin: 72px auto 0;
+  display: grid;
+  gap: 12px;
+}
+.faq-item {
+  background: var(--white);
+  border: 0.5px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+  padding: 22px 26px;
+  text-align: left;
+}
+.faq-item h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+.faq-item p {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--mid);
+  line-height: 1.6;
+}
+@media (max-width: 800px) {
+  .about-grid { grid-template-columns: 1fr; }
+}
+
+/* ─────────────────────────────────────────────
    FOOTER
 ───────────────────────────────────────────── */
 footer {
@@ -773,11 +978,12 @@ footer {
     <li><a href="#how">How It Works</a></li>
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#faq">FAQ</a></li>
   </ul>
   <div class="nav-right">
     <!-- Shown when logged OUT -->
     <a href="login.html" class="nav-signin" id="navSignIn">Sign In</a>
-    <a href="login.html" class="nav-cta" id="navCta">Try for Free</a>
+    <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="nav-cta" id="navCta">Try for Free</a>
     <!-- Shown when logged IN -->
     <a href="purchase.html" class="nav-user-pill" id="navUserPill">
       <div class="nav-user-avatar" id="navUserAvatar">?</div>
@@ -796,12 +1002,12 @@ footer {
   </h1>
 
   <p class="hero-sub">
-    From blank page to polished essay in minutes.
-    Scrybe thinks for you, helping you refine your voice.
+    Scrybe is an AI writing assistant for students that drafts, refines, and types essays directly inside Google Docs.
+    From blank page to polished draft in minutes — at your pace, in your voice.
   </p>
 
   <div class="hero-actions">
-    <a href="login.html" class="btn-blue" id="heroCta">Start Writing Free</a>
+    <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="btn-blue" id="heroCta">Start Writing Free</a>
     <a href="#how" class="btn-ghost">
       See How It Works
       <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -971,7 +1177,7 @@ footer {
         <li><span class="check">✓</span> Up to 500 words each</li>
         <li><span class="check">✓</span> Up to 60 WPM</li>
       </ul>
-      <a href="login.html" class="plan-btn outline" id="btnFree">Get Started Free</a>
+      <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn outline" id="btnFree">Get Started Free</a>
     </div>
 
     <div class="pricing-card featured">
@@ -993,7 +1199,7 @@ footer {
         <li><span class="check">✓</span> Unlimited WPM</li>
         <li><span class="check">✓</span> Priority support</li>
       </ul>
-      <a href="login.html" class="plan-btn white" id="btnPro">Start Pro — $5/mo</a>
+      <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn white" id="btnPro">Start Pro — $5/mo</a>
     </div>
 
     <div class="pricing-card">
@@ -1004,7 +1210,7 @@ footer {
         <span class="price-num">25</span>
         <span class="price-period">/mo</span>
       </div>
-      <p class="plan-desc">Access to new features, 200 essays, undetectable AI writing.</p>
+      <p class="plan-desc">Access to new features, 200 essays, natural-sounding AI writing.</p>
       <div class="plan-divider"></div>
       <ul class="plan-features">
         <li><span class="check">✓</span> Everything in Pro</li>
@@ -1012,7 +1218,7 @@ footer {
         <li><span class="check">✓</span> 200 essays per month</li>
         <li><span class="check">✓</span> Dedicated support</li>
       </ul>
-      <a href="login.html" class="plan-btn dark" id="btnUnlimited">Start Unlimited — $25/mo</a>
+      <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn dark" id="btnUnlimited">Start Unlimited — $25/mo</a>
     </div>
 
   </div>
@@ -1064,6 +1270,64 @@ footer {
   </div>
 </section>
 
+<!-- ── ABOUT / E-E-A-T ── -->
+<section id="about" style="background:var(--white);padding:120px 24px;border-top:0.5px solid var(--light);">
+  <div style="text-align:center;max-width:980px;margin:0 auto;" class="reveal">
+    <span class="eyebrow">About Scrybe</span>
+    <h2 class="h2">Built for students who<br><em>set high standards.</em></h2>
+    <p class="section-body">Who's behind Scrybe, how it works, and why it exists.</p>
+  </div>
+  <div class="about-grid reveal">
+    <div class="about-card">
+      <h4>Who</h4>
+      <p>Scrybe is built by a small independent team of developers and former students who know the 2 a.m. blank-page deadline panic firsthand.</p>
+    </div>
+    <div class="about-card">
+      <h4>How</h4>
+      <p>Scrybe uses AI-assisted drafting with full transparency: it generates text with large language models, keeps citations verifiable, and always produces work you can review, edit, and make your own before submitting.</p>
+    </div>
+    <div class="about-card">
+      <h4>Why</h4>
+      <p>Writing tools shouldn't stand between you and your own work. Scrybe exists to help students get unstuck, learn the writing process, and actually meet their own standards.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section id="faq" style="background:var(--bg);padding:120px 24px;">
+  <div style="text-align:center;max-width:980px;margin:0 auto;" class="reveal">
+    <span class="eyebrow">FAQ</span>
+    <h2 class="h2">Frequently asked questions.</h2>
+    <p class="section-body">Straight answers before you try it.</p>
+  </div>
+  <div class="faq-grid reveal">
+    <div class="faq-item">
+      <h3>What is Scrybe?</h3>
+      <p>Scrybe is an AI writing assistant for students that drafts, refines, and types essays directly inside Google Docs — from a blank page to a polished draft in minutes.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How does Scrybe work?</h3>
+      <p>Scrybe works inside Google Docs as a Chrome extension: paste your assignment prompt, choose your word count and academic level, and Scrybe builds your draft, humanizes it, and types it into your document at your chosen pace.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is Scrybe free?</h3>
+      <p>Yes — Scrybe has a free plan with 2 essays per month up to 500 words each, forever, no credit card required. Paid plans start at $5 per month.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How much does Scrybe cost?</h3>
+      <p>Scrybe costs $0 for the free trial plan, $5 per month for Pro (20 essays, up to 5,000 words each), and $25 per month for Unlimited (200 essays, early access). You can cancel anytime.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does Scrybe work on Chromebooks?</h3>
+      <p>Yes — Scrybe is a Chrome extension, so it works on any device that runs Chrome, including Chromebooks, Windows, and Macs.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does Scrybe support citation styles?</h3>
+      <p>Yes — Scrybe supports major citation formats including APA, MLA, and Chicago, and pulls real, verifiable references rather than invented ones.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ── CTA BAND ── -->
 <section class="cta-band">
   <div style="max-width:700px;margin:0 auto;" class="reveal">
@@ -1074,7 +1338,7 @@ footer {
     <p class="section-body" style="margin-bottom:44px;">
       Join students already writing faster and smarter.
     </p>
-    <a href="login.html" class="btn-blue" style="font-size:18px;padding:16px 38px;" id="ctaBandBtn">Start Writing Free</a>
+    <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="btn-blue" style="font-size:18px;padding:16px 38px;" id="ctaBandBtn">Start Writing Free</a>
   </div>
 </section>
 
@@ -1088,28 +1352,23 @@ footer {
     <div class="footer-col">
       <h5>Product</h5>
       <ul>
-        <li><a href="#">Features</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how">How It Works</a></li>
         <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#">Changelog</a></li>
-        <li><a href="#">API</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h5>Company</h5>
       <ul>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Careers</a></li>
-        <li><a href="#">Press</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="mailto:getscribe@gmail.com">Contact</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h5>Legal</h5>
       <ul>
-        <li><a href="getscrybe.net/privacy">Privacy</a></li>
-        <li><a href="#">Terms</a></li>
-        <li><a href="#">Cookie Policy</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
       </ul>
     </div>
   </div>
@@ -1124,6 +1383,7 @@ footer {
   /* ─── Supabase ─── */
   const SUPABASE_URL  = 'https://ajswovsdbdeohuyyucyo.supabase.co';
   const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqc3dvdnNkYmRlb2h1eXl1Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMTEwNDYsImV4cCI6MjA4OTg4NzA0Nn0.N5NyNjP1fc7fxZm08DbNAlx-hGOlfCYXrlpezt_EG9c';
+  const EXTENSION_URL = 'https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao';
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
   /* ─── Auth: update nav + buttons based on session ─── */
@@ -1162,7 +1422,7 @@ footer {
         if (btn) btn.href = 'purchase.html';
       });
     } else {
-      // Logged out — everything goes to login.html (already set in HTML)
+      // Logged out — CTAs point to the Chrome Web Store (already set in HTML)
       navUserPill.style.display = 'none';
     }
   }
