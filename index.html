@@ -147,6 +147,22 @@
             "@type": "Answer",
             "text": "Yes — Scrybe supports major citation formats including APA, MLA, and Chicago, and pulls real, verifiable references rather than invented ones."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data private?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — Scrybe only stores your account info and subscription status. Your essay content and assignment details are processed to generate your draft and are not stored or shared. See our Privacy Policy for details."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I cancel anytime?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — you can cancel your subscription anytime from your account page. No long-term commitment, no hidden fees."
+          }
         }
       ]
     }
@@ -334,9 +350,21 @@ nav {
 
 .hero-actions {
   display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
-  margin-bottom: 72px;
+  margin-bottom: 24px;
   animation: fadeUp 0.8s ease 0.24s both;
 }
+
+.hero-trust {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; flex-wrap: wrap; text-align: center;
+  margin: 0 0 72px; font-size: 13px; font-weight: 300;
+  color: var(--mid);
+  animation: fadeUp 0.8s ease 0.32s both;
+}
+.store-stars {
+  color: #ff9f0a; letter-spacing: 2px; font-size: 12px;
+}
+.hero-trust-sep { color: var(--light); opacity: 0.7; }
 
 .btn-blue {
   background: var(--accent);
@@ -638,10 +666,20 @@ nav {
   font-size: 20px; color: var(--white);
   margin-bottom: 10px; letter-spacing: -0.02em;
 }
-.step-cell p {
-  font-size: 14px; font-weight: 300;
-  color: rgba(255,255,255,0.45); line-height: 1.65;
-}
+  .step-cell p {
+    font-size: 14px; font-weight: 300;
+    color: rgba(255,255,255,0.45); line-height: 1.65;
+  }
+
+/* ─────────────────────────────────────────────
+   FEATURES
+───────────────────────────────────────────── */
+.feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; max-width: 980px; margin: 72px auto 0; }
+.feat-card { background: var(--white); border: 0.5px solid rgba(0,0,0,0.06); border-radius: var(--radius); padding: 28px 26px; }
+.feat-icon { font-size: 28px; margin-bottom: 16px; }
+.feat-card h4 { font-family: 'Instrument Serif', serif; font-size: 20px; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--dark); }
+.feat-card p { font-size: 14px; font-weight: 300; color: var(--mid); line-height: 1.6; }
+@media (max-width: 800px) {.feat-grid { grid-template-columns: 1fr; } }
 
 /* ─────────────────────────────────────────────
    PRICING
@@ -756,18 +794,22 @@ nav {
 .plan-btn.white {
   background: var(--white); color: var(--dark);
 }
-.plan-btn.white:hover {
-  background: var(--bg);
-  box-shadow: 0 4px 16px rgba(255,255,255,0.12);
-}
-.plan-btn.outline {
-  background: transparent; color: var(--accent);
-  border: 1.5px solid rgba(0,102,204,0.3);
-}
-.plan-btn.outline:hover {
-  background: rgba(0,102,204,0.06);
-  border-color: var(--accent);
-}
+  .plan-btn.white:hover {
+    background: var(--bg);
+    box-shadow: 0 4px 16px rgba(255,255,255,0.12);
+  }
+  .plan-btn.outline {
+    background: transparent; color: var(--dark);
+    border: 0.5px solid var(--light);
+  }
+  .plan-btn.outline:hover {
+    background: var(--bg);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+
+.pricing-trust { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; text-align: center; margin-top: 28px; font-size: 13px; font-weight: 300; color: var(--mid); }
+.pricing-trust .store-stars { color: #ff9f0a; letter-spacing: 2px; font-size: 12px; }
+.pricing-trust .pt-sep { color: var(--light); opacity: 0.7; }
 
 /* ─────────────────────────────────────────────
    TESTIMONIALS
@@ -843,13 +885,17 @@ nav {
   margin-bottom: 10px;
   color: var(--dark);
 }
-.about-card p {
-  font-size: 14px;
-  font-weight: 300;
-  color: var(--mid);
-  line-height: 1.6;
-}
-.faq-grid {
+  .about-card p {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+.review-trust { display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center; margin-top: 28px; font-size: 13px; font-weight: 300; color: var(--mid); }
+.review-trust .store-stars { color: #ff9f0a; letter-spacing: 2px; font-size: 12px; }
+
+  .faq-grid {
   max-width: 980px;
   margin: 72px auto 0;
   display: grid;
@@ -932,7 +978,7 @@ footer {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.reveal {
+.js .reveal {
   opacity: 0; transform: translateY(24px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
@@ -968,7 +1014,7 @@ footer {
 ::-webkit-scrollbar-thumb { background: var(--light); border-radius: 99px; }
 </style>
 </head>
-<body>
+<body><div class="js"><noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 
 <!-- ── NAV ── -->
 <nav>
@@ -994,7 +1040,7 @@ footer {
 
 <!-- ── HERO ── -->
 <section class="hero">
-  <span class="hero-eyebrow">AI Writing Assistant for Students</span>
+  <span class="hero-eyebrow">No more blank-page panic.</span>
 
   <h1 class="hero-headline">
     Write with<br>
@@ -1002,18 +1048,24 @@ footer {
   </h1>
 
   <p class="hero-sub">
-    Scrybe is an AI writing assistant for students that drafts, refines, and types essays directly inside Google Docs.
-    From blank page to polished draft in minutes — at your pace, in your voice.
+    Scrybe drafts, refines, and types essays directly inside Google Docs — in your voice, at your pace, with real, verifiable citations. From blank page to polished draft in minutes. Free to start, no credit card required.
   </p>
 
   <div class="hero-actions">
-    <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="btn-blue" id="heroCta">Start Writing Free</a>
+    <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="btn-blue" id="heroCta">Add to Chrome — Free</a>
     <a href="#how" class="btn-ghost">
       See How It Works
       <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
+  </div>
+
+  <div class="hero-trust">
+    <span class="store-stars">★★★★★</span>
+    <span>5-star rated on the Chrome Web Store</span>
+    <span class="hero-trust-sep">·</span>
+    <span>Free to start · No credit card required · Cancel anytime</span>
   </div>
 
   <!-- macOS window mockup -->
@@ -1109,13 +1161,45 @@ footer {
 <!-- ── TICKER ── -->
 
 <!-- ── FEATURES ── -->
-<div id="features" style="background:var(--bg); padding:120px 24px 0;">
-  <div style="max-width:980px;margin:0 auto;text-align:center;" class="reveal">
+<section id="features" style="background:var(--bg);padding:120px 24px 0;">
+  <div style="text-align:center;max-width:980px;margin:0 auto;" class="reveal">
+    <span class="eyebrow">Features</span>
     <h2 class="h2">Everything a great<br>essay needs.</h2>
     <p class="section-body">Capabilities that cover the full writing cycle from first idea to final submission.</p>
-    <br><br>
   </div>
-</div>
+  <div class="feat-grid reveal">
+    <div class="feat-card">
+      <div class="feat-icon">📚</div>
+      <h4>Real, verifiable citations</h4>
+      <p>Pulls actual papers from JSTOR and other sources — no invented references.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">✍️</div>
+      <h4>Types in your voice</h4>
+      <p>Humanized output that looks like you typed it, at your chosen pace.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📝</div>
+      <h4>Rubric uploads</h4>
+      <p>Upload your assignment rubric so Scrybe hits every requirement.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🎓</div>
+      <h4>Academic levels</h4>
+      <p>Choose your grade level — from high school to graduate work.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔍</div>
+      <h4>Originality check</h4>
+      <p>Ensure your work is original before you submit.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">💻</div>
+      <h4>Works on Chromebooks</h4>
+      <p>Chrome extension — works on any device that runs Chrome.</p>
+    </div>
+  </div>
+</section>
 
 <!-- ── HOW IT WORKS ── -->
 <section class="dark-section" id="how">
@@ -1222,6 +1306,12 @@ footer {
     </div>
 
   </div>
+  <div class="pricing-trust">
+    <span class="store-stars">★★★★★</span>
+    <span>5-star rated on the Chrome Web Store</span>
+    <span class="pt-sep">·</span>
+    <span>No credit card required to start · Cancel anytime</span>
+  </div>
 </section>
 
 <!-- ── TESTIMONIALS ── -->
@@ -1267,6 +1357,10 @@ footer {
         </div>
       </div>
     </div>
+  </div>
+  <div class="review-trust">
+    <span class="store-stars">★★★★★</span>
+    <span>5-star rated on the Chrome Web Store</span>
   </div>
 </section>
 
@@ -1325,6 +1419,14 @@ footer {
       <h3>Does Scrybe support citation styles?</h3>
       <p>Yes — Scrybe supports major citation formats including APA, MLA, and Chicago, and pulls real, verifiable references rather than invented ones.</p>
     </div>
+    <div class="faq-item">
+      <h3>Is my data private?</h3>
+      <p>Yes — Scrybe only stores your account info and subscription status. Your essay content and assignment details are processed to generate your draft and are not stored or shared. See our <a href="privacy.html">Privacy Policy</a> for details.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I cancel anytime?</h3>
+      <p>Yes — you can cancel your subscription anytime from your account page. No long-term commitment, no hidden fees.</p>
+    </div>
   </div>
 </section>
 
@@ -1377,6 +1479,7 @@ footer {
     <span>Made for students who set high standards.</span>
   </div>
 </footer>
+  </div>
 
 <!-- ── JS ── -->
 <script>
@@ -1462,5 +1565,8 @@ footer {
       : 'none';
   }, { passive: true });
 </script>
-</body>
+  </div>
+</div></body>
 </html>
+
+

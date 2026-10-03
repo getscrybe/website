@@ -259,7 +259,11 @@
   }
   .below-card a { color: var(--light); transition: color 0.12s; }
   .below-card a:hover { color: var(--mid); }
-  .below-card .dot { opacity: 0.4; }
+   .below-card .dot { opacity: 0.4; }
+   .assure-note {
+     font-size: 12px; font-weight: 300; color: var(--mid);
+     text-align: center; margin-top: 14px;
+   }
 
   /* FOOTER */
   footer {
@@ -433,6 +437,7 @@
           {
             action: 'saveToken',
             token: session.access_token,
+            refreshToken: session.refresh_token || null,
             user: {
               id:    session.user.id,
               email: session.user.email,

@@ -306,10 +306,18 @@
     .footer-links a:hover { color: rgba(255,255,255,0.6); }
     .footer-copy { font-size: 12px; color: rgba(255,255,255,0.15); }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes riseIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  </style>
+     @keyframes spin { to { transform: rotate(360deg); } }
+     @keyframes riseIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+     @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+     .plan-trust {
+       display: flex; align-items: center; justify-content: center;
+       gap: 7px; flex-wrap: wrap; text-align: center;
+       margin-top: 22px; font-size: 12px; font-weight: 300; color: var(--mid);
+       opacity: 0; animation: fadeUp 0.45s ease 0.42s forwards;
+     }
+     .plan-trust svg { color: var(--mid); }
+     .pt-sep { color: var(--light); }
+   </style>
 </head>
 <body>
 
@@ -336,7 +344,7 @@
         <div class="page-header">
           <div class="page-eyebrow">plans &amp; pricing</div>
           <h1 class="page-title">Choose your plan.</h1>
-          <p class="page-sub">Start free, upgrade when you need more.</p>
+           <p class="page-sub">Start free, upgrade when you need more. Cancel anytime.</p>
         </div>
 
         <div class="error-banner" id="errorBanner"></div>
@@ -379,7 +387,7 @@
                 <span class="plan-dollar">$</span>
                 <span class="plan-num">0</span>
               </div>
-              <div class="plan-note">Forever free</div>
+               <div class="plan-note">Forever free — no credit card required</div>
             </div>
             <div class="plan-body">
               <ul class="plan-features">
@@ -437,7 +445,7 @@
                 <span class="plan-num">25</span>
                 <span class="plan-per">/mo</span>
               </div>
-              <div class="plan-note">200 generations</div>
+               <div class="plan-note">200 generations · cancel anytime</div>
             </div>
             <div class="plan-body">
               <ul class="plan-features">
@@ -453,9 +461,16 @@
             </div>
           </div>
 
-        </div>
+         </div>
 
-        <div class="signout-row">
+         <div class="plan-trust">
+           <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="2.5" y="6" width="9" height="6" rx="1.5"/><path d="M4.5 6V4.5a2.5 2.5 0 0 1 5 0V6"/></svg>
+           <span>Secure checkout via Stripe</span>
+           <span class="pt-sep">·</span><span>Cancel anytime</span>
+           <span class="pt-sep">·</span><span>No credit card required to start</span>
+         </div>
+
+         <div class="signout-row">
           <button class="btn-signout" id="btnSignOut">Sign out</button>
         </div>
 
