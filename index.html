@@ -63,21 +63,21 @@
           "name": "Scrybe Free",
           "price": "0",
           "priceCurrency": "USD",
-          "description": "2 free essays per month, up to 500 words each."
+          "description": "2 essays a month up to 500 words each, plus 2 Type Text sessions a day up to 250 words each."
         },
         {
           "@type": "Offer",
           "name": "Scrybe Pro",
           "price": "5",
           "priceCurrency": "USD",
-          "description": "20 essays per month, up to 5,000 words each, rubric uploads and paper outlines."
+          "description": "20 essays a month up to 5,000 words each, 20 Type Text sessions a day up to 2,000 words each, custom typing duration and paper outlines."
         },
         {
           "@type": "Offer",
           "name": "Scrybe Unlimited",
           "price": "25",
           "priceCurrency": "USD",
-          "description": "200 essays per month, unlimited word count, early access and dedicated support."
+          "description": "200 essays a month with no word cap, unlimited Type Text sessions and unlimited words per session, early access and dedicated support."
         }
       ],
       "publisher": {
@@ -121,7 +121,7 @@
           "name": "Is Scrybe free?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes — Scrybe has a free plan with 2 essays per month up to 500 words each, forever, no credit card required. Paid plans start at $5 per month."
+            "text": "Yes — Scrybe has a free plan with 2 essays a month up to 500 words each, plus 2 Type Text sessions a day up to 250 words each. It's free forever with no credit card required. Paid plans start at $5 per month."
           }
         },
         {
@@ -129,7 +129,15 @@
           "name": "How much does Scrybe cost?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Scrybe costs $0 for the free trial plan, $5 per month for Pro (20 essays, up to 5,000 words each), and $25 per month for Unlimited (200 essays, early access). You can cancel anytime."
+            "text": "Scrybe costs $0 for the free plan, $5 per month for Pro (20 essays a month up to 5,000 words each, plus 20 Type Text sessions a day up to 2,000 words each), and $25 per month for Unlimited (200 essays a month with no word cap, plus unlimited Type Text sessions). You can cancel anytime."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do the plan limits work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Scrybe meters two things separately: essays Scrybe generates for you, and Type Text sessions where you paste writing you already have and have it typed for you. Essay limits reset each month. Type Text session limits reset each day. On the free plan that is 2 essays a month and 2 Type Text sessions a day. Rubric uploads, humanized writing and Google Docs export come with every plan — only the limits differ between tiers."
           }
         },
         {
@@ -776,6 +784,58 @@ nav {
 .pricing-card.featured .plan-features li { color: rgba(255,255,255,0.75); }
 .check { color: var(--green); font-size: 16px; flex-shrink: 0; }
 
+/* Scrybe has two distinct ways to use it — generate an essay, or paste text you
+   already wrote and have it typed for you — and they are metered separately. A
+   single flat feature list hid that, which is the main reason the tiers read as
+   arbitrary. These headings split each card by mode so the limits are attributable. */
+.plan-group {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-top: 6px;
+  margin-bottom: -2px;
+}
+.plan-group:not(:first-child) {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 0.5px solid rgba(0,0,0,0.08);
+}
+.pricing-card.featured .plan-group { color: rgba(255,255,255,0.45); }
+.pricing-card.featured .plan-group:not(:first-child) { border-top-color: rgba(255,255,255,0.1); }
+.plan-group + .plan-features { gap: 10px; }
+
+/* Anything a tier does NOT get still gets listed, marked rather than dropped.
+   Silently omitting a row reads as "we didn't think of it"; an explicit lock is
+   the honest version and is the same lock the extension shows in-product. */
+.lock {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  color: var(--light);
+  text-align: center;
+  font-size: 13px;
+  line-height: 16px;
+}
+.plan-features li.is-locked { color: var(--mid); }
+.pricing-card.featured .plan-features li.is-locked { color: rgba(255,255,255,0.4); }
+
+.plan-shared {
+  margin-top: 32px;
+  padding: 20px 24px;
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg2);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--mid);
+  line-height: 1.7;
+  text-align: center;
+}
+.plan-shared strong { font-weight: 600; color: var(--dark); }
+
 .plan-btn {
   display: block; text-align: center;
   font-size: 15px; font-weight: 500;
@@ -1198,6 +1258,21 @@ footer {
       <h4>Works on Chromebooks</h4>
       <p>Chrome extension — works on any device that runs Chrome.</p>
     </div>
+    <div class="feat-card">
+      <div class="feat-icon">📋</div>
+      <h4>Type text you already wrote</h4>
+      <p>Not every assignment starts from a blank page. Paste writing you already have and Scrybe types it into your document, word by word, at your pace.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⏱️</div>
+      <h4>Set the typing duration</h4>
+      <p>Free runs at your natural pace. Pro and Unlimited let you set how long the typing takes, so a 10-second demo and a 20-minute draft both land right.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📊</div>
+      <h4>Your limit, as you type</h4>
+      <p>A live meter tracks words against your plan's cap, so you find out you're near the limit while there's still time to fix it.</p>
+    </div>
   </div>
 </section>
 
@@ -1241,25 +1316,33 @@ footer {
   <div style="text-align:center;max-width:980px;margin:0 auto;" class="reveal">
     <span class="eyebrow">Pricing</span>
     <h2 class="h2">Simple Pricing.<br>Cancel Anytime.</h2>
-    <p class="section-body" style="margin-top:16px;">Start free, upgrade when you're ready.</p>
+    <p class="section-body" style="margin-top:16px;">Two ways to use Scrybe, metered separately: generate an essay, or paste writing you already have and have it typed for you. Every tier includes both — the limits below are the only thing that changes.</p>
   </div>
 
   <div class="pricing-grid reveal">
 
     <div class="pricing-card">
-      <div class="plan-pill">Free</div>
-      <div class="plan-name">Trial</div>
+      <div class="plan-pill">Free forever</div>
+      <div class="plan-name">Free</div>
       <div class="plan-price">
         <span class="price-sup">$</span>
         <span class="price-num">0</span>
       </div>
       <div class="price-period">Forever Free</div>
-      <p class="plan-desc">Perfect for Trying Scrybe</p>
+      <p class="plan-desc">Enough to try both modes properly. No credit card required.</p>
       <div class="plan-divider"></div>
+      <div class="plan-group">Generate an essay</div>
       <ul class="plan-features">
-        <li><span class="check">✓</span> 2 free essays per month</li>
+        <li><span class="check">✓</span> 2 essays a month</li>
         <li><span class="check">✓</span> Up to 500 words each</li>
-        <li><span class="check">✓</span> Up to 60 WPM</li>
+        <li><span class="check">✓</span> Up to 60 WPM typing speed</li>
+        <li class="is-locked"><span class="lock">✕</span> Paper outlines</li>
+      </ul>
+      <div class="plan-group">Type your own text</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> 2 sessions a day</li>
+        <li><span class="check">✓</span> Up to 250 words per session</li>
+        <li class="is-locked"><span class="lock">✕</span> Types at your natural pace — you can't set the duration</li>
       </ul>
       <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn outline" id="btnFree">Get Started Free</a>
     </div>
@@ -1273,38 +1356,64 @@ footer {
         <span class="price-period">/mo</span>
       </div>
       <div class="price-period" style="color:rgba(255,255,255,0.4);">Cancel Anytime</div>
-      <p class="plan-desc">For students who need consistent, high-quality output all semester.</p>
+      <p class="plan-desc">For the whole semester — generate or type, and set your own pace.</p>
       <div class="plan-divider"></div>
+      <div class="plan-group">Generate an essay</div>
       <ul class="plan-features">
-        <li><span class="check">✓</span> 20 essays per month</li>
+        <li><span class="check">✓</span> 20 essays a month</li>
         <li><span class="check">✓</span> Up to 5,000 words each</li>
-        <li><span class="check">✓</span> Rubric uploads</li>
-        <li><span class="check">✓</span> Draft paper outlines</li>
-        <li><span class="check">✓</span> Unlimited WPM</li>
+        <li><span class="check">✓</span> Unlimited WPM typing speed</li>
+        <li><span class="check">✓</span> Paper outlines</li>
+      </ul>
+      <div class="plan-group">Type your own text</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> 20 sessions a day</li>
+        <li><span class="check">✓</span> Up to 2,000 words per session</li>
+        <li><span class="check">✓</span> Choose your own typing duration</li>
+      </ul>
+      <div class="plan-group">Also included</div>
+      <ul class="plan-features">
         <li><span class="check">✓</span> Priority support</li>
       </ul>
       <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn white" id="btnPro">Start Pro — $5/mo</a>
     </div>
 
     <div class="pricing-card">
-      <div class="plan-pill">Most Features</div>
+      <div class="plan-pill">No limits</div>
       <div class="plan-name">Unlimited</div>
       <div class="plan-price">
         <span class="price-sup">$</span>
         <span class="price-num">25</span>
         <span class="price-period">/mo</span>
       </div>
-      <p class="plan-desc">Access to new features, 200 essays, natural-sounding AI writing.</p>
+      <p class="plan-desc">No limits on what you type or how long it can be. Generous monthly essay allowance.</p>
       <div class="plan-divider"></div>
+      <div class="plan-group">Generate an essay</div>
       <ul class="plan-features">
-        <li><span class="check">✓</span> Everything in Pro</li>
+        <li><span class="check">✓</span> 200 essays a month</li>
+        <li><span class="check">✓</span> Unlimited words each — no length cap</li>
+        <li><span class="check">✓</span> Unlimited WPM typing speed</li>
+        <li><span class="check">✓</span> Paper outlines</li>
+      </ul>
+      <div class="plan-group">Type your own text</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> Unlimited sessions a day</li>
+        <li><span class="check">✓</span> Unlimited words per session</li>
+        <li><span class="check">✓</span> Choose your own typing duration</li>
+      </ul>
+      <div class="plan-group">Also included</div>
+      <ul class="plan-features">
         <li><span class="check">✓</span> Early access to new features</li>
-        <li><span class="check">✓</span> 200 essays per month</li>
         <li><span class="check">✓</span> Dedicated support</li>
       </ul>
       <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn dark" id="btnUnlimited">Start Unlimited — $25/mo</a>
     </div>
 
+  </div>
+  <div class="plan-shared reveal">
+    <strong>Included on every plan, including Free:</strong> rubric &amp; grading-criteria
+    uploads, humanized AI writing, and typing straight into Google&nbsp;Docs.
+    The limits above are the only differences between tiers.
   </div>
   <div class="pricing-trust">
     <span class="store-stars">★★★★★</span>
@@ -1405,11 +1514,15 @@ footer {
     </div>
     <div class="faq-item">
       <h3>Is Scrybe free?</h3>
-      <p>Yes — Scrybe has a free plan with 2 essays per month up to 500 words each, forever, no credit card required. Paid plans start at $5 per month.</p>
+      <p>Yes — Scrybe has a free plan with 2 essays a month up to 500 words each, plus 2 Type Text sessions a day up to 250 words each. It's free forever with no credit card required. Paid plans start at $5 per month.</p>
     </div>
     <div class="faq-item">
       <h3>How much does Scrybe cost?</h3>
-      <p>Scrybe costs $0 for the free trial plan, $5 per month for Pro (20 essays, up to 5,000 words each), and $25 per month for Unlimited (200 essays, early access). You can cancel anytime.</p>
+      <p>Scrybe costs $0 for the free plan, $5 per month for Pro (20 essays a month up to 5,000 words each, plus 20 Type Text sessions a day up to 2,000 words each), and $25 per month for Unlimited (200 essays a month with no word cap, plus unlimited Type Text sessions). You can cancel anytime.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How do the plan limits work?</h3>
+      <p>Scrybe meters two things separately: essays Scrybe generates for you, and Type Text sessions where you paste writing you already have and have it typed for you. Essay limits reset each month. Type Text session limits reset each day. On the free plan that is 2 essays a month and 2 Type Text sessions a day. Rubric uploads, humanized writing and Google Docs export come with every plan — only the limits differ between tiers.</p>
     </div>
     <div class="faq-item">
       <h3>Does Scrybe work on Chromebooks?</h3>

@@ -91,6 +91,7 @@
       transition: background 0.12s, color 0.12s;
     }
     .nav-link:hover { background: rgba(0,0,0,0.05); color: var(--dark); }
+    button.nav-link { background: none; border: none; cursor: pointer; font-family: inherit; }
 
     main {
       flex: 1;
@@ -247,8 +248,22 @@
     .plan-features { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; flex: 1; }
     .plan-features li { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; font-weight: 300; color: var(--mid); line-height: 1.4; }
 
-    .chk { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
-    .chk svg { width: 14px; height: 14px; display: block; }
+.chk { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
+   .chk svg { width: 14px; height: 14px; display: block; }
+   /* Marks a row this tier does NOT get, rather than dropping the row. A missing
+      row reads as an oversight; an explicit cross is the same lock the extension
+      shows in-product, so the checkout and the sidebar agree. */
+   .chk.is-off svg path { stroke: var(--light); }
+   .plan-features li.is-locked { color: var(--light); }
+   /* Generate vs Type-Text groups. The two modes are metered on separate counters
+      with separate limits, so grouping them is what makes the tiers legible. */
+   .plan-group {
+     font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+     text-transform: uppercase; color: var(--mid);
+     margin: 6px 0 -2px;
+   }
+   .plan-group + .plan-features { gap: 7px; }
+   .plan-group:not(:first-child) { margin-top: 14px; padding-top: 13px; border-top: 0.5px solid var(--border); }
 
     /* Buttons */
     .plan-btn {
@@ -324,6 +339,7 @@
   <nav>
     <a href="index.html" class="nav-logo">Scrybe</a>
     <div class="nav-right">
+      <button class="nav-link" id="btnManage" style="display:none;">Manage subscription</button>
       <div class="user-pill" id="userPill">
         <div class="user-avatar" id="userInitial">?</div>
         <span class="user-email" id="userEmail">—</span>
@@ -379,7 +395,7 @@
           <!-- Free -->
           <div class="plan">
             <div class="plan-top neutral">
-              <div class="plan-tag">Trial</div>
+              <div class="plan-tag">Free forever</div>
               <div class="plan-name-row">
                 <div class="plan-name">Free</div>
               </div>
@@ -390,11 +406,20 @@
                <div class="plan-note">Forever free — no credit card required</div>
             </div>
             <div class="plan-body">
+              <div class="plan-group">Generate an essay</div>
               <ul class="plan-features">
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 essays</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 essays a month</li>
                 <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 500 words each</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 60 WPM</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 60 WPM typing speed</li>
+                <li class="is-locked"><span class="chk is-off"><svg viewBox="0 0 14 14" fill="none"><path d="M3.5 3.5l7 7M10.5 3.5l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Paper outlines</li>
               </ul>
+              <div class="plan-group">Type your own text</div>
+              <ul class="plan-features">
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 sessions a day</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 250 words per session</li>
+                <li class="is-locked"><span class="chk is-off"><svg viewBox="0 0 14 14" fill="none"><path d="M3.5 3.5l7 7M10.5 3.5l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Types at your natural pace — you can't set the duration</li>
+              </ul>
+              <p class="plan-note" style="margin-top:2px;">Rubric uploads, humanized writing and Google Docs export are included on every plan.</p>
               <button class="plan-btn btn-ghost" id="btnFree" disabled>
                 <span class="btn-label">Current plan</span>
               </button>
@@ -417,12 +442,21 @@
               <div class="plan-note">Cancel anytime</div>
             </div>
             <div class="plan-body">
+              <div class="plan-group">Generate an essay</div>
               <ul class="plan-features">
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 essays per month</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 essays a month</li>
                 <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 5,000 words each</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Rubric uploads</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited WPM typing speed</li>
                 <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Paper outlines</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited WPM</li>
+              </ul>
+              <div class="plan-group">Type your own text</div>
+              <ul class="plan-features">
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 sessions a day</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 2,000 words per session</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Choose your own typing duration</li>
+              </ul>
+              <div class="plan-group">Also included</div>
+              <ul class="plan-features">
                 <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support</li>
               </ul>
               <button class="plan-btn btn-blue" id="btnPro">
@@ -435,7 +469,7 @@
           <!-- Unlimited -->
           <div class="plan">
             <div class="plan-top ink">
-              <div class="plan-tag">Most features</div>
+              <div class="plan-tag">No limits</div>
               <div class="plan-name-row">
                 <div class="plan-name">Unlimited</div>
                 <span class="plan-badge badge-ghost">Max</span>
@@ -448,12 +482,25 @@
                <div class="plan-note">200 generations · cancel anytime</div>
             </div>
             <div class="plan-body">
+              <div class="plan-group">Generate an essay</div>
               <ul class="plan-features">
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Everything in Pro</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited essays</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>200 essays a month</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited words each — no length cap</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited WPM typing speed</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Paper outlines</li>
+              </ul>
+              <div class="plan-group">Type your own text</div>
+              <ul class="plan-features">
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited sessions a day</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited words per session</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Choose your own typing duration</li>
+              </ul>
+              <div class="plan-group">Also included</div>
+              <ul class="plan-features">
                 <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Early access to new features</li>
                 <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Dedicated support</li>
               </ul>
+              <p class="plan-note" style="margin-top:2px;">Rubric uploads, humanized writing and Google Docs export are included on every plan.</p>
               <button class="plan-btn btn-ink" id="btnUnlimited">
                 <div class="btn-spinner"></div>
                 <span class="btn-label">Get Unlimited — $25/mo</span>
@@ -554,10 +601,44 @@
       }
     }
 
+    async function startPortal() {
+      try {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) { window.location.href = 'login.html'; return; }
+
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/create-portal-session`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            return_url: `${window.location.origin}/purchase.html`,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || data.message || 'Failed to open billing portal.');
+        }
+
+        if (!data.url) {
+          throw new Error('No portal URL returned from server.');
+        }
+
+        window.location.href = data.url;
+
+      } catch (err) {
+        console.error('Portal error:', err);
+        showError(err.message || 'Something went wrong. Please try again.');
+      }
+    }
+
     async function init() {
       // Handle post-checkout return
       const params = new URLSearchParams(window.location.search);
-      if (params.get('checkout') === 'success') {
+      if (params.get('checkout') === 'success' || params.get('success') === 'true') {
         // Refresh session so tier badge reflects new plan
         await sb.auth.refreshSession();
       }
@@ -589,18 +670,23 @@
       const btnPro       = document.getElementById('btnPro');
       const btnUnlimited = document.getElementById('btnUnlimited');
       const btnFree      = document.getElementById('btnFree');
+      const btnManage    = document.getElementById('btnManage');
 
       if (tier === 'pro') {
         btnPro.querySelector('.btn-label').textContent = 'Current plan';
         btnPro.disabled = true;
-        btnFree.querySelector('.btn-label').textContent = 'Downgrade';
-        btnFree.disabled = false;
-        btnFree.classList.remove('btn-ghost');
-        btnFree.style.cssText = 'background:var(--lighter);color:var(--mid);border:0.5px solid rgba(0,0,0,0.09);';
       } else if (tier === 'unlimited') {
         btnUnlimited.querySelector('.btn-label').textContent = 'Current plan';
         btnUnlimited.disabled = true;
         btnPro.querySelector('.btn-label').textContent = 'Get Pro — $5/mo';
+      }
+
+      // Paid users get a real cancel/downgrade path: both the Free card button
+      // and the nav button open the Stripe Billing Portal.
+      if (tier !== 'free') {
+        btnFree.querySelector('.btn-label').textContent = 'Downgrade';
+        btnFree.disabled = false;
+        btnManage.style.display = 'inline-flex';
       }
 
       document.getElementById('loadingState').style.display = 'none';
@@ -614,6 +700,12 @@
       btnUnlimited.addEventListener('click', () => {
         if (!btnUnlimited.disabled) startCheckout('unlimited');
       });
+
+      btnFree.addEventListener('click', () => {
+        if (!btnFree.disabled) startPortal();
+      });
+
+      btnManage.addEventListener('click', startPortal);
 
       document.getElementById('btnSignOut').addEventListener('click', async () => {
         try {
