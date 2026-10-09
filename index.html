@@ -784,44 +784,6 @@ nav {
 .pricing-card.featured .plan-features li { color: rgba(255,255,255,0.75); }
 .check { color: var(--green); font-size: 16px; flex-shrink: 0; }
 
-/* Scrybe has two distinct ways to use it — generate an essay, or paste text you
-   already wrote and have it typed for you — and they are metered separately. A
-   single flat feature list hid that, which is the main reason the tiers read as
-   arbitrary. These headings split each card by mode so the limits are attributable. */
-.plan-group {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--mid);
-  margin-top: 6px;
-  margin-bottom: -2px;
-}
-.plan-group:not(:first-child) {
-  margin-top: 20px;
-  padding-top: 18px;
-  border-top: 0.5px solid rgba(0,0,0,0.08);
-}
-.pricing-card.featured .plan-group { color: rgba(255,255,255,0.45); }
-.pricing-card.featured .plan-group:not(:first-child) { border-top-color: rgba(255,255,255,0.1); }
-.plan-group + .plan-features { gap: 10px; }
-
-/* Anything a tier does NOT get still gets listed, marked rather than dropped.
-   Silently omitting a row reads as "we didn't think of it"; an explicit lock is
-   the honest version and is the same lock the extension shows in-product. */
-.lock {
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  margin-top: 1px;
-  color: var(--light);
-  text-align: center;
-  font-size: 13px;
-  line-height: 16px;
-}
-.plan-features li.is-locked { color: var(--mid); }
-.pricing-card.featured .plan-features li.is-locked { color: rgba(255,255,255,0.4); }
-
 .plan-shared {
   margin-top: 32px;
   padding: 20px 24px;
@@ -1331,18 +1293,11 @@ footer {
       <div class="price-period">Forever Free</div>
       <p class="plan-desc">Enough to try both modes properly. No credit card required.</p>
       <div class="plan-divider"></div>
-      <div class="plan-group">Generate an essay</div>
       <ul class="plan-features">
         <li><span class="check">✓</span> 2 essays a month</li>
         <li><span class="check">✓</span> Up to 500 words each</li>
-        <li><span class="check">✓</span> Up to 60 WPM typing speed</li>
-        <li class="is-locked"><span class="lock">✕</span> Paper outlines</li>
-      </ul>
-      <div class="plan-group">Type your own text</div>
-      <ul class="plan-features">
-        <li><span class="check">✓</span> 2 sessions a day</li>
-        <li><span class="check">✓</span> Up to 250 words per session</li>
-        <li class="is-locked"><span class="lock">✕</span> Types at your natural pace — you can't set the duration</li>
+        <li><span class="check">✓</span> 60 WPM typing speed</li>
+        <li><span class="check">✓</span> 2 typing sessions a day</li>
       </ul>
       <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn outline" id="btnFree">Get Started Free</a>
     </div>
@@ -1358,21 +1313,11 @@ footer {
       <div class="price-period" style="color:rgba(255,255,255,0.4);">Cancel Anytime</div>
       <p class="plan-desc">For the whole semester — generate or type, and set your own pace.</p>
       <div class="plan-divider"></div>
-      <div class="plan-group">Generate an essay</div>
       <ul class="plan-features">
         <li><span class="check">✓</span> 20 essays a month</li>
         <li><span class="check">✓</span> Up to 5,000 words each</li>
         <li><span class="check">✓</span> Unlimited WPM typing speed</li>
-        <li><span class="check">✓</span> Paper outlines</li>
-      </ul>
-      <div class="plan-group">Type your own text</div>
-      <ul class="plan-features">
-        <li><span class="check">✓</span> 20 sessions a day</li>
-        <li><span class="check">✓</span> Up to 2,000 words per session</li>
-        <li><span class="check">✓</span> Choose your own typing duration</li>
-      </ul>
-      <div class="plan-group">Also included</div>
-      <ul class="plan-features">
+        <li><span class="check">✓</span> 20 typing sessions a day</li>
         <li><span class="check">✓</span> Priority support</li>
       </ul>
       <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn white" id="btnPro">Start Pro — $5/mo</a>
@@ -1388,23 +1333,12 @@ footer {
       </div>
       <p class="plan-desc">No limits on what you type or how long it can be. Generous monthly essay allowance.</p>
       <div class="plan-divider"></div>
-      <div class="plan-group">Generate an essay</div>
       <ul class="plan-features">
         <li><span class="check">✓</span> 200 essays a month</li>
-        <li><span class="check">✓</span> Unlimited words each — no length cap</li>
+        <li><span class="check">✓</span> No length caps</li>
         <li><span class="check">✓</span> Unlimited WPM typing speed</li>
-        <li><span class="check">✓</span> Paper outlines</li>
-      </ul>
-      <div class="plan-group">Type your own text</div>
-      <ul class="plan-features">
-        <li><span class="check">✓</span> Unlimited sessions a day</li>
-        <li><span class="check">✓</span> Unlimited words per session</li>
-        <li><span class="check">✓</span> Choose your own typing duration</li>
-      </ul>
-      <div class="plan-group">Also included</div>
-      <ul class="plan-features">
-        <li><span class="check">✓</span> Early access to new features</li>
-        <li><span class="check">✓</span> Dedicated support</li>
+        <li><span class="check">✓</span> Unlimited typing sessions</li>
+        <li><span class="check">✓</span> Early access &amp; dedicated support</li>
       </ul>
       <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn dark" id="btnUnlimited">Start Unlimited — $25/mo</a>
     </div>
