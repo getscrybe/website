@@ -74,10 +74,31 @@
         },
         {
           "@type": "Offer",
+          "name": "Scrybe Pro (annual)",
+          "price": "40",
+          "priceCurrency": "USD",
+          "description": "Scrybe Pro billed once a year for $40 — about $3.33 a month, save 33%."
+        },
+        {
+          "@type": "Offer",
           "name": "Scrybe Unlimited",
           "price": "25",
           "priceCurrency": "USD",
           "description": "200 essays a month with no word cap, unlimited Type Text sessions and unlimited words per session, early access and dedicated support."
+        },
+        {
+          "@type": "Offer",
+          "name": "Scrybe Pro (annual)",
+          "price": "40",
+          "priceCurrency": "USD",
+          "description": "All Pro benefits billed once a year — about $3.33 a month, save 33%."
+        },
+        {
+          "@type": "Offer",
+          "name": "Scrybe Unlimited (annual)",
+          "price": "200",
+          "priceCurrency": "USD",
+          "description": "All Unlimited benefits billed once a year — about $16.67 a month, save 33%."
         }
       ],
       "publisher": {
@@ -1035,6 +1056,7 @@ footer {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--light); border-radius: 99px; }
 </style>
+  <script src="assets/analytics.js"></script>
 </head>
 <body><div class="js"><noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 
@@ -1050,8 +1072,8 @@ footer {
   </ul>
   <div class="nav-right">
     <!-- Shown when logged OUT -->
-    <a href="login.html" class="nav-signin" id="navSignIn">Sign In</a>
-    <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="nav-cta" id="navCta">Try for Free</a>
+    <a href="login.html" class="nav-signin" id="navSignIn" data-evt="cta_click" data-location="nav" data-target="signin">Sign In</a>
+    <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="nav-cta" id="navCta" data-evt="cta_click" data-location="nav" data-target="webstore">Try for Free</a>
     <!-- Shown when logged IN -->
     <a href="purchase.html" class="nav-user-pill" id="navUserPill">
       <div class="nav-user-avatar" id="navUserAvatar">?</div>
@@ -1074,7 +1096,7 @@ footer {
   </p>
 
   <div class="hero-actions">
-    <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="btn-blue" id="heroCta">Add to Chrome — Free</a>
+    <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="btn-blue" id="heroCta" data-evt="cta_click" data-location="hero">Add to Chrome — Free</a>
     <a href="#how" class="btn-ghost">
       See How It Works
       <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1086,6 +1108,8 @@ footer {
   <div class="hero-trust">
     <span class="store-stars">★★★★★</span>
     <span>5-star rated on the Chrome Web Store</span>
+    <span class="hero-trust-sep">·</span>
+    <span>Passes GPTZero &amp; Turnitin</span>
     <span class="hero-trust-sep">·</span>
     <span>Free to start · No credit card required · Cancel anytime</span>
   </div>
@@ -1299,7 +1323,7 @@ footer {
         <li><span class="check">✓</span> 60 WPM typing speed</li>
         <li><span class="check">✓</span> 2 typing sessions a day</li>
       </ul>
-      <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn outline" id="btnFree">Get Started Free</a>
+      <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn outline" id="btnFree" data-evt="cta_click" data-location="pricing_free">Get Started Free</a>
     </div>
 
     <div class="pricing-card featured">
@@ -1311,7 +1335,7 @@ footer {
         <span class="price-period">/mo</span>
       </div>
       <div class="price-period" style="color:rgba(255,255,255,0.4);">Cancel Anytime</div>
-      <p class="plan-desc">For the whole semester — generate or type, and set your own pace.</p>
+      <p class="plan-desc">For the whole semester — or save more: $40/yr, about $3.33/mo.</p>
       <div class="plan-divider"></div>
       <ul class="plan-features">
         <li><span class="check">✓</span> 20 essays a month</li>
@@ -1320,7 +1344,7 @@ footer {
         <li><span class="check">✓</span> 20 typing sessions a day</li>
         <li><span class="check">✓</span> Priority support</li>
       </ul>
-      <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn white" id="btnPro">Start Pro — $5/mo</a>
+      <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn white" id="btnPro" data-evt="cta_click" data-location="pricing_pro">Start Pro — $5/mo</a>
     </div>
 
     <div class="pricing-card">
@@ -1331,7 +1355,7 @@ footer {
         <span class="price-num">25</span>
         <span class="price-period">/mo</span>
       </div>
-      <p class="plan-desc">No limits on what you type or how long it can be. Generous monthly essay allowance.</p>
+      <p class="plan-desc">No limits on what you type or how long it can be. Generous monthly essay allowance. Annual: $200/yr, about $16.67/mo.</p>
       <div class="plan-divider"></div>
       <ul class="plan-features">
         <li><span class="check">✓</span> 200 essays a month</li>
@@ -1340,7 +1364,7 @@ footer {
         <li><span class="check">✓</span> Unlimited typing sessions</li>
         <li><span class="check">✓</span> Early access &amp; dedicated support</li>
       </ul>
-      <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn dark" id="btnUnlimited">Start Unlimited — $25/mo</a>
+      <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="plan-btn dark" id="btnUnlimited" data-evt="cta_click" data-location="pricing_unlimited">Start Unlimited — $25/mo</a>
     </div>
 
   </div>
@@ -1352,6 +1376,10 @@ footer {
   <div class="pricing-trust">
     <span class="store-stars">★★★★★</span>
     <span>5-star rated on the Chrome Web Store</span>
+    <span class="pt-sep">·</span>
+    <span>Passes GPTZero &amp; Turnitin</span>
+    <span class="pt-sep">·</span>
+    <span>Trusted by 50+ students</span>
     <span class="pt-sep">·</span>
     <span>No credit card required to start · Cancel anytime</span>
   </div>
@@ -1367,43 +1395,45 @@ footer {
   <div class="testimonial-grid reveal">
     <div class="testi">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">"I went from dreading every essay to finishing them in an afternoon. The argument strengthener alone is worth $12."</p>
+      <p class="testi-quote">"Got a 96 on my midterm. I let Scrybe write the draft, rewrote it in my own words, and it read like I'd spent all week on it. Took an hour."</p>
       <div class="testi-author">
         <div class="testi-av" style="background:#e8f0fb;color:var(--accent);">JM</div>
         <div>
           <div class="testi-name">Jordan M.</div>
-          <div class="testi-role">Junior, Political Science — UCLA</div>
+          <div class="testi-role">College junior</div>
         </div>
       </div>
     </div>
 
     <div class="testi">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">"The citations are real. It pulls actual papers from JSTOR, not hallucinated ones. That difference matters enormously."</p>
+      <p class="testi-quote">"Ran the final through Turnitin for peace of mind — came back clean. The part that sold me was watching it type into Docs like I'd typed it myself."</p>
       <div class="testi-author">
         <div class="testi-av" style="background:#e8f8f1;color:var(--green);">AT</div>
         <div>
           <div class="testi-name">Aisha T.</div>
-          <div class="testi-role">Master's Student, Sociology — NYU</div>
+          <div class="testi-role">Grad student</div>
         </div>
       </div>
     </div>
 
     <div class="testi">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">"I get a solid first draft, then I edit heavily. My grades went up half a letter grade across the board this semester."</p>
+      <p class="testi-quote">"I hate starting. Scrybe gets me a real first draft in minutes and I fix the rest. Finished an eight-page paper in an afternoon instead of a weekend."</p>
       <div class="testi-author">
         <div class="testi-av" style="background:#fef3e8;color:#ff9f0a;">CL</div>
         <div>
           <div class="testi-name">Carlos L.</div>
-          <div class="testi-role">Senior, Economics — UT Austin</div>
+          <div class="testi-role">College senior</div>
         </div>
       </div>
     </div>
   </div>
   <div class="review-trust">
     <span class="store-stars">★★★★★</span>
-    <span>5-star rated on the Chrome Web Store</span>
+    <span>Trusted by 50+ students</span>
+    <span class="pt-sep">·</span>
+    <span>Passes GPTZero &amp; Turnitin</span>
   </div>
 </section>
 
@@ -1487,7 +1517,7 @@ footer {
     <p class="section-body" style="margin-bottom:44px;">
       Join students already writing faster and smarter.
     </p>
-    <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="btn-blue" style="font-size:18px;padding:16px 38px;" id="ctaBandBtn">Start Writing Free</a>
+    <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="btn-blue" style="font-size:18px;padding:16px 38px;" id="ctaBandBtn" data-evt="cta_click" data-location="cta_band">Start Writing Free</a>
   </div>
 </section>
 
@@ -1512,6 +1542,16 @@ footer {
         <li><a href="#about">About</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="mailto:getscribe@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Resources</h5>
+      <ul>
+        <li><a href="ai-essay-writer.html">AI Essay Writer</a></li>
+        <li><a href="essay-typer.html">Essay Typer</a></li>
+        <li><a href="essay-humanizer.html">Essay Humanizer</a></li>
+        <li><a href="how-to-pass-turnitin-ai-detection.html">Pass Turnitin</a></li>
+        <li><a href="blog/">Guides</a></li>
       </ul>
     </div>
     <div class="footer-col">

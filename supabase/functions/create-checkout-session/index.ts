@@ -3,6 +3,10 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const STRIPE_SECRET_KEY  = Deno.env.get('STRIPE_SECRET_KEY')!;
 const PRO_PRICE_ID       = 'price_1TQfNIQJ639dGC2Y6NlC8K5J';
 const UNLIMITED_PRICE_ID = 'price_1TQfNeQJ639dGC2YDRAUamcr';
+// Annual Pro price. Set the STRIPE_PRICE_PRO_ANNUAL secret in Supabase to enable it.
+const PRO_ANNUAL_PRICE_ID = Deno.env.get('STRIPE_PRICE_PRO_ANNUAL') ?? '';
+// Annual Unlimited price. Set the STRIPE_PRICE_UNLIMITED_ANNUAL secret to enable it.
+const UNLIMITED_ANNUAL_PRICE_ID = Deno.env.get('STRIPE_PRICE_UNLIMITED_ANNUAL') ?? '';
 const DEFAULT_SUCCESS_URL = 'https://getscrybe.net/purchase.html?checkout=success';
 const DEFAULT_CANCEL_URL  = 'https://getscrybe.net/purchase.html?checkout=cancelled';
 
@@ -34,7 +38,16 @@ Deno.serve(async (req: Request) => {
     if (authErr || !user) return new Response('Unauthorized', { status: 401, headers: corsHeaders });
 
     const { plan, success_url, cancel_url } = await req.json();
-    const priceId    = plan === 'unlimited' ? UNLIMITED_PRICE_ID : PRO_PRICE_ID;
+    const priceId =
+      plan === 'unlimited'        ? UNLIMITED_PRICE_ID         :
+      plan === 'unlimited_annual' ? UNLIMITED_ANNUAL_PRICE_ID  :
+      plan === 'pro_annual'       ? PRO_ANNUAL_PRICE_ID        :
+      PRO_PRICE_ID;
+    if (!priceId) {
+      return new Response(JSON.stringify({ error: 'This plan is not configured yet.' }), {
+        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
     const successUrl = safeUrl(success_url, DEFAULT_SUCCESS_URL);
     const cancelUrl  = safeUrl(cancel_url, DEFAULT_CANCEL_URL);
 

@@ -329,6 +329,7 @@
   }
   ::-webkit-scrollbar { width: 0; }
 </style>
+  <script src="assets/analytics.js"></script>
 </head>
 <body><div class="js"><noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 
@@ -441,6 +442,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, extensionUrl: EXTENSION_URL })
       });
+      if (window.scrybeTrack) window.scrybeTrack('email_capture_submit', { page: 'tonight' });
       showSuccess();
     } catch (err) {
       sendBtn.textContent    = 'Send Me the Link';
@@ -463,6 +465,10 @@
   if (window.matchMedia('(hover: hover)').matches) {
     document.getElementById('emailInput').focus();
   }
+
+  // QR / campaign landing attribution
+  const _src = new URLSearchParams(window.location.search).get('src');
+  if (_src && window.scrybeTrack) window.scrybeTrack('qr_view', { src: _src });
 </script>
 
 </div></body>

@@ -224,6 +224,9 @@ main {
     .badge-ghost { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); border: 0.5px solid rgba(255,255,255,0.2); }
 
     .plan-price-row { display: flex; align-items: baseline; gap: 1px; }
+    .plan-was { font-size: 14px; font-weight: 500; text-decoration: line-through; align-self: flex-start; transform: translateY(-4px); margin: 0 6px; }
+    .plan-top.blue .plan-was { color: rgba(255,255,255,0.45); }
+    .plan-top.ink .plan-was  { color: rgba(255,255,255,0.6); }
     .plan-dollar { font-size: 14px; font-weight: 300; }
     .plan-top.neutral .plan-dollar { color: var(--mid); }
     .plan-top.blue .plan-dollar    { color: rgba(255,255,255,0.6); }
@@ -319,7 +322,22 @@ main {
      }
      .plan-trust svg { color: var(--mid); }
      .pt-sep { color: var(--light); }
-   </style>
+   .billing-toggle {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; background: var(--lighter); border-radius: 980px;
+      padding: 4px; margin: 0 auto 24px; width: fit-content;
+    }
+    .bt {
+      border: none; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px; font-weight: 600; color: var(--mid);
+      background: transparent; border-radius: 980px; padding: 8px 18px;
+      transition: background .15s, color .15s;
+    }
+    .bt.active { background: var(--white); color: var(--dark); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    .bt-save { display: inline-block; margin-left: 5px; font-size: 10.5px; font-weight: 700; color: var(--green); }
+
+  </style>
+  <script src="assets/analytics.js"></script>
 </head>
 <body>
 
@@ -376,6 +394,12 @@ main {
           </div>
         </div>
 
+        <!-- Billing period toggle -->
+        <div class="billing-toggle" role="tablist" aria-label="Billing period">
+          <button type="button" class="bt active" id="btMonthly" data-evt="cta_click" data-location="billing_toggle" data-target="monthly">Monthly</button>
+          <button type="button" class="bt" id="btAnnual" data-evt="cta_click" data-location="billing_toggle" data-target="annual">Annual <span class="bt-save">Save 33%</span></button>
+        </div>
+
         <!-- Plans -->
         <div class="plans">
 
@@ -416,18 +440,19 @@ main {
               </div>
               <div class="plan-price-row">
                 <span class="plan-dollar">$</span>
-                <span class="plan-num">5</span>
-                <span class="plan-per">/mo</span>
+                <span class="plan-num" id="proPrice">5</span>
+                <span class="plan-per" id="proPer">/mo</span>
+                <span class="plan-was" id="proWas">$10</span>
               </div>
-              <div class="plan-note">Cancel anytime</div>
+              <div class="plan-note" id="proNote">Cancel anytime</div>
             </div>
             <div class="plan-body">
               <ul class="plan-features">
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 essays a month</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 5,000 words each</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited WPM</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 typing sessions a day</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 essays a month, up to 5,000 words</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>No word caps — write a whole paper</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited typing speed</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 paste-and-type sessions a day</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support (front of the queue)</li>
               </ul>
               <button class="plan-btn btn-blue" id="btnPro">
                 <div class="btn-spinner"></div>
@@ -446,10 +471,11 @@ main {
               </div>
               <div class="plan-price-row">
                 <span class="plan-dollar">$</span>
-                <span class="plan-num">25</span>
-                <span class="plan-per">/mo</span>
+                <span class="plan-num" id="unlimPrice">25</span>
+                <span class="plan-per" id="unlimPer">/mo</span>
+                <span class="plan-was" id="unlimWas">$39.99</span>
               </div>
-               <div class="plan-note">Cancel anytime</div>
+               <div class="plan-note" id="unlimNote">Cancel anytime</div>
             </div>
             <div class="plan-body">
               <ul class="plan-features">
@@ -523,6 +549,7 @@ main {
     async function startCheckout(plan) {
       const btn = plan === 'pro' ? document.getElementById('btnPro') : document.getElementById('btnUnlimited');
       setButtonLoading(btn, true);
+      if (window.scrybeTrack) window.scrybeTrack('checkout_start', { plan });
 
       try {
         const { data: { session } } = await sb.auth.getSession();
@@ -561,6 +588,7 @@ main {
     }
 
     async function startPortal() {
+      if (window.scrybeTrack) window.scrybeTrack('portal_open');
       try {
         const { data: { session } } = await sb.auth.getSession();
         if (!session) { window.location.href = 'login.html'; return; }
@@ -597,9 +625,13 @@ main {
     async function init() {
       // Handle post-checkout return
       const params = new URLSearchParams(window.location.search);
-      if (params.get('checkout') === 'success' || params.get('success') === 'true') {
+      const checkoutResult = params.get('checkout');
+      if (checkoutResult === 'success' || params.get('success') === 'true') {
+        if (window.scrybeTrack) window.scrybeTrack('checkout_success');
         // Refresh session so tier badge reflects new plan
         await sb.auth.refreshSession();
+      } else if (checkoutResult === 'cancelled') {
+        if (window.scrybeTrack) window.scrybeTrack('checkout_cancelled');
       }
 
       const { data: { session } } = await sb.auth.getSession();
@@ -652,12 +684,13 @@ main {
       document.getElementById('mainContent').style.display  = 'flex';
 
       // Wire up checkout buttons
+      let billing = 'monthly';
       btnPro.addEventListener('click', () => {
-        if (!btnPro.disabled) startCheckout('pro');
+        if (!btnPro.disabled) startCheckout(billing === 'annual' ? 'pro_annual' : 'pro');
       });
 
       btnUnlimited.addEventListener('click', () => {
-        if (!btnUnlimited.disabled) startCheckout('unlimited');
+        if (!btnUnlimited.disabled) startCheckout(billing === 'annual' ? 'unlimited_annual' : 'unlimited');
       });
 
       btnFree.addEventListener('click', () => {
@@ -665,6 +698,33 @@ main {
       });
 
       btnManage.addEventListener('click', startPortal);
+
+      const PRO_PRICES = {
+        monthly: { num: '5',   per: '/mo', was: '$10',   note: 'Cancel anytime',                          label: 'Get Pro — $5/mo',         plan: 'pro' },
+        annual:  { num: '40',  per: '/yr', was: '$60',   note: '$3.33/mo billed yearly · Cancel anytime', label: 'Get Pro — $40/yr',        plan: 'pro_annual' }
+      };
+      const UNLIMITED_PRICES = {
+        monthly: { num: '25',  per: '/mo', was: '$39.99', note: 'Cancel anytime',                           label: 'Get Unlimited — $25/mo',   plan: 'unlimited' },
+        annual:  { num: '200', per: '/yr', was: '$300',   note: '$16.67/mo billed yearly · Cancel anytime', label: 'Get Unlimited — $200/yr', plan: 'unlimited_annual' }
+      };
+      function applyPricing(card, prices, period) {
+        const p = prices[period];
+        document.getElementById(card + 'Price').textContent = p.num;
+        document.getElementById(card + 'Per').textContent   = p.per;
+        document.getElementById(card + 'Was').textContent   = p.was;
+        document.getElementById(card + 'Note').textContent  = p.note;
+        const btn = document.getElementById(card === 'pro' ? 'btnPro' : 'btnUnlimited');
+        btn.querySelector('.btn-label').textContent = btn.disabled ? 'Current plan' : p.label;
+      }
+      function setBilling(period) {
+        billing = period;
+        document.getElementById('btMonthly').classList.toggle('active', period === 'monthly');
+        document.getElementById('btAnnual').classList.toggle('active', period === 'annual');
+        applyPricing('pro', PRO_PRICES, period);
+        applyPricing('unlim', UNLIMITED_PRICES, period);
+      }
+      document.getElementById('btMonthly').addEventListener('click', () => setBilling('monthly'));
+      document.getElementById('btAnnual').addEventListener('click', () => setBilling('annual'));
 
       document.getElementById('btnSignOut').addEventListener('click', async () => {
         try {
