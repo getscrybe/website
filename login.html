@@ -7,7 +7,7 @@
   <meta name="description" content="Sign in to Scrybe with your Google account to manage your AI writing assistant for Google Docs and your subscription.">
   <meta name="robots" content="noindex, follow">
   <meta name="theme-color" content="#f2f2f4">
-  <link rel="canonical" href="https://getscrybe.net/login.html">
+  <link rel="canonical" href="https://getscrybe.net/login">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -292,8 +292,8 @@
   <body>
 
   <nav>
-    <a href="index.html" class="nav-logo">Scrybe</a>
-    <a href="index.html" class="nav-link">Home</a>
+    <a href="/" class="nav-logo">Scrybe</a>
+    <a href="/" class="nav-link">Home</a>
   </nav>
 
   <main>
@@ -353,7 +353,7 @@
 
             <div class="card-note">
               By continuing you agree to our
-              <a href="privacy.html">Privacy Policy</a>
+              <a href="/privacy">Privacy Policy</a>
             </div>
           </div>
         </div>
@@ -371,7 +371,7 @@
       </div>
 
       <div class="below-card">
-        <a href="privacy.html">Privacy</a>
+        <a href="/privacy">Privacy</a>
         <span class="dot">·</span>
         <a href="mailto:getscribe@gmail.com">Help</a>
       </div>
@@ -382,7 +382,7 @@
     <div class="footer-inner">
       <div class="footer-logo">Scrybe</div>
       <div class="footer-links">
-        <a href="privacy.html">Privacy</a>
+        <a href="/privacy">Privacy</a>
         <a href="mailto:getscribe@gmail.com">Support</a>
       </div>
       <div class="footer-copy">© 2026 Scrybe, Inc.</div>
@@ -398,7 +398,7 @@
     const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
     let hadSession = false;
-    let redirectTarget = 'purchase.html';
+    let redirectTarget = '/purchase';
 
     window.addEventListener('load', async () => {
       const { data: { session } } = await sb.auth.getSession();
@@ -432,7 +432,7 @@
       document.getElementById('successState').classList.add('show');
       if (window.scrybeTrack) window.scrybeTrack('auth_success');
 
-      redirectTarget = hadSession ? 'purchase.html' : EXTENSION_URL;
+      redirectTarget = hadSession ? '/purchase' : EXTENSION_URL;
 
       try {
         chrome.runtime.sendMessage(
