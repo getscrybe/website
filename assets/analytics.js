@@ -84,14 +84,30 @@
     persistence: 'localStorage+cookie'
   });
 
-  /* Attach attribution to every event and to the person profile. */
-  if (Object.keys(attribution).length) {
-    posthog.register(attribution);
-  }
+  /* Attach attribution and a schema version to every event. */
+  posthog.register(Object.assign({
+    app: 'website',
+    instrumentation: 'v1'
+  }, attribution));
 
   window.scrybeTrack = function (name, props) {
     try {
       posthog.capture(name, Object.assign({}, attribution, props || {}));
+    } catch (e) {}
+  };
+
+  /* Identify the signed-in Supabase user so website events can be joined to
+     billing and usage data. Use the user id, never the email address. */
+  window.scrybeIdentify = function (id, props) {
+    if (!id) return;
+    try {
+      posthog.identify(String(id), props || {});
+    } catch (e) {}
+  };
+
+  window.scrybeReset = function () {
+    try {
+      posthog.reset();
     } catch (e) {}
   };
 

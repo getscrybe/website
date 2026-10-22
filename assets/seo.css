@@ -41,6 +41,12 @@ ul.checks li{display:flex;gap:11px;align-items:flex-start;font-size:16px}
 ul.checks li svg{flex-shrink:0;margin-top:4px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+.compare-table{width:100%;border-collapse:collapse;margin:18px 0 22px;font-size:15px;background:var(--white);
+  border:.5px solid var(--border);border-radius:12px;overflow:hidden}
+.compare-table th,.compare-table td{padding:12px 14px;text-align:left;border-bottom:.5px solid var(--lighter);vertical-align:top}
+.compare-table th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);background:rgba(0,0,0,.02)}
+.compare-table tr:last-child td{border-bottom:0}
+.compare-table td:first-child{color:var(--mid)}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 @media(max-width:720px){.grid3{grid-template-columns:1fr}}
 .faq details{background:var(--white);border:.5px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:11px}

@@ -100,16 +100,6 @@ main {
       position: relative;
     }
 
-    main::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: repeating-linear-gradient(
-        0deg, transparent, transparent 39px,
-        rgba(0,0,0,0.026) 39px, rgba(0,0,0,0.026) 40px
-      );
-      pointer-events: none;
-    }
-
     .wrapper { max-width: 820px; margin: 0 auto; position: relative; z-index: 1; }
 
     .page-header {
@@ -145,40 +135,48 @@ main {
     }
     .error-banner.show { display: block; }
 
-    /* Usage card */
+    /* Usage card - compact, below the plans so it never blocks conversion */
     .usage-card {
       background: var(--white);
       border: 0.5px solid rgba(0,0,0,0.09);
       border-radius: 18px; overflow: hidden;
       box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 28px rgba(0,0,0,0.07);
-      margin-bottom: 16px;
-      opacity: 0; animation: riseIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
+      margin-top: 18px;
+      opacity: 0; animation: riseIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.32s forwards;
     }
 
-    .usage-top {
-      background: var(--accent);
-      padding: 11px 18px 9px;
+    .usage-head {
       display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 18px 0;
     }
 
-    .usage-top-label { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.55); margin-bottom: 3px; letter-spacing: 0.2px; }
-    .usage-heading { font-family: 'Instrument Serif', serif; font-size: 18px; color: #fff; letter-spacing: -0.02em; }
+    .usage-heading { font-family: 'Instrument Serif', serif; font-size: 15px; color: var(--dark); letter-spacing: -0.02em; }
 
     .usage-tier {
-      font-size: 11px; font-weight: 500;
-      color: var(--accent); background: rgba(255,255,255,0.9);
-      padding: 3px 11px; border-radius: 980px; letter-spacing: 0.1px;
+      font-size: 10.5px; font-weight: 500;
+      color: var(--accent); background: rgba(0,102,204,0.08);
+      padding: 3px 10px; border-radius: 980px; letter-spacing: 0.1px;
     }
 
-    .usage-body { padding: 9px 18px 11px; display: flex; align-items: center; gap: 20px; }
+    .usage-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0 24px; padding: 8px 18px 12px;
+    }
+    .usage-section { padding: 0; }
+    .usage-section-label { font-size: 11px; font-weight: 500; color: var(--mid); margin-bottom: 6px; letter-spacing: 0.2px; }
+    .usage-body { padding: 0; display: flex; align-items: center; gap: 14px; }
     .usage-nums { flex-shrink: 0; display: flex; align-items: baseline; gap: 3px; }
-    .usage-count { font-family: 'Instrument Serif', serif; font-size: 26px; letter-spacing: -1.5px; color: var(--dark); line-height: 1; }
-    .usage-sep { font-size: 22px; color: var(--light); font-weight: 300; margin: 0 1px; }
-    .usage-max { font-size: 16px; color: var(--mid); font-weight: 300; }
-    .usage-right { flex: 1; }
-    .usage-bar-wrap { width: 100%; height: 3px; background: var(--lighter); border-radius: 980px; overflow: hidden; margin-bottom: 7px; }
+    .usage-count { font-family: 'Instrument Serif', serif; font-size: 22px; letter-spacing: -1.2px; color: var(--dark); line-height: 1; }
+    .usage-sep { font-size: 18px; color: var(--light); font-weight: 300; margin: 0 1px; }
+    .usage-max { font-size: 14px; color: var(--mid); font-weight: 300; }
+    .usage-right { flex: 1; min-width: 0; }
+    .usage-bar-wrap { width: 100%; height: 3px; background: var(--lighter); border-radius: 980px; overflow: hidden; margin-bottom: 6px; }
     .usage-bar-fill { height: 100%; background: var(--accent); border-radius: 980px; transition: width 0.9s cubic-bezier(.4,0,.2,1); }
-    .usage-note { font-size: 11.5px; font-weight: 300; color: var(--light); }
+    .usage-note { font-size: 11px; font-weight: 300; color: var(--light); }
+    @media (max-width: 560px) {
+      .usage-grid { grid-template-columns: 1fr; gap: 10px; }
+      .usage-section + .usage-section { border-top: 0.5px solid var(--border); padding-top: 10px; }
+    }
 
     /* Plans */
     .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -370,30 +368,6 @@ main {
 
         <div class="error-banner" id="errorBanner"></div>
 
-        <!-- Usage -->
-        <div class="usage-card">
-          <div class="usage-top">
-            <div>
-              <div class="usage-top-label">your usage this period</div>
-              <div class="usage-heading">Essays generated</div>
-            </div>
-            <div class="usage-tier" id="tierBadge">Free</div>
-          </div>
-          <div class="usage-body">
-            <div class="usage-nums">
-              <span class="usage-count" id="usageCount">0</span>
-              <span class="usage-sep">/</span>
-              <span class="usage-max" id="usageMax">2</span>
-            </div>
-            <div class="usage-right">
-              <div class="usage-bar-wrap">
-                <div class="usage-bar-fill" id="usageBar" style="width:0%"></div>
-              </div>
-              <div class="usage-note">Resets each billing period</div>
-            </div>
-          </div>
-        </div>
-
         <!-- Billing period toggle -->
         <div class="billing-toggle" role="tablist" aria-label="Billing period">
           <button type="button" class="bt active" id="btMonthly" data-evt="cta_click" data-location="billing_toggle" data-target="monthly">Monthly</button>
@@ -418,10 +392,10 @@ main {
             </div>
             <div class="plan-body">
               <ul class="plan-features">
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 essays a month</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 500 words each</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Generate 2 Essays Per Month</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>250 Word Typing Limit</li>
                 <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>60 WPM typing speed</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 typing sessions a day</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Type 2 Essays Per Day</li>
               </ul>
               <button class="plan-btn btn-ghost" id="btnFree" disabled>
                 <div class="btn-spinner"></div>
@@ -448,11 +422,11 @@ main {
             </div>
             <div class="plan-body">
               <ul class="plan-features">
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 essays a month, up to 5,000 words</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>No word caps — write a whole paper</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited typing speed</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 paste-and-type sessions a day</li>
-                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support (front of the queue)</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Generate 20 Essays Per Month, Up To 5,000 Words Each</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited Typing Word Cap</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Unlimited Typing Speed</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>20 Type Sessions Per Day</li>
+                <li><span class="chk"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#34c759" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority Support (front of the queue)</li>
               </ul>
               <button class="plan-btn btn-blue" id="btnPro">
                 <div class="btn-spinner"></div>
@@ -502,6 +476,48 @@ main {
            <span class="pt-sep">·</span><span>No credit card required to start</span>
          </div>
 
+         <!-- Usage - below the offer so it never competes with the plans -->
+         <div class="usage-card">
+           <div class="usage-head">
+             <span class="usage-heading">Your usage</span>
+             <span class="usage-tier" id="tierBadge">Free</span>
+           </div>
+           <div class="usage-grid">
+             <div class="usage-section">
+               <div class="usage-section-label">Essays generated</div>
+               <div class="usage-body">
+                 <div class="usage-nums">
+                   <span class="usage-count" id="usageCount">0</span>
+                   <span class="usage-sep">/</span>
+                   <span class="usage-max" id="usageMax">2</span>
+                 </div>
+                 <div class="usage-right">
+                   <div class="usage-bar-wrap">
+                     <div class="usage-bar-fill" id="usageBar" style="width:0%"></div>
+                   </div>
+                   <div class="usage-note" id="usageNote">Resets each billing period</div>
+                 </div>
+               </div>
+             </div>
+             <div class="usage-section" id="typingUsage">
+               <div class="usage-section-label">Daily typing sessions</div>
+               <div class="usage-body">
+                 <div class="usage-nums">
+                   <span class="usage-count" id="usagePasteCount">0</span>
+                   <span class="usage-sep">/</span>
+                   <span class="usage-max" id="usagePasteMax">2</span>
+                 </div>
+                 <div class="usage-right">
+                   <div class="usage-bar-wrap">
+                     <div class="usage-bar-fill" id="usagePasteBar" style="width:0%"></div>
+                   </div>
+                   <div class="usage-note" id="usagePasteNote">Resets daily at midnight UTC</div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
          <div class="signout-row">
           <button class="btn-signout" id="btnSignOut">Sign out</button>
         </div>
@@ -527,15 +543,41 @@ main {
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
     const TIER_LIMITS = {
-      free:      { essays: 2,        label: 'Free'      },
-      pro:       { essays: 20,       label: 'Pro'       },
-      unlimited: { essays: 200, label: 'Unlimited' }
+      free:      { essays: 2,        sessionsPerDay: 2,        label: 'Free'      },
+      pro:       { essays: 20,       sessionsPerDay: 20,       label: 'Pro'       },
+      unlimited: { essays: 200,      sessionsPerDay: Infinity, label: 'Unlimited' }
     };
 
     let currentSession = null;
+    let currentTier = 'free';
+    let navigatingAway = false;
+    const pageStartedAt = performance.now();
+
+    function sessionGet(key) {
+      try { return sessionStorage.getItem(key); } catch (e) { return null; }
+    }
+
+    function track(name, props) {
+      if (window.scrybeTrack) window.scrybeTrack(name, props || {});
+    }
+
+    function elapsedSinceAuth() {
+      const ts = Number(sessionGet('scrybe_auth_ts'));
+      return Number.isFinite(ts) && ts > 0 ? Math.max(0, Date.now() - ts) : null;
+    }
+
+    track('purchase_page_load', {
+      path: window.location.pathname,
+      search: window.location.search,
+      referrer: document.referrer || null,
+      auth_source: sessionGet('scrybe_auth_source'),
+      new_user: sessionGet('scrybe_new_user') === '1',
+      elapsed_since_auth_ms: elapsedSinceAuth()
+    });
 
     function showError(msg) {
       const el = document.getElementById('errorBanner');
+      if (!el) return;
       el.textContent = msg;
       el.classList.add('show');
       setTimeout(() => el.classList.remove('show'), 6000);
@@ -547,13 +589,24 @@ main {
     }
 
     async function startCheckout(plan) {
-      const btn = plan === 'pro' ? document.getElementById('btnPro') : document.getElementById('btnUnlimited');
+      const isPro = plan === 'pro' || plan === 'pro_annual';
+      const btn = isPro ? document.getElementById('btnPro') : document.getElementById('btnUnlimited');
       setButtonLoading(btn, true);
-      if (window.scrybeTrack) window.scrybeTrack('checkout_start', { plan });
+      track('checkout_start', {
+        plan,
+        billing: plan.endsWith('_annual') ? 'annual' : 'monthly',
+        tier: currentTier
+      });
 
+      let httpStatus = null;
       try {
         const { data: { session } } = await sb.auth.getSession();
-        if (!session) { window.location.href = '/login'; return; }
+        if (!session) {
+          track('purchase_auth_missing', { from: 'checkout_start', plan });
+          navigatingAway = true;
+          window.location.href = '/login';
+          return;
+        }
 
         const response = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout-session`, {
           method: 'POST',
@@ -567,6 +620,7 @@ main {
             cancel_url:  `${window.location.origin}/purchase?checkout=cancelled`,
           }),
         });
+        httpStatus = response.status;
 
         const data = await response.json();
 
@@ -578,20 +632,40 @@ main {
           throw new Error('No checkout URL returned from server.');
         }
 
+        track('checkout_redirect', { plan, tier: currentTier });
+        navigatingAway = true;
+        await new Promise(resolve => setTimeout(resolve, 120));
         window.location.href = data.url;
 
       } catch (err) {
         console.error('Checkout error:', err);
+        track('checkout_error', {
+          plan,
+          tier: currentTier,
+          status: httpStatus,
+          message: err?.message || String(err)
+        });
         showError(err.message || 'Something went wrong. Please try again.');
         setButtonLoading(btn, false);
       }
     }
 
-    async function startPortal() {
-      if (window.scrybeTrack) window.scrybeTrack('portal_open');
+    async function startPortal(source) {
+      const portalSource = source === 'downgrade' ? 'downgrade' : 'manage';
+      track('billing_portal_open', {
+        source: portalSource,
+        tier: currentTier
+      });
+
+      let httpStatus = null;
       try {
         const { data: { session } } = await sb.auth.getSession();
-        if (!session) { window.location.href = '/login'; return; }
+        if (!session) {
+          track('purchase_auth_missing', { from: 'billing_portal', source: portalSource });
+          navigatingAway = true;
+          window.location.href = '/login';
+          return;
+        }
 
         const response = await fetch(`${SUPABASE_URL}/functions/v1/create-portal-session`, {
           method: 'POST',
@@ -603,6 +677,7 @@ main {
             return_url: `${window.location.origin}/purchase`,
           }),
         });
+        httpStatus = response.status;
 
         const data = await response.json();
 
@@ -614,10 +689,18 @@ main {
           throw new Error('No portal URL returned from server.');
         }
 
+        navigatingAway = true;
+        await new Promise(resolve => setTimeout(resolve, 120));
         window.location.href = data.url;
 
       } catch (err) {
         console.error('Portal error:', err);
+        track('billing_portal_error', {
+          source: portalSource,
+          tier: currentTier,
+          status: httpStatus,
+          message: err?.message || String(err)
+        });
         showError(err.message || 'Something went wrong. Please try again.');
       }
     }
@@ -627,36 +710,93 @@ main {
       const params = new URLSearchParams(window.location.search);
       const checkoutResult = params.get('checkout');
       if (checkoutResult === 'success' || params.get('success') === 'true') {
-        if (window.scrybeTrack) window.scrybeTrack('checkout_success');
+        track('checkout_return', { result: 'success' });
+        // Kept for continuity; treat subscription_activated from the Stripe
+        // webhook as the reliable paid conversion event.
+        track('checkout_success', { client_side: true });
         // Refresh session so tier badge reflects new plan
         await sb.auth.refreshSession();
       } else if (checkoutResult === 'cancelled') {
-        if (window.scrybeTrack) window.scrybeTrack('checkout_cancelled');
+        track('checkout_return', { result: 'cancelled' });
+        track('checkout_cancelled', { client_side: true });
       }
 
       const { data: { session } } = await sb.auth.getSession();
-      if (!session) { window.location.href = '/login'; return; }
+      if (!session) {
+        track('purchase_auth_missing', { from: 'purchase_init' });
+        navigatingAway = true;
+        window.location.href = '/login';
+        return;
+      }
 
       currentSession = session;
       const user = session.user;
-      const { data: profile } = await sb.from('users')
+      const { data: profile, error: profileError } = await sb.from('users')
         .select('tier, essay_count')
         .eq('id', user.id)
         .single();
 
+      if (profileError) {
+        track('purchase_profile_error', {
+          message: profileError.message || 'unknown',
+          code: profileError.code || null
+        });
+      }
+
+      const { data: pasteProfile, error: pasteError } = await sb.from('users')
+        .select('pastetype_count, pastetype_reset_at')
+        .eq('id', user.id)
+        .single();
+
       const tier  = profile?.tier || 'free';
+      currentTier = tier;
       const count = profile?.essay_count || 0;
       const info  = TIER_LIMITS[tier] || TIER_LIMITS.free;
       const max   = info.essays;
       const pct   = max === Infinity ? 5 : Math.min(100, (count / max) * 100);
+      const email = user.email || '';
 
-      document.getElementById('userEmail').textContent   = user.email;
-      document.getElementById('userInitial').textContent = user.email[0].toUpperCase();
+      if (window.scrybeIdentify) {
+        window.scrybeIdentify(user.id, { tier });
+      }
+
+      document.getElementById('userEmail').textContent   = email || '—';
+      document.getElementById('userInitial').textContent = (email[0] || '?').toUpperCase();
       document.getElementById('userPill').style.display  = 'flex';
       document.getElementById('usageCount').textContent  = count;
       document.getElementById('usageMax').textContent    = max === Infinity ? '∞' : max;
       document.getElementById('usageBar').style.width    = pct + '%';
       document.getElementById('tierBadge').textContent   = info.label;
+
+      // Daily Paste & Type quota. Hide the row if the optional columns are not
+      // available instead of blocking the whole page.
+      if (pasteError) {
+        document.getElementById('typingUsage').style.display = 'none';
+      } else {
+        const sessionMax  = info.sessionsPerDay;
+        const resetAt     = pasteProfile?.pastetype_reset_at
+          ? new Date(pasteProfile.pastetype_reset_at).getTime()
+          : null;
+        const sessionUsed = resetAt && Date.now() >= resetAt
+          ? 0
+          : (pasteProfile?.pastetype_count || 0);
+        const sessionLeft = sessionMax === Infinity
+          ? Infinity
+          : Math.max(0, sessionMax - sessionUsed);
+        const sessionPct  = sessionMax === Infinity
+          ? 0
+          : Math.min(100, (sessionUsed / sessionMax) * 100);
+
+        document.getElementById('usagePasteCount').textContent = sessionUsed;
+        document.getElementById('usagePasteMax').textContent   = sessionMax === Infinity ? '∞' : sessionMax;
+        document.getElementById('usagePasteBar').style.width   = sessionPct + '%';
+        document.getElementById('usagePasteNote').textContent  =
+          sessionMax === Infinity
+            ? 'Unlimited typing sessions'
+            : sessionLeft <= 0
+              ? 'Daily limit reached · resets at midnight UTC'
+              : `${sessionLeft} session${sessionLeft === 1 ? '' : 's'} left today · resets at midnight UTC`;
+      }
 
       const btnPro       = document.getElementById('btnPro');
       const btnUnlimited = document.getElementById('btnUnlimited');
@@ -683,21 +823,44 @@ main {
       document.getElementById('loadingState').style.display = 'none';
       document.getElementById('mainContent').style.display  = 'flex';
 
+      track('purchase_offer_view', {
+        tier,
+        essay_count: count,
+        has_pastetype: !pasteError,
+        visible: document.visibilityState === 'visible',
+        init_ms: Math.round(performance.now() - pageStartedAt),
+        elapsed_since_auth_ms: elapsedSinceAuth()
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden' && !navigatingAway) {
+          track('purchase_tab_hidden', {
+            elapsed_ms: Math.round(performance.now() - pageStartedAt)
+          });
+        }
+      });
+
       // Wire up checkout buttons
       let billing = 'monthly';
       btnPro.addEventListener('click', () => {
-        if (!btnPro.disabled) startCheckout(billing === 'annual' ? 'pro_annual' : 'pro');
+        if (btnPro.disabled) return;
+        const plan = billing === 'annual' ? 'pro_annual' : 'pro';
+        track('plan_cta_click', { plan, billing, tier });
+        startCheckout(plan);
       });
 
       btnUnlimited.addEventListener('click', () => {
-        if (!btnUnlimited.disabled) startCheckout(billing === 'annual' ? 'unlimited_annual' : 'unlimited');
+        if (btnUnlimited.disabled) return;
+        const plan = billing === 'annual' ? 'unlimited_annual' : 'unlimited';
+        track('plan_cta_click', { plan, billing, tier });
+        startCheckout(plan);
       });
 
       btnFree.addEventListener('click', () => {
-        if (!btnFree.disabled) startPortal();
+        if (!btnFree.disabled) startPortal('downgrade');
       });
 
-      btnManage.addEventListener('click', startPortal);
+      btnManage.addEventListener('click', () => startPortal('manage'));
 
       const PRO_PRICES = {
         monthly: { num: '5',   per: '/mo', was: '$10',   note: 'Cancel anytime',                          label: 'Get Pro — $5/mo',         plan: 'pro' },
@@ -722,11 +885,14 @@ main {
         document.getElementById('btAnnual').classList.toggle('active', period === 'annual');
         applyPricing('pro', PRO_PRICES, period);
         applyPricing('unlim', UNLIMITED_PRICES, period);
+        track('billing_period_change', { period, tier });
       }
       document.getElementById('btMonthly').addEventListener('click', () => setBilling('monthly'));
       document.getElementById('btAnnual').addEventListener('click', () => setBilling('annual'));
 
       document.getElementById('btnSignOut').addEventListener('click', async () => {
+        track('signout');
+        if (window.scrybeReset) window.scrybeReset();
         try {
           chrome.runtime.sendMessage('imelbhmelocdbjoobiogfallkokomoao', { action: 'logout' });
         } catch (e) { /* extension not installed */ }
@@ -735,7 +901,18 @@ main {
       });
     }
 
-    init();
+    init().catch(err => {
+      console.error('Purchase init error:', err);
+      track('purchase_init_error', {
+        message: err?.message || String(err),
+        stack: err?.stack || null
+      });
+      const loading = document.getElementById('loadingState');
+      const main = document.getElementById('mainContent');
+      if (loading) loading.style.display = 'none';
+      if (main) main.style.display = 'flex';
+      showError('Something went wrong loading your plan. Please refresh the page.');
+    });
   </script>
 </body>
 </html>

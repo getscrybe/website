@@ -165,7 +165,7 @@ footer{background:var(--dark2);border-top:0.5px solid rgba(255,255,255,0.07);pad
   <p class="hero-meta">
     Effective: March 22, 2026
     <span>·</span>
-    Last updated: March 22, 2026
+    Last updated: October 21, 2026
   </p>
 </div>
 
@@ -194,7 +194,7 @@ footer{background:var(--dark2);border-top:0.5px solid rgba(255,255,255,0.07);pad
       <h2>Overview</h2>
       <p>Scrybe is committed to protecting your privacy. This Privacy Policy explains what information the Scrybe Chrome Extension and its associated services collect when you use them to generate, review, and type essays into Google Docs.</p>
       <div class="highlight-block">
-        <p><strong>The short version:</strong> Scrybe collects only what is necessary to provide the service — your account information and subscription status. The content of your essays and assignment details are processed on our servers to generate your essay and are not sold or shared with third parties.</p>
+        <p><strong>The short version:</strong> Scrybe collects only what is necessary to provide the service — your account information, subscription status, and first-party website usage analytics. The content of your essays and assignment details are processed on our servers to generate your essay and are not sold or shared with third parties.</p>
       </div>
       <p>By installing Scrybe or creating an account, you agree to this Privacy Policy. If you do not agree, please do not use the service.</p>
     </div>
@@ -221,6 +221,14 @@ footer{background:var(--dark2);border-top:0.5px solid rgba(255,255,255,0.07);pad
       </div>
 
       <div class="info-card">
+        <span class="info-card-icon">▦</span>
+        <div class="info-card-body">
+          <strong>Website Analytics</strong>
+          <p>On getscrybe.net, we use PostHog to understand how visitors find the site, which pages and plans they view, and where sign-up or checkout steps fail. It records page views, clicks, referring URLs and UTM parameters, browser and device metadata, and a pseudonymous visitor ID stored in cookies and local storage. After you sign in, we link that ID to your Scrybe account ID. We do not send essay content, prompts, or payment card data to PostHog, and the Chrome extension does not include PostHog.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
         <span class="info-card-icon">✍️</span>
         <div class="info-card-body">
           <strong>Assignment Details &amp; Essay Content</strong>
@@ -240,7 +248,7 @@ footer{background:var(--dark2);border-top:0.5px solid rgba(255,255,255,0.07);pad
         <span class="info-card-icon">🚫</span>
         <div class="info-card-body">
           <strong>What We Do Not Collect</strong>
-          <p>We do not collect your browsing history, device identifiers, location data, or any information from pages other than Google Docs. We do not run advertising trackers or third-party analytics inside the extension.</p>
+          <p>The Chrome extension does not collect your browsing history, device identifiers, location data, or any information from pages other than Google Docs. The extension does not run advertising trackers or third-party analytics.</p>
         </div>
       </div>
 
@@ -251,6 +259,7 @@ footer{background:var(--dark2);border-top:0.5px solid rgba(255,255,255,0.07);pad
         <tbody>
           <tr><td>Name &amp; email (Google sign-in)</td><td>Scrybe account database</td><td>Yes — required for account</td></tr>
           <tr><td>Subscription tier &amp; essay count</td><td>Scrybe database</td><td>Yes — required for billing</td></tr>
+          <tr><td>Website analytics (pages, clicks, referral/UTM, browser/device metadata)</td><td>PostHog (US cloud)</td><td>Pseudonymous visitor ID; linked to account ID after sign-in</td></tr>
           <tr><td>Payment details</td><td>Stripe (not Scrybe)</td><td>No — Stripe only</td></tr>
           <tr><td>Assignment prompt / rubric</td><td>Scrybe servers → AI provider</td><td>No — processed, not stored</td></tr>
           <tr><td>Generated essay</td><td>Scrybe servers → your browser → Google Docs</td><td>No — not stored</td></tr>
@@ -267,7 +276,7 @@ footer{background:var(--dark2);border-top:0.5px solid rgba(255,255,255,0.07);pad
         <li><strong>Account &amp; authentication</strong> — your email and name are used to create your account, verify your identity when you sign in, and communicate with you about your subscription.</li>
         <li><strong>Subscription management</strong> — your subscription tier and essay usage count are used to enforce your plan limits and process billing through Stripe.</li>
         <li><strong>Essay generation</strong> — your assignment details are sent to our servers, passed to an AI provider, and the resulting essay is returned to your browser. This content is not stored beyond the duration of your request.</li>
-        <li><strong>Service improvements</strong> — we may use anonymized, aggregated usage data (e.g. average essay word count, feature usage rates) to improve the product. This data cannot be used to identify you.</li>
+        <li><strong>Service improvements</strong> — we may use aggregated or pseudonymous usage data (e.g. average essay word count, feature usage rates, and website conversion events) to improve the product. This data is not sold or used for advertising.</li>
       </ul>
       <p>We do not sell your data, use it for advertising, or share it with any party other than the service providers listed below.</p>
     </div>
@@ -309,7 +318,15 @@ footer{background:var(--dark2);border-top:0.5px solid rgba(255,255,255,0.07);pad
         </div>
       </div>
 
-      <p>Scrybe does not use advertising networks, marketing trackers, or crash analytics tools of any kind.</p>
+      <div class="info-card">
+        <span class="info-card-icon">◈</span>
+        <div class="info-card-body">
+          <strong>PostHog (posthog.com)</strong>
+          <p>Used for first-party analytics on getscrybe.net. PostHog processes website page views, clicks, referral data, browser/device metadata, and pseudonymous visitor IDs so we can measure sign-up and checkout performance. See <a href="https://posthog.com/privacy" target="_blank">PostHog's Privacy Policy</a>.</p>
+        </div>
+      </div>
+
+      <p>Scrybe does not use advertising networks or sell your data. Our website uses PostHog for first-party product analytics as described above; the Chrome extension does not include third-party analytics.</p>
     </div>
 
     <!-- 5. SHARING -->
@@ -317,7 +334,7 @@ footer{background:var(--dark2);border-top:0.5px solid rgba(255,255,255,0.07);pad
       <h2>Sharing &amp; Disclosure</h2>
       <p>We do not sell or rent your personal information. We share your data only in the following limited circumstances:</p>
       <ul>
-        <li><strong>Service providers</strong> — the third-party providers listed above (Google, Stripe, DeepSeek, Supabase) receive only the data necessary to perform their specific function.</li>
+        <li><strong>Service providers</strong> — the third-party providers listed above (Google, Stripe, DeepSeek, Supabase, PostHog) receive only the data necessary to perform their specific function.</li>
         <li><strong>Legal requirements</strong> — we may disclose your information if required by law, court order, or government request. We will notify you where legally permitted to do so.</li>
         <li><strong>Business transfers</strong> — if Scrybe is acquired or merges with another company, your information may be transferred as part of that transaction. We will notify users before this occurs.</li>
       </ul>
@@ -335,6 +352,7 @@ footer{background:var(--dark2);border-top:0.5px solid rgba(255,255,255,0.07);pad
         <li><strong>Essay usage count</strong> — retained to enforce plan limits and billing. Deleted with your account.</li>
         <li><strong>Assignment prompts &amp; generated essays</strong> — not stored. Processed in memory to fulfill your request and discarded immediately.</li>
         <li><strong>Payment records</strong> — retained by Stripe per their legal and compliance obligations. Scrybe retains only your subscription status.</li>
+        <li><strong>Website analytics</strong> — retained in PostHog for as long as needed to analyze product usage, then deleted or aggregated according to our project retention settings. Account linkage is removed when you request deletion.</li>
       </ul>
       <p>To delete your account and all associated data, contact us at <a href="mailto:getscribe@gmail.com">getscribe@gmail.com</a>. We will process your request within 30 days.</p>
     </div>

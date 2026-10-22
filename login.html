@@ -392,19 +392,41 @@
   <script>
     const SUPABASE_URL  = 'https://ajswovsdbdeohuyyucyo.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqc3dvdnNkYmRlb2h1eXl1Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMTEwNDYsImV4cCI6MjA4OTg4NzA0Nn0.N5NyNjP1fc7fxZm08DbNAlx-hGOlfCYXrlpezt_EG9c';
-    const EXTENSION_URL  = 'https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao';
 
     const { createClient } = supabase;
     const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
-    let hadSession = false;
+    const OAUTH_PENDING_KEY = 'scrybe_oauth_pending';
     let redirectTarget = '/purchase';
 
+    function sessionGet(key) {
+      try { return sessionStorage.getItem(key); } catch (e) { return null; }
+    }
+    function sessionSet(key, value) {
+      try { sessionStorage.setItem(key, value); } catch (e) {}
+    }
+    function sessionRemove(key) {
+      try { sessionStorage.removeItem(key); } catch (e) {}
+    }
+
     window.addEventListener('load', async () => {
-      const { data: { session } } = await sb.auth.getSession();
+      const oauthReturn = sessionGet(OAUTH_PENDING_KEY) === '1';
+      if (oauthReturn) sessionRemove(OAUTH_PENDING_KEY);
+
+      let session = null;
+      try {
+        const result = await sb.auth.getSession();
+        session = result?.data?.session || null;
+      } catch (err) {
+        if (window.scrybeTrack) {
+          window.scrybeTrack('auth_session_error', { message: err?.message || String(err) });
+        }
+      }
+
       if (session) {
-        hadSession = true;
-        handleSuccess(session);
+        handleSuccess(session, oauthReturn);
+      } else if (oauthReturn) {
+        if (window.scrybeTrack) window.scrybeTrack('auth_callback_no_session');
       }
     });
 
@@ -413,6 +435,7 @@
       const errEl = document.getElementById('authError');
       btn.classList.add('loading');
       errEl.classList.remove('show');
+      sessionSet(OAUTH_PENDING_KEY, '1');
       if (window.scrybeTrack) window.scrybeTrack('signin_start', { provider: 'google' });
 
       const { error } = await sb.auth.signInWithOAuth({
@@ -421,18 +444,63 @@
       });
 
       if (error) {
+        sessionRemove(OAUTH_PENDING_KEY);
         btn.classList.remove('loading');
         errEl.textContent = error.message || 'Something went wrong. Please try again.';
         errEl.classList.add('show');
+        if (window.scrybeTrack) {
+          window.scrybeTrack('signin_oauth_error', { message: error.message || 'unknown' });
+        }
       }
     }
 
-    function handleSuccess(session) {
+    function handleSuccess(session, oauthReturn) {
       document.getElementById('mainContent').style.display = 'none';
       document.getElementById('successState').classList.add('show');
-      if (window.scrybeTrack) window.scrybeTrack('auth_success');
 
-      redirectTarget = hadSession ? '/purchase' : EXTENSION_URL;
+      const createdAt = Date.parse(session.user?.created_at || '');
+      const lastSignIn = Date.parse(session.user?.last_sign_in_at || '');
+      const newUser = Boolean(
+        oauthReturn &&
+        Number.isFinite(createdAt) &&
+        Number.isFinite(lastSignIn) &&
+        Math.abs(lastSignIn - createdAt) < 2 * 60 * 1000
+      );
+
+      sessionSet('scrybe_auth_ts', String(Date.now()));
+      sessionSet('scrybe_auth_source', oauthReturn ? 'oauth_callback' : 'session_restore');
+      sessionSet('scrybe_new_user', newUser ? '1' : '0');
+
+      if (window.scrybeIdentify) {
+        window.scrybeIdentify(session.user.id, { auth_provider: 'google' });
+      }
+
+      if (window.scrybeTrack) {
+        window.scrybeTrack('auth_success', {
+          source: oauthReturn ? 'oauth_callback' : 'session_restore',
+          new_user: newUser,
+          redirect_target: redirectTarget
+        });
+      }
+
+      let navigated = false;
+      function goToNextPage() {
+        if (navigated) return;
+        navigated = true;
+        if (window.scrybeTrack) {
+          const authTs = Number(sessionGet('scrybe_auth_ts')) || Date.now();
+          window.scrybeTrack('auth_redirect', {
+            target: redirectTarget,
+            elapsed_ms: Math.max(0, Date.now() - authTs)
+          });
+        }
+        setTimeout(() => { window.location.href = redirectTarget; }, 120);
+      }
+
+      // If the extension never answers (not installed, browser quirk), the
+      // fallback still moves the user forward instead of leaving them on the
+      // success screen forever.
+      const fallback = setTimeout(goToNextPage, 2000);
 
       try {
         chrome.runtime.sendMessage(
@@ -447,10 +515,24 @@
               name:  session.user.user_metadata?.full_name || ''
             }
           },
-          () => { setTimeout(() => { window.location.href = redirectTarget; }, 1200); }
+          () => {
+            clearTimeout(fallback);
+            const error = chrome.runtime.lastError?.message || null;
+            if (window.scrybeTrack) {
+              window.scrybeTrack('auth_extension_bridge', { ok: !error, error });
+            }
+            setTimeout(goToNextPage, 600);
+          }
         );
       } catch (e) {
-        setTimeout(() => { window.location.href = redirectTarget; }, 1200);
+        clearTimeout(fallback);
+        if (window.scrybeTrack) {
+          window.scrybeTrack('auth_extension_bridge', {
+            ok: false,
+            error: e?.message || String(e)
+          });
+        }
+        setTimeout(goToNextPage, 600);
       }
     }
   </script>

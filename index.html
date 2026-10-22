@@ -38,7 +38,9 @@
         "@id": "https://getscrybe.net/#logo",
         "url": "https://getscrybe.net/Scrybe.png"
       },
-      "sameAs": []
+      "sameAs": [
+        "https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao"
+      ]
     },
     {
       "@type": "WebSite",
@@ -56,6 +58,7 @@
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "Chrome",
       "url": "https://getscrybe.net/",
+      "sameAs": "https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao",
       "description": "Scrybe is an AI writing assistant for students that drafts, refines, and types essays directly inside Google Docs.",
       "offers": [
         {
@@ -85,13 +88,6 @@
           "price": "25",
           "priceCurrency": "USD",
           "description": "200 essays a month with no word cap, unlimited Type Text sessions and unlimited words per session, early access and dedicated support."
-        },
-        {
-          "@type": "Offer",
-          "name": "Scrybe Pro (annual)",
-          "price": "40",
-          "priceCurrency": "USD",
-          "description": "All Pro benefits billed once a year — about $3.33 a month, save 33%."
         },
         {
           "@type": "Offer",
@@ -126,7 +122,7 @@
           "name": "What is Scrybe?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Scrybe is an AI writing assistant for students that drafts, refines, and types essays directly inside Google Docs — from a blank page to a polished draft in minutes."
+            "text": "Scrybe is an AI writing assistant that drafts, refines, and types essays directly inside Google Docs."
           }
         },
         {
@@ -134,7 +130,7 @@
           "name": "How does Scrybe work?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Scrybe works inside Google Docs as a Chrome extension: paste your assignment prompt, choose your word count and academic level, and Scrybe builds your draft, humanizes it, and types it into your document at your chosen pace."
+            "text": "Paste your assignment prompt, choose a word count and academic level, and Scrybe writes, humanizes, and types the draft into your doc."
           }
         },
         {
@@ -142,7 +138,7 @@
           "name": "Is Scrybe free?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes — Scrybe has a free plan with 2 essays a month up to 500 words each, plus 2 Type Text sessions a day up to 250 words each. It's free forever with no credit card required. Paid plans start at $5 per month."
+            "text": "Yes — the free plan includes 2 essays a month up to 500 words each, plus 2 Type Text sessions a day. Paid plans start at $5/mo."
           }
         },
         {
@@ -150,7 +146,7 @@
           "name": "How much does Scrybe cost?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Scrybe costs $0 for the free plan, $5 per month for Pro (20 essays a month up to 5,000 words each, plus 20 Type Text sessions a day up to 2,000 words each), and $25 per month for Unlimited (200 essays a month with no word cap, plus unlimited Type Text sessions). You can cancel anytime."
+            "text": "Free is $0, Pro is $5/mo (20 essays + 20 Type Text sessions a day), and Unlimited is $25/mo (200 essays, no word cap)."
           }
         },
         {
@@ -158,7 +154,7 @@
           "name": "How do the plan limits work?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Scrybe meters two things separately: essays Scrybe generates for you, and Type Text sessions where you paste writing you already have and have it typed for you. Essay limits reset each month. Type Text session limits reset each day. On the free plan that is 2 essays a month and 2 Type Text sessions a day. Rubric uploads, humanized writing and Google Docs export come with every plan — only the limits differ between tiers."
+            "text": "Essay limits reset monthly. Type Text session limits reset daily. Every plan includes rubric uploads, humanizing, and Google Docs export."
           }
         },
         {
@@ -166,7 +162,7 @@
           "name": "Does Scrybe work on Chromebooks?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes — Scrybe is a Chrome extension, so it works on any device that runs Chrome, including Chromebooks, Windows, and Macs."
+            "text": "Yes — Scrybe is a Chrome extension, so it works on Chromebooks, Windows, Macs, and any device that runs Chrome."
           }
         },
         {
@@ -174,7 +170,7 @@
           "name": "Does Scrybe support citation styles?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes — Scrybe supports major citation formats including APA, MLA, and Chicago, and pulls real, verifiable references rather than invented ones."
+            "text": "Yes — Scrybe supports APA, MLA, and Chicago and pulls real, verifiable references."
           }
         },
         {
@@ -182,7 +178,7 @@
           "name": "Is my data private?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes — Scrybe only stores your account info and subscription status. Your essay content and assignment details are processed to generate your draft and are not stored or shared. See our Privacy Policy for details."
+            "text": "Scrybe only stores your account and subscription info. Essay content is processed to create your draft but is not stored or shared. See our Privacy Policy."
           }
         },
         {
@@ -190,7 +186,7 @@
           "name": "Can I cancel anytime?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes — you can cancel your subscription anytime from your account page. No long-term commitment, no hidden fees."
+            "text": "Yes — cancel anytime from your account page. No long-term commitment, no hidden fees."
           }
         }
       ]
@@ -934,33 +930,45 @@ nav {
 .review-trust { display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center; margin-top: 28px; font-size: 13px; font-weight: 300; color: var(--mid); }
 .review-trust .store-stars { color: #ff9f0a; letter-spacing: 2px; font-size: 12px; }
 
+  #faq { background: var(--bg); padding: 80px 24px; }
+
   .faq-grid {
   max-width: 980px;
-  margin: 72px auto 0;
+  margin: 40px auto 0;
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 .faq-item {
   background: var(--white);
   border: 0.5px solid rgba(0,0,0,0.06);
   border-radius: 14px;
-  padding: 22px 26px;
+  padding: 18px 20px;
   text-align: left;
+  height: 100%;
 }
 .faq-item h3 {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--dark);
-  margin-bottom: 8px;
+  line-height: 1.3;
+  margin-bottom: 6px;
 }
 .faq-item p {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 300;
   color: var(--mid);
-  line-height: 1.6;
+  line-height: 1.5;
+}
+@media (max-width: 900px) {
+  .faq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 800px) {
   .about-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  #faq { padding: 64px 20px; }
+  .faq-grid { grid-template-columns: 1fr; }
 }
 
 /* ─────────────────────────────────────────────
@@ -1117,15 +1125,15 @@ footer {
 
 <!-- ── HERO ── -->
 <section class="hero">
-  <span class="hero-eyebrow">No more blank-page panic.</span>
+  <span class="hero-eyebrow">Easiest Way To Cheat In School</span>
 
   <h1 class="hero-headline">
-    Write with<br>
+    Cheat with<br>
     <span class="morph-word" id="morph">clarity.</span>
   </h1>
 
   <p class="hero-sub">
-    Scrybe drafts, refines, and types essays directly inside Google Docs — in your voice, at your pace, with real, verifiable citations. From blank page to polished draft in minutes. Free to start, no credit card required.
+    Scrybe can generate essays or type humanized essays directly inside Google Docs in your voice, at your pace. Undetectable cheating made easy. Free to start, no credit card required.
   </p>
 
   <div class="hero-actions">
@@ -1263,7 +1271,7 @@ footer {
   <div style="text-align:center;max-width:980px;margin:0 auto;" class="reveal">
     <span class="eyebrow">Process</span>
     <h2 class="h2">Four Steps.<br>One Great Essay.</h2>
-    <p class="section-body" style="margin-top:18px;">From prompt to polished draft — no blank-page dread.</p>
+    <p class="section-body" style="margin-top:18px;">From prompt to polished draft in minuites</p>
   </div>
 
   <div class="steps-grid reveal">
@@ -1272,8 +1280,8 @@ footer {
       <div class="step-icon-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="4" width="10" height="16" rx="2"/><path d="M10 4a2 2 0 0 1 4 0"/><path d="M10 11h4M10 15h3"/></svg>
       </div>
-      <h4>Paste Your Prompt</h4>
-      <p>Drop in your assignment brief, essay question, or notes.</p>
+      <h4>Create Your Essay</h4>
+      <p>Use a chatgpt and a humanizer to generate yoru essay or upload your rubric and let Scrybe do it for you</p>
     </div>
     <div class="step-cell">
       <span class="step-num">02</span>
@@ -1288,8 +1296,8 @@ footer {
       <div class="step-icon-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>
       </div>
-      <h4>Generate &amp; Refine</h4>
-      <p>Scrybe drafts it, humanizes it, and types it into your doc.</p>
+      <h4>Start Typing</h4>
+      <p>Let Scrybe type your essay into the doc for you. It matches your typing speed and make mistakes to insure you never get caught.</p>
     </div>
     <div class="step-cell">
       <span class="step-num">04</span>
@@ -1297,7 +1305,7 @@ footer {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3L10.5 13.5"/><path d="M21 3l-7 18-3.5-7.5L3 10z"/></svg>
       </div>
       <h4>Submit</h4>
-      <p>Run the originality check, then turn it in.</p>
+      <p>After it types submit it. If you get accused of using AI show the teacher you typing report.</p>
     </div>
   </div>
   <div class="how-cta reveal">
@@ -1316,7 +1324,7 @@ footer {
   <div class="testimonial-grid reveal">
     <div class="testi">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">"Got a 96 on my midterm. I let Scrybe write the draft, rewrote it in my own words, and it read like I'd spent all week on it. Took an hour."</p>
+      <p class="testi-quote">"Got a 96 on my midterm. I let Scrybe type my essay and my teacher had no Idea. I can't belive cheating is this easy"</p>
       <div class="testi-author">
         <div class="testi-av" style="background:#e8f0fb;color:var(--accent);">JM</div>
         <div>
@@ -1328,19 +1336,19 @@ footer {
 
     <div class="testi">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">"Ran the final through Turnitin for peace of mind — came back clean. The part that sold me was watching it type into Docs like I'd typed it myself."</p>
+      <p class="testi-quote">"I got an A in my english class because of Scrybe. The typing history is really enough proof to show I made the essay. Can't recommend this app enough."</p>
       <div class="testi-author">
         <div class="testi-av" style="background:#e8f8f1;color:var(--green);">AT</div>
         <div>
           <div class="testi-name">Aisha T.</div>
-          <div class="testi-role">Grad student</div>
+          <div class="testi-role">High School Sophmore</div>
         </div>
       </div>
     </div>
 
     <div class="testi">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">"I hate starting. Scrybe gets me a real first draft in minutes and I fix the rest. Finished an eight-page paper in an afternoon instead of a weekend."</p>
+      <p class="testi-quote">"I hate writing for englihs and this made my life so much easier. This allowed me to balance my courses and still have free time. "</p>
       <div class="testi-author">
         <div class="testi-av" style="background:#fef3e8;color:#ff9f0a;">CL</div>
         <div>
@@ -1464,17 +1472,17 @@ footer {
     </div>
     <div class="about-card">
       <h4>How</h4>
-      <p>Scrybe uses AI-assisted drafting with full transparency: it generates text with large language models, keeps citations verifiable, and always produces work you can review, edit, and make your own before submitting.</p>
+      <p>Scrybe types for you or generates and humanizes the perfect essay using the rubric and any instructions your teacher gave you.</p>
     </div>
     <div class="about-card">
       <h4>Why</h4>
-      <p>Writing tools shouldn't stand between you and your own work. Scrybe exists to help students get unstuck, learn the writing process, and actually meet their own standards.</p>
+      <p>Writing tools shouldn't stand between you and your own work. Scrybe exists to help students get unstuck and have more free time.</p>
     </div>
   </div>
 </section>
 
 <!-- ── FAQ ── -->
-<section id="faq" style="background:var(--bg);padding:120px 24px;">
+<section id="faq">
   <div style="text-align:center;max-width:980px;margin:0 auto;" class="reveal">
     <span class="eyebrow">FAQ</span>
     <h2 class="h2">Frequently asked questions.</h2>
@@ -1483,39 +1491,39 @@ footer {
   <div class="faq-grid reveal">
     <div class="faq-item">
       <h3>What is Scrybe?</h3>
-      <p>Scrybe is an AI writing assistant for students that drafts, refines, and types essays directly inside Google Docs — from a blank page to a polished draft in minutes.</p>
+      <p>Scrybe is an AI writing assistant that drafts, refines, and types essays directly inside Google Docs.</p>
     </div>
     <div class="faq-item">
       <h3>How does Scrybe work?</h3>
-      <p>Scrybe works inside Google Docs as a Chrome extension: paste your assignment prompt, choose your word count and academic level, and Scrybe builds your draft, humanizes it, and types it into your document at your chosen pace.</p>
+      <p>Paste your assignment prompt, choose a word count and academic level, and Scrybe writes, humanizes, and types the draft into your doc.</p>
     </div>
     <div class="faq-item">
       <h3>Is Scrybe free?</h3>
-      <p>Yes — Scrybe has a free plan with 2 essays a month up to 500 words each, plus 2 Type Text sessions a day up to 250 words each. It's free forever with no credit card required. Paid plans start at $5 per month.</p>
+      <p>Yes — the free plan includes 2 essays a month up to 500 words each, plus 2 Type Text sessions a day. Paid plans start at $5/mo.</p>
     </div>
     <div class="faq-item">
       <h3>How much does Scrybe cost?</h3>
-      <p>Scrybe costs $0 for the free plan, $5 per month for Pro (20 essays a month up to 5,000 words each, plus 20 Type Text sessions a day up to 2,000 words each), and $25 per month for Unlimited (200 essays a month with no word cap, plus unlimited Type Text sessions). You can cancel anytime.</p>
+      <p>Free is $0, Pro is $5/mo (20 essays + 20 Type Text sessions a day), and Unlimited is $25/mo (200 essays, no word cap).</p>
     </div>
     <div class="faq-item">
       <h3>How do the plan limits work?</h3>
-      <p>Scrybe meters two things separately: essays Scrybe generates for you, and Type Text sessions where you paste writing you already have and have it typed for you. Essay limits reset each month. Type Text session limits reset each day. On the free plan that is 2 essays a month and 2 Type Text sessions a day. Rubric uploads, humanized writing and Google Docs export come with every plan — only the limits differ between tiers.</p>
+      <p>Essay limits reset monthly. Type Text session limits reset daily. Every plan includes rubric uploads, humanizing, and Google Docs export.</p>
     </div>
     <div class="faq-item">
       <h3>Does Scrybe work on Chromebooks?</h3>
-      <p>Yes — Scrybe is a Chrome extension, so it works on any device that runs Chrome, including Chromebooks, Windows, and Macs.</p>
+      <p>Yes — Scrybe is a Chrome extension, so it works on Chromebooks, Windows, Macs, and any device that runs Chrome.</p>
     </div>
     <div class="faq-item">
       <h3>Does Scrybe support citation styles?</h3>
-      <p>Yes — Scrybe supports major citation formats including APA, MLA, and Chicago, and pulls real, verifiable references rather than invented ones.</p>
+      <p>Yes — Scrybe supports APA, MLA, and Chicago and pulls real, verifiable references.</p>
     </div>
     <div class="faq-item">
       <h3>Is my data private?</h3>
-      <p>Yes — Scrybe only stores your account info and subscription status. Your essay content and assignment details are processed to generate your draft and are not stored or shared. See our <a href="/privacy">Privacy Policy</a> for details.</p>
+      <p>Scrybe only stores your account and subscription info. Essay content is processed to create your draft but is not stored or shared. See our <a href="/privacy">Privacy Policy</a>.</p>
     </div>
     <div class="faq-item">
       <h3>Can I cancel anytime?</h3>
-      <p>Yes — you can cancel your subscription anytime from your account page. No long-term commitment, no hidden fees.</p>
+      <p>Yes — cancel anytime from your account page. No long-term commitment, no hidden fees.</p>
     </div>
   </div>
 </section>
@@ -1570,7 +1578,7 @@ footer {
       <h5>Resources</h5>
       <ul>
         <li><a href="/ai-essay-writer">AI Essay Writer</a></li>
-        <li><a href="/essay-typer">Essay Typer</a></li>
+        <li><a href="/essay-typer">Auto Typer for Google Docs</a></li>
         <li><a href="/essay-humanizer">Essay Humanizer</a></li>
         <li><a href="/how-to-pass-turnitin-ai-detection">Pass Turnitin</a></li>
         <li><a href="blog/">Guides</a></li>
