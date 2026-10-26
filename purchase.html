@@ -809,7 +809,9 @@ main {
       } else if (tier === 'unlimited') {
         btnUnlimited.querySelector('.btn-label').textContent = 'Current plan';
         btnUnlimited.disabled = true;
-        btnPro.querySelector('.btn-label').textContent = 'Get Pro — $5/mo';
+        btnPro.querySelector('.btn-label').textContent = 'Included in Unlimited';
+        btnPro.disabled = true;
+        btnPro.dataset.labelOverride = 'Included in Unlimited';
       }
 
       // Paid users get a real cancel/downgrade path: both the Free card button
@@ -877,7 +879,8 @@ main {
         document.getElementById(card + 'Was').textContent   = p.was;
         document.getElementById(card + 'Note').textContent  = p.note;
         const btn = document.getElementById(card === 'pro' ? 'btnPro' : 'btnUnlimited');
-        btn.querySelector('.btn-label').textContent = btn.disabled ? 'Current plan' : p.label;
+        btn.querySelector('.btn-label').textContent =
+          btn.dataset.labelOverride || (btn.disabled ? 'Current plan' : p.label);
       }
       function setBilling(period) {
         billing = period;
