@@ -335,17 +335,25 @@ main {
     .bt-save { display: inline-block; margin-left: 5px; font-size: 10.5px; font-weight: 700; color: var(--green); }
 
   </style>
+  <link rel="stylesheet" href="assets/site-ui.css">
   <script src="assets/analytics.js"></script>
+  <script src="assets/site-ui.js"></script>
 </head>
 <body>
 
   <nav>
     <a href="/" class="nav-logo">Scrybe</a>
     <div class="nav-right">
-      <button class="nav-link" id="btnManage" style="display:none;">Manage subscription</button>
-      <div class="user-pill" id="userPill">
-        <div class="user-avatar" id="userInitial">?</div>
-        <span class="user-email" id="userEmail">—</span>
+      <div class="cm-account">
+        <button type="button" class="user-pill" id="userPill" aria-haspopup="menu" aria-expanded="false">
+          <div class="user-avatar" id="userInitial">?</div>
+          <span class="user-email" id="userEmail">—</span>
+        </button>
+        <div class="cm-account-menu" id="accountMenu">
+          <button type="button" id="btnManage" style="display:none;">Manage plan</button>
+          <a href="https://chromewebstore.google.com/detail/imelbhmelocdbjoobiogfallkokomoao/reviews/my-review?utm_source=website&amp;utm_medium=account_menu&amp;utm_campaign=review_request" target="_blank" rel="noopener noreferrer" data-evt="review_link_click" data-location="account_menu">Leave a review</a>
+          <button type="button" class="cm-account-menu__danger" id="logoutMenuBtn">Log out</button>
+        </div>
       </div>
       <a href="/" class="nav-link">Home</a>
     </div>
@@ -530,6 +538,7 @@ main {
         <div class="footer-logo">Scrybe</div>
         <div class="footer-links">
           <a href="/privacy">Privacy</a>
+          <a href="https://chromewebstore.google.com/detail/imelbhmelocdbjoobiogfallkokomoao/reviews/my-review?utm_source=website&amp;utm_medium=footer&amp;utm_campaign=review_request" target="_blank" rel="noopener noreferrer" data-evt="review_link_click" data-location="footer">Leave a review</a>
           <a href="mailto:getscribe@gmail.com">Support</a>
         </div>
         <div class="footer-copy">© 2026 Scrybe, Inc.</div>
@@ -557,8 +566,42 @@ main {
       try { return sessionStorage.getItem(key); } catch (e) { return null; }
     }
 
+    function sessionRemove(key) {
+      try { sessionStorage.removeItem(key); } catch (e) {}
+    }
+
     function track(name, props) {
       if (window.scrybeTrack) window.scrybeTrack(name, props || {});
+    }
+
+    async function performLogout() {
+      track('logout_confirmed');
+      if (window.scrybeReset) window.scrybeReset();
+      try {
+        chrome.runtime.sendMessage('imelbhmelocdbjoobiogfallkokomoao', { action: 'logout' });
+      } catch (e) {}
+      await sb.auth.signOut();
+      window.location.href = '/';
+    }
+
+    function requestLogout() {
+      track('signout_requested');
+      if (window.scrybeUI) window.scrybeUI.showLogoutConfirm(performLogout);
+      else performLogout();
+    }
+
+    window.scrybePerformLogout = performLogout;
+
+    if (window.scrybeUI) {
+      window.scrybeUI.bindAccountMenu(
+        document.getElementById('userPill'),
+        document.getElementById('accountMenu')
+      );
+      document.getElementById('logoutMenuBtn').addEventListener('click', requestLogout);
+      window.scrybeUI.mountMobileNotice(document.querySelector('.wrapper'), {
+        before: document.querySelector('.page-header'),
+        ctaHref: '/scan?src=mobile_purchase'
+      });
     }
 
     function elapsedSinceAuth() {
@@ -825,6 +868,31 @@ main {
       document.getElementById('loadingState').style.display = 'none';
       document.getElementById('mainContent').style.display  = 'flex';
 
+      const showWelcome = sessionGet('scrybe_show_welcome') === '1';
+      const extConnected = sessionGet('scrybe_ext_connected') === '1';
+      const newUser = sessionGet('scrybe_new_user') === '1';
+      if (showWelcome) {
+        sessionRemove('scrybe_show_welcome');
+        sessionRemove('scrybe_ext_connected');
+        if (window.scrybeUI && !window.scrybeUI.isMobile) {
+          if (!extConnected) {
+            window.scrybeUI.showWelcomeToast({
+              title: 'One more step.',
+              text: 'You’re signed in on the website. Add Scrybe to Chrome to use it inside Google Docs.',
+              linkHref: 'https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao',
+              linkText: 'Add to Chrome',
+              props: { ext_connected: false, new_user: newUser }
+            });
+          } else {
+            window.scrybeUI.showWelcomeToast({
+              title: newUser ? 'Welcome to Scrybe.' : 'Scrybe is ready.',
+              text: 'You’re signed in here and in the Chrome extension. Open a Google Doc to start writing.',
+              props: { ext_connected: true, new_user: newUser }
+            });
+          }
+        }
+      }
+
       track('purchase_offer_view', {
         tier,
         essay_count: count,
@@ -893,15 +961,7 @@ main {
       document.getElementById('btMonthly').addEventListener('click', () => setBilling('monthly'));
       document.getElementById('btAnnual').addEventListener('click', () => setBilling('annual'));
 
-      document.getElementById('btnSignOut').addEventListener('click', async () => {
-        track('signout');
-        if (window.scrybeReset) window.scrybeReset();
-        try {
-          chrome.runtime.sendMessage('imelbhmelocdbjoobiogfallkokomoao', { action: 'logout' });
-        } catch (e) { /* extension not installed */ }
-        await sb.auth.signOut();
-        window.location.href = '/';
-      });
+      document.getElementById('btnSignOut').addEventListener('click', requestLogout);
     }
 
     init().catch(err => {

@@ -975,6 +975,19 @@ nav {
    POST-REVIEW CTA
 ───────────────────────────────────────────── */
 .reviews-cta { text-align: center; margin-top: 44px; }
+.reviews-review-link {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: 14px auto 0;
+  font-size: 13px;
+  color: var(--mid);
+  text-decoration: underline;
+  text-decoration-color: var(--light);
+  text-underline-offset: 3px;
+  transition: color 0.12s;
+}
+.reviews-review-link:hover { color: var(--accent); }
 
 /* ─────────────────────────────────────────────
    MOBILE STICKY CTA
@@ -1097,7 +1110,9 @@ footer {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--light); border-radius: 99px; }
 </style>
+  <link rel="stylesheet" href="assets/site-ui.css">
   <script src="assets/analytics.js"></script>
+  <script src="assets/site-ui.js"></script>
 </head>
 <body><div class="js"><noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 
@@ -1116,10 +1131,17 @@ footer {
     <a href="/login" class="nav-signin" id="navSignIn" data-evt="cta_click" data-location="nav" data-target="signin">Sign In</a>
     <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="nav-cta" id="navCta" data-evt="cta_click" data-location="nav" data-target="webstore">Try for Free</a>
     <!-- Shown when logged IN -->
-    <a href="/purchase" class="nav-user-pill" id="navUserPill">
-      <div class="nav-user-avatar" id="navUserAvatar">?</div>
-      <span class="nav-user-email" id="navUserEmail">—</span>
-    </a>
+    <div class="cm-account">
+      <button type="button" class="nav-user-pill" id="navUserPill" aria-haspopup="menu" aria-expanded="false">
+        <div class="nav-user-avatar" id="navUserAvatar">?</div>
+        <span class="nav-user-email" id="navUserEmail">—</span>
+      </button>
+      <div class="cm-account-menu" id="accountMenu">
+        <a href="/purchase">Manage plan</a>
+        <a href="https://chromewebstore.google.com/detail/imelbhmelocdbjoobiogfallkokomoao/reviews/my-review?utm_source=website&amp;utm_medium=account_menu&amp;utm_campaign=review_request" target="_blank" rel="noopener noreferrer" data-evt="review_link_click" data-location="account_menu">Leave a review</a>
+        <button type="button" class="cm-account-menu__danger" id="navLogoutBtn">Log out</button>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -1366,6 +1388,7 @@ footer {
   </div>
   <div class="reviews-cta reveal">
     <a href="https://chromewebstore.google.com/detail/scrybe/imelbhmelocdbjoobiogfallkokomoao" target="_blank" rel="noopener" class="btn-blue" data-evt="cta_click" data-location="reviews">Add to Chrome — Free</a>
+    <a href="https://chromewebstore.google.com/detail/imelbhmelocdbjoobiogfallkokomoao/reviews/my-review?utm_source=website&amp;utm_medium=reviews_section&amp;utm_campaign=review_request" target="_blank" rel="noopener noreferrer" class="reviews-review-link" data-evt="review_link_click" data-location="reviews_section">Already using Scrybe? Leave a review</a>
   </div>
 </section>
 
@@ -1571,6 +1594,7 @@ footer {
       <ul>
         <li><a href="#about">About</a></li>
         <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://chromewebstore.google.com/detail/imelbhmelocdbjoobiogfallkokomoao/reviews/my-review?utm_source=website&amp;utm_medium=footer&amp;utm_campaign=review_request" target="_blank" rel="noopener noreferrer" data-evt="review_link_click" data-location="footer">Leave a review</a></li>
         <li><a href="mailto:getscribe@gmail.com">Contact</a></li>
       </ul>
     </div>
@@ -1646,7 +1670,38 @@ footer {
     } else {
       // Logged out — CTAs point to the Chrome Web Store (already set in HTML)
       navUserPill.style.display = 'none';
+      if (window.scrybeUI) {
+        window.scrybeUI.useScanLinks('#navCta', 'Get link');
+        window.scrybeUI.useScanLinks('#heroCta, #ctaBandBtn, #stickyCtaBtn', 'Email me the link');
+      }
     }
+  }
+
+  async function performLogout() {
+    if (window.scrybeTrack) window.scrybeTrack('logout_confirmed');
+    if (window.scrybeReset) window.scrybeReset();
+    try {
+      chrome.runtime.sendMessage('imelbhmelocdbjoobiogfallkokomoao', { action: 'logout' });
+    } catch (e) {}
+    await sb.auth.signOut();
+    window.location.href = '/';
+  }
+
+  window.scrybePerformLogout = performLogout;
+
+  if (window.scrybeUI) {
+    window.scrybeUI.bindAccountMenu(
+      document.getElementById('navUserPill'),
+      document.getElementById('accountMenu')
+    );
+    document.getElementById('navLogoutBtn').addEventListener('click', () => {
+      if (window.scrybeTrack) window.scrybeTrack('signout_requested');
+      window.scrybeUI.showLogoutConfirm(performLogout);
+    });
+    window.scrybeUI.mountMobileNotice(document.querySelector('.hero'), {
+      before: document.querySelector('.hero-eyebrow'),
+      ctaHref: '/scan?src=mobile_home'
+    });
   }
 
   initAuth();
@@ -1737,6 +1792,7 @@ footer {
     const toggleSticky = () => {
       const past = window.scrollY > heroSection.offsetHeight - 120;
       stickyCta.classList.toggle('show', past);
+      document.body.classList.toggle('cm-sticky-cta', past);
     };
     window.addEventListener('scroll', toggleSticky, { passive: true });
     window.addEventListener('resize', toggleSticky, { passive: true });

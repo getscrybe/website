@@ -287,7 +287,9 @@
     .card-top, .card-body, .success-state { padding-left: 20px; padding-right: 20px; }
   }
   </style>
+  <link rel="stylesheet" href="assets/site-ui.css">
     <script src="assets/analytics.js"></script>
+    <script src="assets/site-ui.js"></script>
 </head>
   <body>
 
@@ -365,7 +367,7 @@
             </svg>
           </div>
           <h2>You're in.</h2>
-          <p>Redirecting you now…</p>
+          <p>Signed in. Taking you to the next step…</p>
         </div>
 
       </div>
@@ -383,6 +385,7 @@
       <div class="footer-logo">Scrybe</div>
       <div class="footer-links">
         <a href="/privacy">Privacy</a>
+        <a href="https://chromewebstore.google.com/detail/imelbhmelocdbjoobiogfallkokomoao/reviews/my-review?utm_source=website&amp;utm_medium=footer&amp;utm_campaign=review_request" target="_blank" rel="noopener noreferrer" data-evt="review_link_click" data-location="footer">Leave a review</a>
         <a href="mailto:getscribe@gmail.com">Support</a>
       </div>
       <div class="footer-copy">© 2026 Scrybe, Inc.</div>
@@ -407,6 +410,13 @@
     }
     function sessionRemove(key) {
       try { sessionStorage.removeItem(key); } catch (e) {}
+    }
+
+    if (window.scrybeUI) {
+      window.scrybeUI.mountMobileNotice(document.querySelector('.wrapper'), {
+        before: document.getElementById('card'),
+        ctaHref: '/scan?src=mobile_login'
+      });
     }
 
     window.addEventListener('load', async () => {
@@ -470,6 +480,8 @@
       sessionSet('scrybe_auth_ts', String(Date.now()));
       sessionSet('scrybe_auth_source', oauthReturn ? 'oauth_callback' : 'session_restore');
       sessionSet('scrybe_new_user', newUser ? '1' : '0');
+      sessionSet('scrybe_show_welcome', oauthReturn ? '1' : '0');
+      sessionSet('scrybe_ext_connected', '0');
 
       if (window.scrybeIdentify) {
         window.scrybeIdentify(session.user.id, { auth_provider: 'google' });
@@ -518,6 +530,7 @@
           () => {
             clearTimeout(fallback);
             const error = chrome.runtime.lastError?.message || null;
+            sessionSet('scrybe_ext_connected', error ? '0' : '1');
             if (window.scrybeTrack) {
               window.scrybeTrack('auth_extension_bridge', { ok: !error, error });
             }
