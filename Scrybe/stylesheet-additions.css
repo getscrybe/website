@@ -1,0 +1,634 @@
+/* ============================================================
+   SCRYBE — COSMETIC ADDITIONS
+   Toasts · loading skeletons · progress bars · confetti · micro-interactions
+   ============================================================ */
+
+/* ---------- TOASTS ---------- */
+.toast-stack {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 88%;
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: rgba(29, 29, 31, 0.92);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.1) inset;
+  animation: toastIn 0.28s cubic-bezier(0.32, 0.72, 0, 1) both;
+  pointer-events: auto;
+}
+
+.toast.leaving { animation: toastOut 0.24s ease both; }
+
+.toast-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+}
+.toast-icon svg { width: 15px; height: 15px; }
+
+.toast.ok   .toast-icon { color: var(--green); }
+.toast.err  .toast-icon { color: var(--red); }
+.toast.warn .toast-icon { color: var(--amber-text); }
+
+.toast-body {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.toast-msg { flex: 1; min-width: 0; }
+
+/* White dismiss on the dark toast surface. Sits outside .toast-body so it stays
+   a fixed 16px target at the right edge rather than shifting with the message
+   width, and flex-shrink is 0 so a long message squeezes instead. */
+.toast-close {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #fff;
+  opacity: 0.65;
+  cursor: pointer;
+  transition: opacity 0.12s, background 0.12s;
+}
+
+.toast-close svg { width: 11px; height: 11px; display: block; }
+.toast-close:hover  { opacity: 1; background: rgba(255, 255, 255, 0.16); }
+.toast-close:active { transform: scale(0.9); }
+.toast-close:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+
+/* One-tap upgrade from inside a paywall toast — the action is on the neutral
+   toast surface so it reads as part of the message, not a competing button. */
+.toast-action {
+  flex-shrink: 0;
+  padding: 4px 11px;
+  border: none;
+  border-radius: 99px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.toast-action:hover  { background: #0055aa; }
+.toast-action:active { transform: scale(0.96); }
+
+@keyframes toastIn {
+  from { transform: translateY(16px) scale(0.96); opacity: 0; }
+  to   { transform: translateY(0)    scale(1);    opacity: 1; }
+}
+
+@keyframes toastOut {
+  from { transform: translateY(0)    scale(1);    opacity: 1; }
+  to   { transform: translateY(10px) scale(0.97); opacity: 0; }
+}
+
+/* ---------- LOADING SKELETONS ---------- */
+.skeleton,
+.skeleton-block {
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--surface-2) 25%, rgba(0, 0, 0, 0.05) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.2s ease-in-out infinite;
+}
+
+.skeleton            { height: 12px; margin-bottom: 10px; }
+.skeleton:last-child { margin-bottom: 0; }
+.skeleton-block      { height: 12px; }
+
+@keyframes skeletonShimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* Full-page skeleton card (direct-draft flow) */
+.skeleton-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  z-index: 50;
+  align-items: center;
+  justify-content: center;
+}
+.skeleton-overlay.active { display: flex; }
+
+.skeleton-overlay-inner {
+  width: 100%;
+  max-width: 320px;
+  padding: 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+.skeleton-card {
+  width: 100%;
+  background: var(--surface);
+  border: 0.5px solid var(--border-hi);
+  border-radius: var(--r);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.skeleton-overlay-label {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.2px;
+}
+
+/* ---------- TYPING PROGRESS ---------- */
+.typing-progress {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.typing-progress.active { display: flex; }
+
+.typing-progress-track {
+  flex: 1;
+  height: 5px;
+  border-radius: 99px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.typing-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 99px;
+  background: var(--accent);
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.28) 0%, transparent 100%);
+  transition: width 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.typing-progress-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ---------- DONE CELEBRATION — CONFETTI ---------- */
+.confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 300;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -14px;
+  width: 7px;
+  height: 13px;
+  border-radius: 2px;
+  animation: confettiFall 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes confettiFall {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate3d(var(--drift, 0px), 105vh, 0) rotate(720deg); opacity: 0.7; }
+}
+
+/* ---------- MICRO-INTERACTIONS ---------- */
+
+/* Ambient brand glow behind header */
+.hdr { position: relative; }
+.hdr::before {
+  content: '';
+  position: absolute;
+  top: -90px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 340px;
+  height: 180px;
+  background: radial-gradient(closest-side, rgba(0, 102, 204, 0.14), transparent 72%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Shine sweep on primary buttons */
+.gen-btn::after {
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+  transform: translateX(-130%);
+  transition: transform 0.6s ease;
+}
+.gen-btn:hover::after { transform: translateX(130%); }
+
+.login-btn,
+.upgrade-btn,
+#typeBtn {
+  position: relative;
+  overflow: hidden;
+}
+.login-btn::after,
+.upgrade-btn::after,
+#typeBtn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+  transform: translateX(-130%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+.login-btn:hover::after,
+.upgrade-btn:hover::after,
+#typeBtn:hover::after { transform: translateX(130%); }
+
+/* Hover lift on toggle row (not locked) */
+.toggle-row { transition: border-color 0.12s, background 0.12s, box-shadow 0.12s, transform 0.15s; }
+.toggle-row:not(.locked):hover { transform: translateY(-1px); }
+
+/* Outline line hover */
+.outline-line { transition: background 0.15s; }
+.outline-line:hover { background: var(--surface-2); border-radius: 4px; }
+
+/* Consistent focus ring */
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent-glow);
+  outline-offset: 1px;
+}
+
+/* Type button icon spacing */
+.type-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.type-btn svg { width: 13px; height: 13px; }
+
+/* Crown badge SVG */
+.crown-badge .crown svg { width: 10px; height: 10px; vertical-align: -1px; }
+.upgrade-btn svg { width: 12px; height: 12px; }
+
+/* ---------- SCROLL AFFORDANCE ---------- */
+
+/* Clearly visible scrollbar so pages obviously scroll */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.22); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.34); }
+
+/* Breathing room at the bottom of each page */
+.body { padding-bottom: 20px; }
+
+/* Tighter vertical rhythm so key buttons sit higher */
+.section { padding-top: 13px; padding-bottom: 13px; }
+.field + .field { margin-top: 8px; }
+
+/* Scroll-for-more pill */
+.scroll-hint {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: 99px;
+  background: rgba(29, 29, 31, 0.85);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  z-index: 150;
+  pointer-events: none;
+  backdrop-filter: saturate(180%) blur(10px);
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
+}
+.scroll-hint.visible {
+  display: inline-flex;
+  animation: hintIn 0.35s ease both, hintPulse 2.2s ease-in-out 0.5s infinite;
+}
+.scroll-hint svg {
+  width: 13px;
+  height: 13px;
+  animation: hintBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes hintIn {
+  from { transform: translateX(-50%) translateY(10px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
+}
+@keyframes hintPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.75; }
+}
+@keyframes hintBounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(2px); }
+}
+
+/* ---------- TYPE CONTROLS — pause / stop redesign ---------- */
+
+/* Center the control row while typing */
+.type-controls.typing { justify-content: center; }
+
+/* Pause: circular icon button; turns blue while paused (acting as Resume) */
+.type-btn-pause {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 50%;
+}
+.type-btn-pause.paused {
+  background: var(--accent) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px var(--accent-glow) !important;
+}
+.type-btn-pause.paused:hover:not(:disabled) { background: #0055aa !important; }
+
+/* Stop: dark slate circular icon button */
+#stopBtn {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(29, 29, 31, 0.88);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+  flex-shrink: 0;
+}
+#stopBtn:hover:not(:disabled) {
+  background: rgba(29, 29, 31, 0.96);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+#stopBtn:active:not(:disabled) { transform: scale(0.94); }
+#stopBtn:disabled {
+  background: var(--surface-3);
+  color: var(--muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Dim the typing progress bar while paused */
+.typing-progress.paused .typing-progress-fill {
+  background: var(--muted);
+}
+
+/* ---------- REDUCED MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .toast,
+  .skeleton,
+  .skeleton-block,
+  .confetti-piece,
+  .scroll-hint {
+    animation: none !important;
+  }
+  .review-nudge {
+    transition: none;
+  }
+  .gen-btn::after,
+  .login-btn::after,
+  .upgrade-btn::after,
+  #typeBtn::after {
+    display: none;
+  }
+  .page-enter,
+  .page-exit {
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ══════════════════════════════
+   GENERATE FORM — FITS ONE SCREEN
+   Scoped to #pageForm so the typewriter and preview pages keep their airier
+   rhythm. The form used to need a scroll on typical side-panel heights; this
+   compacts the vertical rhythm until the whole form (header to Generate) sits
+   on screen, and the CTA is one two-button row, not two stacked full-bleeds.
+   ══════════════════════════════ */
+#pageForm .hdr { height: 48px; }
+#pageForm .mode-bar { margin-top: 8px; }
+#pageForm .body { padding-bottom: 12px; }
+
+#pageForm .section { padding-top: 16px; padding-bottom: 15px; }
+#pageForm .sec-label { margin-bottom: 12px; }
+
+#pageForm .field { gap: 5px; }
+#pageForm .field + .field { margin-top: 10px; }
+#pageForm .row + .field { margin-top: 10px; }
+
+#pageForm .field label { font-size: 12px; }
+#pageForm .lbl-unit { font-size: 9.5px; }
+
+#pageForm .field input,
+#pageForm .field select,
+#pageForm .field textarea {
+  padding: 9px 12px;
+  font-size: 13px;
+}
+
+#pageForm .field textarea {
+  height: auto;
+  min-height: 72px;
+  resize: vertical;
+}
+
+#pageForm .toggle-row { padding: 10px 12px; }
+
+/* Two-up CTA: Type Text is the quiet escape hatch, Generate is the point. */
+/* Two-up CTA, pinned to the bottom of the panel at every panel height.
+   `sticky` + `margin-top:auto` does both jobs in one: on a tall panel the auto
+   margin pushes the row down (no dead space under the buttons), and on a short
+   one it sticks to the viewport edge so it is reachable without scrolling.
+   The full-width bleed means the translucent background spans the panel and the
+   form content scrolls *under* the buttons rather than past their edge. */
+#pageForm .cta-row {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: stretch;
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  margin: auto -14px 0;
+  padding: 10px 14px 12px;
+  border-top: 0.5px solid var(--border);
+  border-bottom: none;
+  background: rgba(245, 245, 247, 0.86);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  /* `.section` runs a fadeUp that leaves a transform behind. A pinned element
+     with a live transform is not worth the risk of breaking its sticky
+     containing block, and it cannot animate usefully anyway — the row does not
+     move. */
+  animation: none;
+}
+#pageForm .cta-row .gen-btn,
+#pageForm .cta-row .apply-btn {
+  width: auto;
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#pageForm .gen-btn { padding: 9px 16px; font-size: 13px; }
+#pageForm .apply-btn { padding: 8px 12px; font-size: 12px; }
+
+/* The pinned CTA row occupies the bottom ~62px of the panel. Both floating
+   overlays are siblings of the pages inside .app, so the visible page can be
+   targeted with a sibling combinator and both lifted clear of the buttons.
+   Without this, upgrade toasts land on top of the CTA that produced them. */
+#pageForm:not(.page-hidden) ~ .scroll-hint  { bottom: 92px; }
+#pageForm:not(.page-hidden) ~ .toast-stack   { bottom: 92px; }
+#pagePreview:not(.page-hidden) ~ .scroll-hint { bottom: 84px; }
+#pagePreview:not(.page-hidden) ~ .toast-stack  { bottom: 84px; }
+
+/* ══════════════════════════════════════════
+   TYPE DOCK — Start Typing pinned to the bottom
+   Same sticky + auto-margin trick as the form's CTA row: bottom of the panel on
+   a tall screen, always reachable on a short one. The status line travels with
+   it, so an error like "open a Google Doc first" is visible without scrolling
+   back up to where the error happened to render.
+   ══════════════════════════════════════════ */
+#pagePreview .type-dock {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  margin: auto -14px 0;
+  padding: 10px 14px 12px;
+  border-top: 0.5px solid var(--border);
+  border-bottom: none;
+  background: rgba(245, 245, 247, 0.86);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  animation: none;
+}
+
+.review-nudge {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 9px;
+  padding: 10px 11px;
+  border: 0.5px solid var(--border-hi);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.review-nudge[hidden] { display: none; }
+.review-nudge.visible { opacity: 1; transform: none; }
+
+.review-nudge-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.review-nudge-title {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  color: var(--text);
+}
+
+.review-nudge-sub {
+  font-family: var(--sans);
+  font-size: 11px;
+  line-height: 1.35;
+  color: #6e6e73;
+}
+
+.review-nudge-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.review-nudge-primary {
+  flex: 1;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.1s;
+}
+
+.review-nudge-primary:hover { background: #0055aa; }
+.review-nudge-primary:active { transform: scale(0.98); }
+.review-nudge-primary:focus-visible { outline: 2px solid var(--accent-glow); outline-offset: 2px; }
+
+.review-nudge-secondary {
+  padding: 7px 8px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #6e6e73;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.review-nudge-secondary:hover {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.review-nudge-secondary:focus-visible {
+  outline: 2px solid var(--accent-glow);
+  outline-offset: 2px;
+}

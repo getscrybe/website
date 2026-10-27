@@ -1,0 +1,1790 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ══════════════════════════════
+   TOKENS
+══════════════════════════════ */
+:root {
+  --bg:          #f5f5f7;
+  --surface:     #ffffff;
+  --surface-2:   #f0f0f2;
+  --surface-3:   #e8e8ed;
+  --border:      rgba(0, 0, 0, 0.08);
+  --border-hi:   rgba(0, 0, 0, 0.14);
+  --text:        #1d1d1f;
+  --text-2:      #6e6e73;
+  --muted:       #aeaeb2;
+  --accent:      #0066cc;
+  --accent-2:    #0077ed;
+  --accent-dim:  rgba(0, 102, 204, 0.08);
+  --accent-glow: rgba(0, 102, 204, 0.22);
+  --red:         #ff3b30;
+  --red-dim:     rgba(255, 59, 48, 0.1);
+  --green:       #34c759;
+  --green-dim:   rgba(52, 199, 89, 0.1);
+
+  /* Upgrade / gated-feature amber. Every yellow in the panel resolves to these,
+     which is what makes the gated states read as one system instead of a
+     scattering of near-identical oranges. Anchored on the locked duration rail
+     (--amber-soft fill, --amber-line edge, --amber-text label), which is the
+     yellow that was already right.
+
+     The two deep tones exist for contrast: --amber at 10px on the panel
+     background is ~2.0:1 and effectively unreadable, so small amber text uses
+     --amber-text (~3.1:1) and anything sitting on an amber wash steps deeper. */
+  --amber:            #ff9500;
+  --amber-text:       #e08600;
+  --amber-deep:       #b36000;
+  --amber-deepest:    #8f4c00;
+  --amber-dim:        rgba(255, 149, 0, 0.08);
+  --amber-soft:       rgba(255, 149, 0, 0.16);
+  --amber-line:       rgba(255, 149, 0, 0.32);
+  --amber-line-strong: rgba(255, 149, 0, 0.5);
+  --amber-glow:       rgba(255, 149, 0, 0.3);
+  --amber-glow-strong: rgba(255, 149, 0, 0.45);
+
+  /* ── Track greys ──
+     --surface-3 sits at ~1.2:1 against the panel background, which is why the
+     unfilled duration rail was hard to see. Captions move up to --text-2
+     (~4.6:1) rather than --muted (~1.9:1); at 8px that difference is the whole
+     ballgame. */
+  --rail:        #dedee4;
+  --r:           10px;
+  --sans:        'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+  --mono:        'JetBrains Mono', 'SF Mono', monospace;
+  --nav-h:       48px;
+}
+
+/* ══════════════════════════════
+   BASE
+══════════════════════════════ */
+html, body {
+  width: 100%;
+  min-width: 260px;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ══════════════════════════════
+   APP SHELL — two-page layout
+══════════════════════════════ */
+.app {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.page-hidden { display: none !important; }
+
+.page-enter {
+  animation: slideInRight 0.28s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+.page-exit {
+  animation: slideOutLeft 0.28s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes slideOutLeft {
+  from { transform: translateX(0);     opacity: 1; }
+  to   { transform: translateX(-100%); opacity: 0; }
+}
+
+/* ══════════════════════════════
+   HEADER
+══════════════════════════════ */
+.hdr {
+  padding: 0 14px;
+  height: var(--nav-h);
+  border-bottom: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(245, 245, 247, 0.88);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  /* `.page` is a flex column, so on a short panel the header was a shrink
+     candidate and lost ~6px. A sticky header has a fixed job — keep it. */
+  flex-shrink: 0;
+}
+
+/* `.hdr` is space-between, so a bare Back+brand pair splits across the full
+   width. Grouping the left side lets the account strip own the right edge on
+   every page instead.
+   The min-width is a floor, not a target: below ~360px the strip outgrows the
+   panel and the wordmark has to give way, but it must never collapse to nothing
+   or the logo vanishes entirely. 84px holds the 26px icon plus a readable
+   "Scrybe". */
+.hdr-lead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 84px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+/* The wordmark is the only thing in the header allowed to give up width. The
+   quota chips and the upgrade action are the reason the strip is here, so they
+   hold their size and "Scrybe" truncates first on a narrow panel. */
+.brand > div { min-width: 0; }
+.brand-name,
+.brand-sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.brand-sub {
+  font-size: 10px;
+  font-weight: 600;
+  color: #6e6e73;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.brand-icon {
+  width: 26px;
+  height: 26px;
+  background: transparent;
+  border-radius: 7px;
+  overflow: hidden; /* ← clips the image to the rounded container */
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.brand-icon svg  { width: 13px; height: 13px; color: #fff; }
+.brand-icon img  { width: 24px; height: 24px; object-fit: contain; }
+
+.brand-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.3px;
+  color: var(--text);
+}
+
+/* ══════════════════════════════
+   BACK BUTTON
+══════════════════════════════ */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background 0.12s;
+}
+.back-btn:hover    { background: var(--accent-dim); }
+.back-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.back-btn svg      { width: 13px; height: 13px; }
+
+/* ══════════════════════════════
+   BODY / SECTIONS
+══════════════════════════════ */
+.body {
+  padding: 0 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.section {
+  padding: 16px 0 15px;
+  border-bottom: 0.5px solid var(--border);
+  animation: fadeUp 0.22s ease both;
+}
+.section:last-of-type { border-bottom: none; }
+
+.section:nth-child(1) { animation-delay: 0.03s; }
+.section:nth-child(2) { animation-delay: 0.06s; }
+.section:nth-child(3) { animation-delay: 0.09s; }
+.section:nth-child(4) { animation-delay: 0.12s; }
+.section:nth-child(5) { animation-delay: 0.15s; }
+.section:nth-child(6) { animation-delay: 0.18s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.35 } }
+
+/* ══════════════════════════════
+   LABELS
+══════════════════════════════ */
+.sec-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.sec-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+
+.lbl-unit {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.2px;
+}
+
+/* ══════════════════════════════
+   FIELDS
+══════════════════════════════ */
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field + .field { margin-top: 10px; }
+
+/* wrap:wrap is load-bearing, not cosmetic. These labels hold several inline
+   items — the unit hint and, on capped fields, a crown badge — inside a 1fr
+   grid column. Without it the label was a non-wrapping flex row wider than its
+   column, so the badge bled sideways into the neighbouring field (Grade Level
+   landed on top of the "500 max" chip) and overflowed the panel edge. nowrap on
+   the text runs is kept so individual words still never break; only the items
+   move to a second line. */
+.field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  row-gap: 3px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-width: 0;
+  background: var(--surface);
+  border: 0.5px solid var(--border-hi);
+  border-radius: var(--r);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 400;
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 0.5px 0 rgba(255, 255, 255, 0.8) inset;
+  -webkit-font-smoothing: antialiased;
+}
+
+.field input:hover,
+.field select:hover,
+.field textarea:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim), 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.field select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23aeaeb2' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  color: var(--text);
+}
+.field select option { background: var(--surface); color: var(--text); }
+
+.field textarea {
+  resize: vertical;
+  line-height: 1.6;
+  font-size: 12.5px;
+}
+
+/* 2-col grid */
+/* min-height, not height: the fixed 18px was there to line up labels in a
+   two-up row, but it clipped any label whose items wrapped. min-height still
+   aligns the normal single-line case and lets a wrapped badge grow. */
+.row   { display: grid; gap: 9px; }
+.row > * { min-width: 0; }
+.row-2 { grid-template-columns: 1fr 1fr; }
+.row-2 .field label { min-height: 18px; line-height: 18px; }
+
+/* no number spinners */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* mono numeric inputs */
+.mono-input {
+  font-family: var(--mono) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.4px !important;
+  color: var(--text) !important;
+}
+
+/* error state */
+.input-error {
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 3px var(--red-dim) !important;
+}
+
+/* other subject field */
+#otherSubjectWrap         { display: none; margin-top: 8px; }
+#otherSubjectWrap.visible { display: block; }
+
+/* ══════════════════════════════
+   TOGGLE ROW
+══════════════════════════════ */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 0.5px solid var(--border-hi);
+  border-radius: var(--r);
+  background: var(--surface);
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
+}
+.toggle-row:hover { border-color: rgba(0, 0, 0, 0.18); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); }
+.toggle-row.on    { border-color: var(--accent); background: var(--accent-dim); box-shadow: 0 0 0 3px var(--accent-dim); }
+
+.toggle-label { font-size: 12px; font-weight: 500; color: var(--text-2); transition: color 0.12s; }
+.toggle-row.on .toggle-label { color: var(--accent); }
+
+/* iOS switch */
+.sw {
+  width: 30px;
+  height: 18px;
+  background: var(--surface-3);
+  border-radius: 99px;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset;
+}
+.sw.on { background: var(--accent); box-shadow: 0 2px 8px var(--accent-glow); }
+.sw::after {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  top: 2px; left: 2px;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+.sw.on::after { transform: translateX(12px); }
+
+/* ══════════════════════════════
+   BUTTONS
+══════════════════════════════ */
+
+/* Generate / primary CTA */
+.gen-btn {
+  width: 100%;
+  padding: 11px 18px;
+  border: none;
+  border-radius: 980px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 12px var(--accent-glow), 0 1px 0 rgba(255, 255, 255, 0.15) inset;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.gen-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+.gen-btn:hover  { background: #0055aa; box-shadow: 0 4px 20px var(--accent-glow), 0 1px 0 rgba(255, 255, 255, 0.15) inset; }
+.gen-btn:active { transform: scale(0.985); background: #004499; }
+
+/* Apply changes — secondary */
+.apply-btn {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid var(--border-hi);
+  border-radius: 980px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  margin-bottom: 10px;
+}
+.apply-btn:hover:not(:disabled)  { background: var(--surface-2); border-color: rgba(0, 0, 0, 0.18); }
+.apply-btn:active:not(:disabled) { transform: scale(0.985); }
+.apply-btn:disabled              { opacity: 0.45; cursor: not-allowed; }
+
+/* API key save */
+.api-key-row       { display: flex; gap: 6px; }
+.api-key-row input { flex: 1; }
+.api-key-save-btn  { padding: 0 12px; }
+.api-key-status    { font-size: 11px; margin-top: 4px; }
+.api-key-status.ok  { color: var(--green); }
+.api-key-status.err { color: var(--red); }
+
+/* ══════════════════════════════
+   PROMPT OUTPUT
+══════════════════════════════ */
+.prompt-out-wrap         { display: none; }
+.prompt-out-wrap.visible { display: block; margin-top: 10px; }
+
+.prompt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.prompt-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.copy-btn {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 980px;
+  transition: background 0.12s;
+}
+.copy-btn:hover { background: var(--accent-dim); }
+
+#promptOut {
+  width: 100%;
+  height: 120px;
+  background: var(--surface);
+  border: 0.5px solid var(--border-hi);
+  border-radius: var(--r);
+  color: var(--text-2);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.65;
+  padding: 10px 12px;
+  resize: vertical;
+  outline: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.15s;
+}
+#promptOut:focus { border-color: rgba(0, 0, 0, 0.2); }
+
+/* ══════════════════════════════
+   ESSAY / DRAFT TEXTAREA
+══════════════════════════════ */
+.essay-preview {
+  width: 100%;
+  min-height: 280px;
+  resize: vertical;
+  font-family: var(--sans) !important;
+  font-size: 12.5px !important;
+  line-height: 1.7 !important;
+  color: var(--text) !important;
+  background: var(--surface);
+  border: 0.5px solid var(--border-hi);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  outline: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.15s;
+  margin-top: 10px;
+}
+.essay-preview:focus { border-color: var(--accent); }
+
+/* ══════════════════════════════
+   BADGES
+══════════════════════════════ */
+.outline-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 0.5px solid rgba(0, 102, 204, 0.15);
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.2px;
+}
+
+.draft-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 0.5px solid var(--border-hi);
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.2px;
+}
+
+.word-count-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.3px;
+}
+
+/* ══════════════════════════════
+   OUTLINE BOX
+══════════════════════════════ */
+.outline-box {
+  margin-top: 12px;
+  background: var(--surface);
+  border: 0.5px solid var(--border-hi);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 120px;
+}
+
+.outline-line {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text);
+  font-family: var(--sans);
+}
+.outline-line:not(:first-child) { padding-left: 4px; }
+
+.outline-status {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  min-height: 16px;
+  margin-bottom: 10px;
+  letter-spacing: 0.1px;
+}
+.outline-status.ok  { color: var(--green); }
+.outline-status.err { color: var(--red); }
+
+/* ══════════════════════════════
+   STATUS LINE
+══════════════════════════════ */
+#status {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  min-height: 16px;
+  letter-spacing: 0.1px;
+  padding: 5px 0 2px;
+}
+#status.ok  { color: var(--green); }
+#status.err { color: var(--red); }
+#status.run { color: var(--accent); }
+
+/* ══════════════════════════════
+   TYPING ANIMATION
+══════════════════════════════ */
+.typing-anim {
+  display: none;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 12px;
+  height: 28px;
+  padding: 0 4px;
+}
+.typing-anim.active { display: flex; }
+.typing-anim.paused { display: flex; opacity: 0.45; }
+
+.typing-bar {
+  width: 3px;
+  height: 14px;
+  border-radius: 99px;
+  background: var(--accent);
+  transform-origin: bottom;
+}
+.typing-anim.active .typing-bar { animation: barBounce 0.9s ease-in-out infinite; }
+.typing-anim.active .typing-bar:nth-child(1) { animation-delay: 0.00s; }
+.typing-anim.active .typing-bar:nth-child(2) { animation-delay: 0.12s; }
+.typing-anim.active .typing-bar:nth-child(3) { animation-delay: 0.24s; }
+.typing-anim.active .typing-bar:nth-child(4) { animation-delay: 0.36s; }
+.typing-anim.active .typing-bar:nth-child(5) { animation-delay: 0.48s; }
+
+@keyframes barBounce {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.4; }
+  50%       { transform: scaleY(1.6); opacity: 1; }
+}
+
+.typing-anim-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.3px;
+  margin-left: 6px;
+}
+
+/* ══════════════════════════════
+   TYPE CONTROLS
+══════════════════════════════ */
+.type-controls {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+.type-controls #typeBtn  { flex: 1; }
+.type-controls #pauseBtn { display: none; }
+.type-controls #stopBtn  { display: none; }
+
+.type-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 980px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+}
+
+#typeBtn {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 10px var(--accent-glow);
+}
+#typeBtn:hover:not(:disabled)  { background: #0055aa; box-shadow: 0 4px 16px var(--accent-glow); }
+#typeBtn:active:not(:disabled) { transform: scale(0.985); }
+#typeBtn:disabled              { background: var(--surface-3); color: var(--muted); cursor: not-allowed; box-shadow: none; }
+
+#stopBtn {
+  background: var(--red);
+  color: #fff;
+  display: none;
+  box-shadow: 0 2px 10px var(--red-dim);
+  padding: 10px 14px;
+  flex-shrink: 0;
+}
+#stopBtn:hover:not(:disabled) { background: #e0302a; box-shadow: 0 4px 14px var(--red-dim); }
+#stopBtn:disabled              { background: var(--surface-3); color: var(--muted); cursor: not-allowed; box-shadow: none; }
+
+.type-btn-pause {
+  background: var(--surface-3) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+  flex-shrink: 0;
+  min-width: 38px;
+}
+.type-btn-pause:hover:not(:disabled) { background: var(--border-hi) !important; }
+
+/* ══════════════════════════════
+   GENERATION OVERLAY
+══════════════════════════════ */
+.gen-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  z-index: 50;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.gen-overlay.active { display: flex; }
+
+.gen-overlay-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.gen-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 48px;
+}
+
+.gen-bar {
+  width: 5px;
+  border-radius: 99px;
+  background: var(--accent);
+  animation: genBarWave 1.1s ease-in-out infinite;
+}
+.gen-bar:nth-child(1) { height: 18px; animation-delay: 0.00s; }
+.gen-bar:nth-child(2) { height: 28px; animation-delay: 0.15s; }
+.gen-bar:nth-child(3) { height: 40px; animation-delay: 0.30s; }
+.gen-bar:nth-child(4) { height: 28px; animation-delay: 0.45s; }
+.gen-bar:nth-child(5) { height: 18px; animation-delay: 0.60s; }
+
+@keyframes genBarWave {
+  0%, 100% { transform: scaleY(0.5); opacity: 0.4; }
+  50%       { transform: scaleY(1.3); opacity: 1; }
+}
+
+.gen-overlay-title {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.2px;
+}
+
+.gen-overlay-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.2px;
+}
+
+/* ══════════════════════════════
+   SCROLLBAR
+══════════════════════════════ */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ══════════════════════════════
+   AUTH — ACCOUNT STRIP
+   Lives inside the sticky header on every signed-in page, so quota, tier and
+   upgrade read identically on Type Text and Generate Essay. The old version was
+   a full-width band under the header carrying an avatar + email, which cost a
+   whole 48px row and was the only asymmetry between the two views. No email now:
+   the strip is quota/tier/action only, and it has to survive a 260px panel.
+   ══════════════════════════════ */
+
+.acct {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+/* Quota chips. Mono and tight so "2 / 5" and "Paste 1 / 3" sit on one line
+   without competing with the brand block for the header's width. Class name is
+   unchanged from the old user-bar so the existing className writes in
+   renderProfile / renderPasteTypeUsage keep working. */
+.essay-usage {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--text-2);
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Nothing to report yet — don't reserve a gap in the strip. */
+.essay-usage:empty { display: none; }
+.essay-usage.usage-warn { color: var(--amber-text); }
+.essay-usage.usage-full { color: var(--red); }
+
+/* ── Tier badge ──────────────────────────── */
+.tier-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  padding: 2px 7px;
+  border-radius: 99px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tier-badge-free {
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 0.5px solid var(--border-hi);
+}
+
+/* Profile could not be loaded — never imply "Free" for a paying user */
+.tier-badge-unknown {
+  color: var(--muted);
+  background: transparent;
+  border: 0.5px dashed var(--border-hi);
+  opacity: 0.7;
+}
+
+.tier-badge-pro {
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 0.5px solid rgba(0, 102, 204, 0.18);
+}
+
+.tier-badge-unlimited {
+  color: #a259ff;
+  background: rgba(162, 89, 255, 0.08);
+  border: 0.5px solid rgba(162, 89, 255, 0.2);
+}
+
+/* ── Essay usage chip ───────────────────── */
+/* ── Upgrade button ─────────────────────── */
+.upgrade-btn {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 99px;
+  border: none;
+  cursor: pointer;
+  background: var(--amber);
+  color: #fff;
+  box-shadow: 0 1px 6px var(--amber-glow);
+  transition: background 0.12s, box-shadow 0.12s, transform 0.1s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.upgrade-btn:hover {
+  background: var(--amber-text);
+  box-shadow: 0 2px 10px var(--amber-glow-strong);
+}
+
+.upgrade-btn:active { transform: scale(0.97); }
+
+/* ── Narrow-panel condensation ──────────────────────────
+   Measured strip widths: 216px with the button label, 166px icon-only, 123px
+   also without the tier badge. What gets given up, in order:
+
+     1. "Essay Typer"  — 72px of static tagline in a header that already says
+        Scrybe. Freeing it is what buys the Upgrade button its label back at
+        realistic side-panel widths, which matters more than the tagline does.
+     2. "Upgrade" text — down to the crown glyph, which carries a title and an
+        aria-label so it stays discoverable.
+     3. Tier badge — the button's own presence already encodes "not unlimited",
+        so this is the least informative thing in the strip.
+     Never given up: the quota chips (the live information), the logo, and the
+     upgrade action itself.
+
+   Sized for the *wider* of the two headers, not the average: Type Text carries
+   a Back button, so its left side is heavier than Generate's, and a threshold
+   tuned to the Generate header overflows the Type one. Sizing to the worst case
+   is what makes the strip genuinely identical on both pages rather than differing
+   by a button label at the same window width.
+
+   Keyed off the header's own inline size rather than the viewport, so the strip
+   responds to the space it actually has instead of assuming the panel fills the
+   window. */
+.hdr { container-type: inline-size; }
+
+@container (max-width: 400px) {
+  .hdr .brand-sub { display: none; }
+}
+
+@container (max-width: 340px) {
+  .acct .upgrade-label { display: none; }
+  .acct .upgrade-btn { padding: 4px 7px; }
+}
+
+@container (max-width: 290px) {
+  .acct .tier-badge { display: none; }
+}
+
+/* ══════════════════════════════
+   AUTH — LOGIN PROMPT
+══════════════════════════════ */
+
+.login-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px 20px;
+  text-align: center;
+  flex: 1;
+}
+
+.login-prompt-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--accent-dim);
+  border: 0.5px solid rgba(0, 102, 204, 0.14);
+  display: grid;
+  place-items: center;
+  margin-bottom: 2px;
+}
+
+.login-prompt-icon svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.login-prompt h3 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: -0.2px;
+  margin-bottom: 2px;
+}
+
+.login-prompt p {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.55;
+  max-width: 200px;
+}
+
+.login-btn {
+  margin-top: 4px;
+  padding: 10px 22px;
+  border-radius: 980px;
+  border: none;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 12px var(--accent-glow);
+  transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+
+.login-btn:hover {
+  background: #0055aa;
+  box-shadow: 0 4px 18px var(--accent-glow);
+}
+
+.login-btn:active { transform: scale(0.985); }
+
+/* ══════════════════════════════
+   TIER GATING — CROWN LOCKS
+══════════════════════════════ */
+
+/* Crown badge — inline next to labels */
+.crown-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 99px;
+  background: var(--amber-dim);
+  border: 0.5px solid var(--amber-line);
+  color: var(--amber-text);
+  cursor: pointer;
+  transition: background 0.12s;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.crown-badge:hover { background: var(--amber-soft); }
+.crown-badge .crown { font-size: 10px; }
+
+/* Lock flash — shakes and turns red for 700ms */
+@keyframes lockFlash {
+  0%   { transform: translateX(0);   border-color: var(--amber-line); }
+  15%  { transform: translateX(-4px); border-color: var(--red); background: var(--red-dim); color: var(--red); }
+  30%  { transform: translateX(4px);  border-color: var(--red); background: var(--red-dim); color: var(--red); }
+  45%  { transform: translateX(-3px); border-color: var(--red); background: var(--red-dim); color: var(--red); }
+  60%  { transform: translateX(3px);  border-color: var(--red); background: var(--red-dim); color: var(--red); }
+  75%  { transform: translateX(-1px); border-color: var(--red); background: var(--red-dim); color: var(--red); }
+  100% { transform: translateX(0);   border-color: var(--amber-line); }
+}
+
+.lock-flash {
+  animation: lockFlash 0.7s ease both;
+}
+
+/* Capped input flash */
+@keyframes inputFlash {
+  0%, 100% { border-color: var(--border-hi); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  40%       { border-color: var(--red); box-shadow: 0 0 0 3px var(--red-dim); }
+}
+
+.input-cap-flash {
+  animation: inputFlash 0.7s ease both;
+}
+
+/* ══════════════════════════════
+   GENERATE BUTTON — UPGRADE STATE
+══════════════════════════════ */
+
+.gen-btn.gen-btn-upgrade {
+  background: var(--amber);
+  box-shadow: 0 2px 14px var(--amber-glow-strong);
+}
+
+.gen-btn.gen-btn-upgrade:hover {
+  background: var(--amber-text);
+  box-shadow: 0 4px 20px var(--amber-glow-strong);
+}
+
+/* ══════════════════════════════
+   OUTLINE TOGGLE — LOCKED STATE
+══════════════════════════════ */
+
+.toggle-row.locked {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.toggle-row.locked:hover {
+  border-color: var(--border-hi);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* ══════════════════════════════
+   MISC HELPERS
+══════════════════════════════ */
+
+/* Hide elements for tier gating */
+.tier-hidden { display: none !important; }
+/* ══════════════════════════════
+   PREVIEW TABS
+══════════════════════════════ */
+.preview-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.preview-tab {
+  flex: 1;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.preview-tab.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.preview-tab:not(.active):hover {
+  color: var(--text);
+}
+
+/* ══════════════════════════════
+   MODE NAV — Type | Generate
+   Top-level switch, sits directly under the sticky header on both top-level
+   pages. Type is listed first and owns the default state.
+   ══════════════════════════════ */
+.mode-bar {
+  display: flex;
+  gap: 3px;
+  margin: 10px 14px 0;
+  padding: 3px;
+  background: var(--surface-2);
+  border-radius: 9px;
+  flex-shrink: 0;
+}
+
+.mode-btn {
+  flex: 1;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  padding: 7px 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.mode-btn.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.mode-btn:not(.active):hover { color: var(--text); }
+
+/* ══════════════════════════════
+   TARGET DURATION
+   ══════════════════════════════ */
+.dur-readout {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 22px;
+  margin-bottom: 6px;
+}
+
+/* Caption sits in front of the number so it reads "ETA 4:32" — an ETA has to be
+   present before a run starts, not just the time the user picked. */
+.dur-main {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.dur-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-2);
+  transition: color 0.15s;
+}
+
+/* While the run is live the caption becomes the countdown's label, so a ticking
+   number is never ambiguous about whether it is counting up or down. */
+.dur-counting .dur-label { color: var(--accent); }
+.dur-paused .dur-label  { color: var(--amber-text); }
+
+.dur-value {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -1px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.dur-eff {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.2px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The input is a full-height transparent hit area layered over a drawn rail, so
+   the visible bar can be styled freely without fighting ::-webkit-slider-runnable
+   -track, and the grab target stays comfortable on a sidebar. */
+.dur-track {
+  position: relative;
+  height: 24px;
+}
+
+/* 9px rather than 7px: at 7px a light fill on a light rail was effectively
+   invisible, which made the handle look like it was floating. */
+.dur-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 9px;
+  transform: translateY(-50%);
+  border-radius: 99px;
+  background: var(--rail);
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.08);
+}
+
+/* Grows outward from the centre detent toward the handle. Left/width are set
+   in updateDurationReadout. */
+.dur-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  border-radius: 99px;
+  /* Solid, not a gradient fading to near-white: the far end of the fill was
+     washing out against the rail and reading as "nothing is selected". */
+  background: var(--accent);
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--accent) 70%, var(--text));
+  opacity: 0;
+  transition: left 0.12s ease, width 0.12s ease, opacity 0.2s ease;
+}
+
+#durationRange {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 24px;
+  margin: 0;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  display: block;
+}
+
+#durationRange::-webkit-slider-runnable-track {
+  height: 24px;
+  background: transparent;
+  border: none;
+}
+
+#durationRange::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 4px; /* centres the 16px thumb on the 24px runnable track */
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  cursor: grab;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+
+#durationRange::-webkit-slider-thumb:hover {
+  transform: scale(1.14);
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.24);
+}
+
+#durationRange::-webkit-slider-thumb:active { cursor: grabbing; }
+
+#durationRange::-moz-range-track {
+  height: 24px;
+  background: transparent;
+  border: none;
+}
+
+#durationRange::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  cursor: grab;
+}
+
+#durationRange:focus-visible { outline: none; }
+#durationRange:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px var(--accent-dim); }
+#durationRange:focus-visible::-moz-range-thumb     { box-shadow: 0 0 0 3px var(--accent-dim); }
+
+/* No text pasted yet — the range has nothing to say. */
+#durationRange:disabled { opacity: 0.35; cursor: default; }
+#durationRange:disabled::-webkit-slider-thumb { cursor: default; transform: none; }
+#durationRange:disabled::-moz-range-thumb     { cursor: default; }
+
+/* Empty state dims the drawn rail too, not just the input on top of it. */
+.dur-track:has(#durationRange:disabled) .dur-rail { opacity: 0.4; }
+
+/* ── Free tier: the bar is visible and reachable, it just refuses to move. ──
+   It is deliberately NOT hidden and NOT `disabled` — a control that is simply
+   absent gives the user nothing to react to. The not-allowed cursor states the
+   lock up front, and a drag still gets answered with the upgrade toast. */
+/* Opaque while locked, for the same reason as .dur-lock: the thumb is a 16px
+   circle directly under the PRO badge, and a translucent fill let the rail read
+   through it as a second, third ring. Solid surface + amber edge keeps it a
+   handle that the badge is visibly parked on. */
+.dur-locked #durationRange::-webkit-slider-thumb {
+  background: var(--surface);
+  border-color: var(--amber-line-strong);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.dur-locked #durationRange::-moz-range-thumb {
+  background: var(--surface);
+  border-color: var(--amber-line-strong);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* The locked rail — no amber wash on a grey track. Just a deeper track with a
+   light amber outline, which keeps it calm and matches the rest of the gated
+   state. */
+.dur-locked .dur-rail {
+  background: var(--rail);
+  box-shadow: inset 0 0 0 1px var(--amber-line);
+}
+.dur-locked .dur-fill {
+  background: var(--amber-soft);
+  box-shadow: none;
+}
+.dur-locked { cursor: not-allowed; }
+
+/* Sits on the knob when the tier is gated, so the control reads as "locked in
+   place" rather than "broken". It IS the free tier's upgrade tap — clicking the
+   badge opens the purchase page, so a silo of "why can't I move this" never
+   forms. */
+.dur-lock {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 6px 0 5px;
+  border-radius: 99px;
+  /* Opaque on purpose. This badge sits directly on top of the slider thumb, and
+     --amber-dim is only 8% alpha — so the thumb's circle showed through it and
+     the two together read as overlapping circles once the input stopped being
+     :disabled (i.e. the moment text was pasted). Mixing amber into the surface
+     gives the same tint with a solid backing, so nothing underneath shows. */
+  background: color-mix(in srgb, var(--amber) 16%, var(--surface));
+  border: 1px solid var(--amber-line-strong);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16);
+  color: var(--amber-deepest);
+  font-family: var(--mono);
+  cursor: pointer;
+  z-index: 3;
+  transition: transform 0.12s, background 0.12s, box-shadow 0.12s;
+}
+
+.dur-lock svg { width: 9px; height: 9px; }
+.dur-locked .dur-lock { display: flex; }
+
+/* Names the tier instead of leaving the amber glyph to be interpreted. */
+.dur-lock-tag {
+  font-family: var(--mono);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  margin-left: 2px;
+}
+
+.dur-lock:hover {
+  background: var(--amber-soft);
+  box-shadow: 0 0 0 4px var(--amber-dim);
+}
+.dur-lock:active { transform: translate(-50%, -50%) scale(0.92); }
+
+/* Handle is sitting on Natural, so the marker would just be visual noise. */
+.dur-tick.at-handle { opacity: 0; }
+
+/* Centre detent. Spans only the height of the drawn rail rather than the full
+   hit area, so it reads as a notch in the bar instead of a stray hairline. */
+.dur-tick {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 7px;
+  transform: translate(-50%, -50%);
+  width: 1px;
+  background: var(--muted);
+  opacity: 0.4;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.dur-locked .dur-tick { background: var(--amber-line); }
+
+@keyframes durNudge {
+  0%   { transform: translate(-50%, -50%); }
+  22%  { transform: translate(calc(-50% - 3px), -50%); }
+  48%  { transform: translate(calc(-50% + 3px), -50%); }
+  74%  { transform: translate(calc(-50% - 1.5px), -50%); }
+  100% { transform: translate(-50%, -50%); }
+}
+
+.dur-nudge { animation: durNudge 0.42s ease both; }
+
+/* Yellow focus ring for the locked knob, not a red one. */
+.dur-locked #durationRange:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px var(--amber-dim); }
+.dur-locked #durationRange:focus-visible::-moz-range-thumb     { box-shadow: 0 0 0 3px var(--amber-dim); }
+
+/* End labels are the actual minutes each end lands on, with the adjective as a
+   caption. Numbers are what make the control predictable; "Slower"/"Faster" on
+   their own did not. */
+.dur-ends {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 6px;
+  font-family: var(--mono);
+  color: var(--text-2);
+}
+
+.dur-end {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1.25;
+}
+
+.dur-end-time {
+  font-size: 10px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+}
+
+.dur-end-cap {
+  font-size: 8.5px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+/* Now a button — clicking it returns the handle to the natural pace. Resetting
+   to Natural by dragging a 1000-step slider to within a pixel of centre is not
+   something anyone should have to do. */
+.dur-natural-label {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 1px 6px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-2);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.dur-natural-label:hover { background: var(--surface-2); color: var(--text); }
+
+.dur-natural-cap {
+  font-size: 8.5px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.dur-natural-label .dur-natural-time {
+  font-size: 10px;
+  color: var(--text);
+}
+
+/* At the centre detent there is nothing to reset to, so the affordance goes away
+   rather than sitting there as a dead control. */
+.dur-natural-label.at-natural { opacity: 0.7; }
+.dur-natural-label.at-natural:hover { background: transparent; cursor: default; color: var(--text-2); }
+
+.dur-hint {
+  margin-top: 7px;
+  font-family: var(--sans);
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: var(--text-2);
+}
+
+/* While a run is live the ETA is live too, so the bar is dimmed for the gated
+   tier — moving it would change nothing about the run in progress. */
+#durationField.run-inert .dur-track,
+#durationField.run-inert .dur-ends,
+#durationField.run-inert .dur-hint { opacity: 0.5; }
+
+/* ══════════════════════════════
+   FREE-TIER LIMIT METER
+   ══════════════════════════════ */
+.limit-meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.limit-meter-track {
+  flex: 1;
+  height: 3px;
+  border-radius: 99px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.limit-meter-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 99px;
+  background: var(--accent);
+  transition: width 0.18s ease, background 0.18s;
+}
+
+.limit-meter-fill.usage-warn { background: var(--amber); }
+.limit-meter-fill.usage-full { background: var(--red); }
+
+.limit-meter-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.2px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.limit-meter-label.usage-warn { color: var(--amber-text); }
+.limit-meter-label.usage-full { color: var(--red); }
+
+/* The custom-text count became a button so the capped state can be an upgrade
+   link. Strip the button chrome and keep the badge look. */
+button.word-count-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  padding: 3px 7px;
+  margin: -3px -7px;
+  border: none;
+  border-radius: 99px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+button.word-count-badge:hover {
+  background: var(--surface-3);
+  color: var(--text-2);
+}
+
+/* Same warn/full thresholds as the usage chips in the user bar. */
+button.word-count-badge.usage-warn { color: var(--amber-text); }
+button.word-count-badge.usage-full { color: var(--red); }
+
+button.word-count-badge.usage-warn:hover { background: var(--amber-dim); color: var(--amber-deep); }
+button.word-count-badge.usage-full:hover { background: var(--red-dim); color: var(--red); }
+
+/* Once the text is at the cap, the count stops being a muted grey chip and
+   becomes a filled amber pill — the only text-coloured element in the panel. */
+button.word-count-badge.at-cap {
+  color: var(--amber-deep);
+  background: var(--amber-dim);
+  border: 0.5px solid var(--amber-line);
+  padding: 3px 8px;
+  margin: -3px -8px;
+  font-weight: 700;
+}
+
+button.word-count-badge.at-cap:hover { background: var(--amber-soft); color: var(--amber-deepest); }
+
+/* Over the cap (user pasted something long) — same pill, red. */
+button.word-count-badge.over-cap {
+  color: var(--red);
+  background: var(--red-dim);
+  border-color: color-mix(in srgb, var(--red) 45%, transparent);
+}
+
+button.word-count-badge.over-cap:hover { background: color-mix(in srgb, var(--red) 18%, transparent); color: var(--red); }
+
+/* ══════════════════════════════════════════
+   LIMIT NOTE — under the word-count input
+   States the ceiling and the way past it as one clickable line. The crown badge
+   in the label is 9px muted text and was being missed entirely.
+   ══════════════════════════════════════════ */
+.limit-note {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  margin-top: 4px;
+  padding: 5px 8px;
+  border: 0.5px solid rgba(255, 149, 0, 0.3);
+  border-radius: 7px;
+  background: rgba(255, 149, 0, 0.08);
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-2);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.limit-note:hover {
+  background: rgba(255, 149, 0, 0.14);
+  border-color: rgba(255, 149, 0, 0.5);
+}
+
+.limit-note svg {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  color: #e08600;
+}
+
+/* The CTA is separated by an auto margin so it sits at the far right of the
+   note, making the upgrade the obvious target of the tap. */
+.limit-note > span:first-of-type { flex: 1; min-width: 0; }
+
+.limit-note-cta {
+  flex-shrink: 0;
+  font-weight: 700;
+  color: #b36000;
+  white-space: nowrap;
+}
+
+.limit-note:hover .limit-note-cta { color: #8f4c00; }
+
+/* At the cap the note stops being information and becomes the warning. */
+.limit-note.at-cap {
+  background: var(--red-dim);
+  border-color: color-mix(in srgb, var(--red) 40%, transparent);
+}
+
+.limit-note.at-cap svg { color: var(--red); }
+.limit-note.at-cap .limit-note-cta { color: var(--red); }
+.limit-note.at-cap:hover { background: color-mix(in srgb, var(--red) 16%, transparent); }
+
+/* ══════════════════════════════════════════
+   CAP BANNER — under the custom-text box
+   Appears the moment the free cap is crossed, so the user is told before they
+   press Start Typing and get refused.
+   ══════════════════════════════════════════ */
+.cap-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  border: 0.5px solid rgba(255, 149, 0, 0.35);
+  background: rgba(255, 149, 0, 0.09);
+  animation: fadeUp 0.2s ease both;
+}
+
+.cap-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cap-banner-title {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.1px;
+}
+
+.cap-banner-sub {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: var(--text-2);
+}
+
+.cap-banner-cta {
+  flex-shrink: 0;
+  padding: 6px 11px;
+  border: none;
+  border-radius: 99px;
+  background: #ff9500;
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.cap-banner-cta:hover  { background: #e08600; }
+.cap-banner-cta:active { transform: scale(0.96); }
+
+/* Over the cap the banner turns red — same words, different severity. */
+.cap-banner.over {
+  border-color: color-mix(in srgb, var(--red) 40%, transparent);
+  background: var(--red-dim);
+}
+
+.cap-banner.over .cap-banner-cta { background: var(--red); }
+.cap-banner.over .cap-banner-cta:hover { background: #d9342b; }

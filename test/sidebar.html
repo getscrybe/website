@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>My Sidebar</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f9f9fb;
+      color: #1a1a2e;
+      padding: 20px;
+    }
+    h1 { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: #4f46e5; }
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #888; margin-bottom: 6px; }
+    .value { font-size: 13px; color: #333; word-break: break-all; line-height: 1.5; }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #4338ca; }
+  </style>
+</head>
+<body>
+  <h1>👋 My Extension</h1>
+  <div class="card">
+    <div class="label">Page Title</div>
+    <div class="value" id="title">Loading...</div>
+  </div>
+  <div class="card">
+    <div class="label">URL</div>
+    <div class="value" id="url">Loading...</div>
+  </div>
+  <button id="refreshBtn">🔄 Refresh</button>
+
+  <script src="sidebar.js"></script>
+</body>
+</html>

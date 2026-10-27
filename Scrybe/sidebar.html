@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Scrybe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="stylesheet.css">
+  <link rel="stylesheet" href="stylesheet-additions.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ═══════════════════════════
+       LOGIN PROMPT (shown when signed out)
+  ═══════════════════════════ -->
+  <div class="page" id="pageLogin">
+    <header class="hdr">
+      <div class="brand">
+        <div class="brand-icon">
+          <img src="Scrybebackground.png" alt="Brand Icon">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span class="brand-name">Scrybe</span>
+          <span class="brand-sub">Essay Typer</span>
+        </div>
+      </div>
+    </header>
+    <div class="body">
+      <div class="login-prompt">
+        <div class="login-prompt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+        </div>
+        <h3>Sign in to Scrybe</h3>
+        <p>Generate and type AI essays directly into Google Docs.</p>
+        <button class="login-btn" id="loginBtn">Sign In →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════
+       PAGE 1 — FORM
+  ═══════════════════════════ -->
+  <div class="page page-hidden" id="pageForm">
+    <header class="hdr">
+      <div class="hdr-lead">
+        <div class="brand">
+          <div class="brand-icon">
+            <img src="Scrybebackground.png" alt="Brand Icon">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span class="brand-name">Scrybe</span>
+            <span class="brand-sub">Essay Typer</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Account strip — shown when signed in. Condensed: quota chips, tier,
+           upgrade. No email; the avatar/email row cost a whole 48px band. -->
+      <div class="acct tier-hidden" data-acct>
+        <span class="essay-usage" data-acct-essay></span>
+        <span class="essay-usage" data-acct-paste></span>
+        <span class="tier-badge tier-badge-free" data-acct-tier>Free</span>
+        <button class="upgrade-btn" data-acct-upgrade title="Upgrade to Scrybe Pro" aria-label="Upgrade to Scrybe Pro"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 6.2l2.4 2L8 4.5l2.6 3.7 2.4-2-.9 5H3.9L3 6.2z"/><path d="M3.9 12.6h8.2V14H3.9z"/></svg><span class="upgrade-label">Upgrade</span></button>
+      </div>
+    </header>
+
+    <!-- Top-level mode nav — Type is the product; Generate is the alternative -->
+    <div class="mode-bar" data-mode-nav>
+      <button class="mode-btn active" data-mode="type">Type Text</button>
+      <button class="mode-btn" data-mode="generate">Generate Essay</button>
+    </div>
+
+    <div class="body">
+      
+      <div class="section">
+        <div class="sec-label">Assignment</div>
+        <div class="row row-2">
+          <div class="field">
+            <label>Subject</label>
+            <select id="subject">
+              <option value="" disabled selected>Choose…</option>
+              <option value="English / Literature">English / Lit</option>
+              <option value="History">History</option>
+              <option value="Science">Science</option>
+              <option value="Psychology">Psychology</option>
+              <option value="Philosophy">Philosophy</option>
+              <option value="Economics">Economics</option>
+              <option value="Political Science">Pol. Science</option>
+              <option value="Computer Science">Comp. Science</option>
+              <option value="Sociology">Sociology</option>
+              <option value="Art / Design">Art / Design</option>
+              <option value="other">Other…</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Target Score</label>
+            <select id="grade">
+              <option value="A+">A+ — Perfect</option>
+              <option value="A" selected>A — Excellent</option>
+              <option value="B+">B+ — Very Good</option>
+              <option value="B">B — Good</option>
+              <option value="C">C — Average</option>
+            </select>
+          </div>
+        </div>
+        <div id="otherSubjectWrap" class="field">
+          <label>Specify subject</label>
+          <input type="text" id="otherSubject" placeholder="e.g. Environmental Studies" maxlength="60" />
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-label">Parameters</div>
+        <div class="row row-2">
+          <div class="field">
+            <label>
+              Word Count <span class="lbl-unit">words</span>
+              <span class="crown-badge tier-hidden" id="wordCountCrown" title="Free tier: 500 words per essay">
+                <span class="crown"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 6.2l2.4 2L8 4.5l2.6 3.7 2.4-2-.9 5H3.9L3 6.2z"/><path d="M3.9 12.6h8.2V14H3.9z"/></svg></span> <span id="wordCountCrownText">500 max</span>
+              </span>
+            </label>
+            <input class="mono-input" type="number" id="wordCount" placeholder="500" min="50" max="99999" inputmode="numeric" />
+          </div>
+          <div class="field">
+            <label>Grade Level <span class="lbl-unit">year in school</span></label>
+            <select id="gradeLevel">
+              <option value="9">9th Grade</option>
+              <option value="10">10th Grade</option>
+              <option value="11">11th Grade</option>
+              <option value="12">12th Grade</option>
+              <option value="college" selected>College</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-label">Content</div>
+        <div class="field">
+          <label>Rubric / Grading Criteria</label>
+          <textarea id="rubric" rows="3" placeholder="Paste your rubric here…"></textarea>
+        </div>
+        <div class="field">
+          <label>Instructions / Prompt</label>
+          <textarea id="instructions" rows="3" placeholder="Paste the assignment prompt or describe what to write…"></textarea>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-label">Options</div>
+        <div class="toggle-row" id="outlineToggle">
+          <span class="toggle-label">
+            Generate outline first
+            <span class="crown-badge tier-hidden" id="outlineCrown">
+              <span class="crown"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 6.2l2.4 2L8 4.5l2.6 3.7 2.4-2-.9 5H3.9L3 6.2z"/><path d="M3.9 12.6h8.2V14H3.9z"/></svg></span> Pro
+            </span>
+          </span>
+          <div class="sw" id="outlineSw"></div>
+        </div>
+      </div>
+
+      <div class="section cta-row">
+        <button class="apply-btn" id="pasteTypeBtn">Type Text →</button>
+        <button class="gen-btn" id="genBtn">Generate →</button>
+      </div>
+    </div>
+
+    <div class="gen-overlay" id="genOverlay">
+      <div class="gen-overlay-inner">
+        <div class="gen-bars">
+          <div class="gen-bar"></div>
+          <div class="gen-bar"></div>
+          <div class="gen-bar"></div>
+          <div class="gen-bar"></div>
+          <div class="gen-bar"></div>
+        </div>
+        <div class="gen-overlay-title" id="genOverlayTitle">Writing essay…</div>
+        <div class="gen-overlay-sub">This takes about 15–30 seconds</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════
+       PAGE 2 — OUTLINE
+  ═══════════════════════════ -->
+  <div class="page page-hidden" id="pageOutline">
+    <header class="hdr">
+      <div class="hdr-lead">
+        <button class="back-btn" id="outlineBackBtn">
+          <svg viewBox="0 0 13 13" fill="none"><path d="M8 2L3 6.5 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back
+        </button>
+        <div class="brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 13 13" fill="none"><path d="M2 2.5h9M2 6.5h6M2 10.5h4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span class="brand-name">Scrybe</span>
+            <span class="brand-sub">Essay Typer</span>
+          </div>
+        </div>
+      </div>
+      <div class="acct tier-hidden" data-acct>
+        <span class="essay-usage" data-acct-essay></span>
+        <span class="essay-usage" data-acct-paste></span>
+        <span class="tier-badge tier-badge-free" data-acct-tier>Free</span>
+        <button class="upgrade-btn" data-acct-upgrade title="Upgrade to Scrybe Pro" aria-label="Upgrade to Scrybe Pro"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 6.2l2.4 2L8 4.5l2.6 3.7 2.4-2-.9 5H3.9L3 6.2z"/><path d="M3.9 12.6h8.2V14H3.9z"/></svg><span class="upgrade-label">Upgrade</span></button>
+      </div>
+    </header>
+    <div class="body">
+      <div class="section" style="flex:1;">
+        <div class="sec-label-row">
+          <span class="sec-label" style="margin-bottom:0;">Outline</span>
+          <span class="outline-badge">Review before writing</span>
+        </div>
+        <div class="outline-box" id="outlineBox"></div>
+      </div>
+      <div class="section">
+        <button class="gen-btn" id="outlineNextBtn">Review Draft →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════
+       PAGE 3 — DRAFT REVIEW
+  ═══════════════════════════ -->
+  <div class="page page-hidden" id="pageDraft">
+    <header class="hdr">
+      <div class="hdr-lead">
+        <button class="back-btn" id="draftBackBtn">
+          <svg viewBox="0 0 13 13" fill="none"><path d="M8 2L3 6.5 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back
+        </button>
+        <div class="brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 13 13" fill="none"><path d="M2 2.5h9M2 6.5h6M2 10.5h4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span class="brand-name">Scrybe</span>
+            <span class="brand-sub">Essay Typer</span>
+          </div>
+        </div>
+      </div>
+      <div class="acct tier-hidden" data-acct>
+        <span class="essay-usage" data-acct-essay></span>
+        <span class="essay-usage" data-acct-paste></span>
+        <span class="tier-badge tier-badge-free" data-acct-tier>Free</span>
+        <button class="upgrade-btn" data-acct-upgrade title="Upgrade to Scrybe Pro" aria-label="Upgrade to Scrybe Pro"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 6.2l2.4 2L8 4.5l2.6 3.7 2.4-2-.9 5H3.9L3 6.2z"/><path d="M3.9 12.6h8.2V14H3.9z"/></svg><span class="upgrade-label">Upgrade</span></button>
+      </div>
+    </header>
+    <div class="body">
+
+      <div class="section">
+        <div class="sec-label-row">
+          <span class="sec-label" style="margin-bottom:0;">Draft</span>
+          <span class="draft-badge">Not yet humanized</span>
+        </div>
+        <textarea class="essay-preview" id="draftText" spellcheck="false"></textarea>
+      </div>
+
+      <div class="section">
+        <div class="sec-label">Request Changes <span class="lbl-unit">optional</span></div>
+        <div class="field" style="margin-bottom:10px;">
+          <textarea id="changesNote" rows="3" placeholder="e.g. Make the intro stronger, add more evidence in paragraph 2, shorten the conclusion…"></textarea>
+        </div>
+        <button class="apply-btn" id="applyBtn">Apply Changes →</button>
+      </div>
+
+      <div class="section">
+        <button class="gen-btn" id="approveBtn">Looks good — Finalize →</button>
+      </div>
+
+    </div>
+
+    <div class="gen-overlay" id="draftOverlay">
+      <div class="gen-overlay-inner">
+        <div class="gen-bars">
+          <div class="gen-bar"></div>
+          <div class="gen-bar"></div>
+          <div class="gen-bar"></div>
+          <div class="gen-bar"></div>
+          <div class="gen-bar"></div>
+        </div>
+        <div class="gen-overlay-title" id="draftOverlayTitle">Applying changes…</div>
+        <div class="gen-overlay-sub"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════
+       PAGE 4 — PREVIEW (type)
+  ═══════════════════════════ -->
+  <div class="page page-hidden" id="pagePreview">
+    <header class="hdr">
+      <div class="hdr-lead">
+        <button class="back-btn" id="backBtn">
+          <svg viewBox="0 0 13 13" fill="none"><path d="M8 2L3 6.5 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back
+        </button>
+        <div class="brand">
+          <div class="brand-icon">
+            <img src="Scrybebackground.png" alt="Brand Icon">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span class="brand-name">Scrybe</span>
+            <span class="brand-sub">Essay Typer</span>
+          </div>
+        </div>
+      </div>
+      <div class="acct tier-hidden" data-acct>
+        <span class="essay-usage" data-acct-essay></span>
+        <span class="essay-usage" data-acct-paste></span>
+        <span class="tier-badge tier-badge-free" data-acct-tier>Free</span>
+        <button class="upgrade-btn" data-acct-upgrade title="Upgrade to Scrybe Pro" aria-label="Upgrade to Scrybe Pro"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 6.2l2.4 2L8 4.5l2.6 3.7 2.4-2-.9 5H3.9L3 6.2z"/><path d="M3.9 12.6h8.2V14H3.9z"/></svg><span class="upgrade-label">Upgrade</span></button>
+      </div>
+    </header>
+
+    <!-- Top-level mode nav — mirrors the one on the Generate page -->
+    <div class="mode-bar" data-mode-nav>
+      <button class="mode-btn active" data-mode="type">Type Text</button>
+      <button class="mode-btn" data-mode="generate">Generate Essay</button>
+    </div>
+
+    <div class="body">
+
+      <!-- Sub-tabs: only appear once an essay exists to switch to -->
+      <div class="section tier-hidden" id="previewSubTabs" style="padding:12px 0 0;border-bottom:none;">
+        <div class="preview-tabs">
+          <button class="preview-tab" id="tabEssay">AI Essay</button>
+          <button class="preview-tab active" id="tabCustom">Your Text</button>
+        </div>
+      </div>
+
+      <!-- AI essay panel -->
+      <div id="panelEssay" style="display:none;">
+        <div class="section">
+          <div class="sec-label-row">
+            <span class="sec-label" style="margin-bottom:0;">Final Essay</span>
+            <span class="word-count-badge" id="wordCountBadge">— words</span>
+          </div>
+          <textarea class="essay-preview" id="essayText" spellcheck="false"></textarea>
+        </div>
+      </div>
+
+      <!-- Custom paste panel -->
+      <div id="panelCustom">
+        <div class="section">
+          <div class="sec-label-row">
+            <span class="sec-label" style="margin-bottom:0;">Your Text</span>
+            <button class="word-count-badge" id="customWordCountBadge" title="Words in your text">— words</button>
+          </div>
+          <textarea class="essay-preview" id="customText" spellcheck="false" placeholder="Paste any text here and click Start Typing to type it into your Google Doc…"></textarea>
+          <!-- Fires the moment the count crosses the free cap, rather than waiting
+               for Start Typing to refuse the run. -->
+          <div class="cap-banner tier-hidden" id="customCapBanner">
+            <div class="cap-banner-text">
+              <span class="cap-banner-title" id="customCapTitle">Free plan is 250 words</span>
+              <span class="cap-banner-sub" id="customCapSub">You're over it — trim the text or upgrade to type up to 2,000.</span>
+            </div>
+            <button class="cap-banner-cta" id="customCapUpgrade">Upgrade →</button>
+          </div>
+          <div class="limit-meter tier-hidden" id="wordCountMeter">
+            <div class="limit-meter-track"><div class="limit-meter-fill" id="wordCountFill"></div></div>
+            <span class="limit-meter-label" id="wordCountMeterLabel">0 / 250</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-label">Typing Speed</div>
+        <div class="field" style="margin-bottom:12px;">
+          <label>
+            Speed <span class="lbl-unit">wpm</span>
+            <span class="crown-badge tier-hidden" id="wpmCrown" title="Free plan: 60 wpm max. Click to upgrade.">
+              <span class="crown"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 6.2l2.4 2L8 4.5l2.6 3.7 2.4-2-.9 5H3.9L3 6.2z"/><path d="M3.9 12.6h8.2V14H3.9z"/></svg></span> <span id="wpmCrownText">60 max</span>
+            </span>
+          </label>
+          <input class="mono-input" type="number" id="wpm" placeholder="60" min="1" max="800" inputmode="numeric" />
+        </div>
+        <div class="field" id="durationField" style="margin-bottom:12px;">
+          <label>Target Duration <span class="lbl-unit">min:sec</span></label>
+
+          <!-- One bar for every tier. The handle starts centred on the natural pace.
+               Left is a longer run (slower), right a shorter one (faster), and both
+               ends show the actual minutes they land on — the numbers are what make
+               the control legible, the captions alone are not. -->
+          <div class="dur-readout">
+            <span class="dur-main">
+              <span class="dur-label" id="durationLabel">ETA</span>
+              <span class="dur-value" id="durationValue"></span>
+            </span>
+            <span class="dur-eff" id="durationEffective">add text to set a target</span>
+          </div>
+
+          <div class="dur-track" id="durationTrack">
+            <div class="dur-rail" aria-hidden="true"><div class="dur-fill" id="durationFill"></div></div>
+            <div class="dur-tick" id="durationTick" title="Back to natural pace"></div>
+            <!-- aria-hidden was wrong here even before the PRO tag: this is a
+                 live button that opens the purchase page, so it needs to be
+                 reachable and announced. -->
+            <button class="dur-lock" id="durationLock" type="button" title="Custom pacing is a Pro feature — click to upgrade">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.6 7V5.4a3.4 3.4 0 016.8 0V7h.6a1 1 0 011 1v4.4a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1h.6zm1.6 0h3.6V5.4a1.8 1.8 0 00-3.6 0V7z"/></svg>
+              <span class="dur-lock-tag">PRO</span>
+            </button>
+            <input type="range" id="durationRange" min="0" max="1000" step="1" value="500"
+                   aria-disabled="false"
+                   aria-label="Target duration relative to your natural typing pace" />
+          </div>
+
+          <!-- Live end values, so the bar is read in minutes rather than adjectives. -->
+          <div class="dur-ends">
+            <span class="dur-end"><span class="dur-end-time" id="durationSlowEnd">—</span><span class="dur-end-cap">slower</span></span>
+            <button class="dur-natural-label" id="durationNatural" type="button" title="Back to natural pace">
+              <span class="dur-natural-cap">Natural</span>
+              <span class="dur-natural-time" id="durationNaturalTime">—</span>
+            </button>
+            <span class="dur-end"><span class="dur-end-time" id="durationFastEnd">—</span><span class="dur-end-cap">faster</span></span>
+          </div>
+          <div class="dur-hint">Drag to see how long the whole essay takes.</div>
+        </div>
+        <div class="typing-anim" id="typingAnim">
+          <div class="typing-bar"></div>
+          <div class="typing-bar"></div>
+          <div class="typing-bar"></div>
+          <div class="typing-bar"></div>
+          <div class="typing-bar"></div>
+          <span class="typing-anim-label" id="typingAnimLabel">Typing…</span>
+        </div>
+        <div class="typing-progress" id="typingProgress">
+          <div class="typing-progress-track"><div class="typing-progress-fill" id="typingProgressFill"></div></div>
+          <span class="typing-progress-label" id="typingProgressLabel">0%</span>
+        </div>
+      </div>
+
+      <!-- Own section so it can pin to the panel bottom on its own. Sharing the
+           Typing Speed section would drag the duration bar down with it. -->
+      <div class="section type-dock">
+        <div class="type-controls">
+          <button class="type-btn" id="typeBtn"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M5 3.2l9 4.8-9 4.8z"/></svg> Start Typing</button>
+          <button class="type-btn type-btn-pause" id="pauseBtn"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M5 3h2.6v10H5zM8.4 3H11v10H8.4z"/></svg></button>
+          <button class="type-btn" id="stopBtn"><svg viewBox="0 0 16 16" fill="currentColor"><rect x="4.2" y="4.2" width="7.6" height="7.6" rx="1.4"/></svg></button>
+        </div>
+        <div id="status"></div>
+        <div class="review-nudge" id="reviewNudge" role="region" aria-label="Review Scrybe" aria-live="polite" hidden>
+          <div class="review-nudge-copy">
+            <span class="review-nudge-title">Scrybe saved you some typing.</span>
+            <span class="review-nudge-sub">A quick Chrome Web Store review helps other students find it.</span>
+          </div>
+          <div class="review-nudge-actions">
+            <button type="button" class="review-nudge-primary" id="reviewNudgeReview">Leave a review</button>
+            <button type="button" class="review-nudge-secondary" id="reviewNudgeDismiss">Not now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Skeleton card overlay — shown while a direct draft generates -->
+  <div class="skeleton-overlay" id="skeletonOverlay">
+    <div class="skeleton-overlay-inner">
+      <div class="skeleton-card">
+        <div class="skeleton-block" style="width:30%;"></div>
+        <div class="skeleton-block" style="width:96%;"></div>
+        <div class="skeleton-block" style="width:90%;"></div>
+        <div class="skeleton-block" style="width:94%;"></div>
+        <div class="skeleton-block" style="width:86%;"></div>
+        <div class="skeleton-block" style="width:92%;"></div>
+        <div class="skeleton-block" style="width:68%;"></div>
+      </div>
+      <div class="skeleton-overlay-label" id="skeletonOverlayLabel">Writing draft…</div>
+    </div>
+  </div>
+
+  <!-- Scroll hint — appears when the current page has more content below -->
+  <div class="scroll-hint" id="scrollHint">
+    Scroll for more
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+  </div>
+
+  <!-- Toast notifications -->
+  <div class="toast-stack" id="toastStack"></div>
+
+  <!-- Celebration confetti -->
+  <div class="confetti" id="confetti"></div>
+
+</div>
+<script src="typing-timing.js"></script>
+<script src="sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Scrybe — strip .html from URLs (Netlify drag-and-drop reads this from the publish root).
+# The site also ships a JS fallback in assets/analytics.js that rewrites the
+# address bar, plus canonical tags, so links never expose .html.
+
+/index.html                       /                              301!
+/purchase.html                    /purchase                      301!
+/login.html                       /login                         301!
+/privacy.html                     /privacy                       301!
+/ai-essay-writer.html             /ai-essay-writer               301!
+/ai-essay-writer-google-docs.html /ai-essay-writer-google-docs   301!
+/college-essay-writer.html        /college-essay-writer          301!
+/essay-humanizer.html             /essay-humanizer               301!
+/essay-typer.html                 /essay-typer                   301!
+/auto-typer                       /essay-typer                   301!
+/auto-typer-for-google-docs       /essay-typer                   301!
+/essaytyper-alternative.html      /essaytyper-alternative        301!
+/how-to-pass-turnitin-ai-detection.html /how-to-pass-turnitin-ai-detection 301!
+/how-to-write-an-essay-fast.html  /how-to-write-an-essay-fast    301!
+/paperbleach-alternative.html     /paperbleach-alternative       301!
+/scan.html                        /scan                          301!
+/scanned.html                     /scanned                       301!
+/tonight.html                     /tonight                       301!
+/blog/index.html                  /blog/                         301!
